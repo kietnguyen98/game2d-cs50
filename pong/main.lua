@@ -234,31 +234,31 @@ function love.draw()
         -- render the game mode menu
         love.graphics.setColor(0, 1, 0, 1)
         love.graphics.setFont(retroFont)
-        love.graphics.print('Choosing game mode:', 0, VIRTUAL_HEIGHT / 2 - 40, VIRTUAL_WIDTH, 'center')
-        love.graphics.print('1 Player (Play with AI): Press key "1"', VIRTUAL_WIDTH / 2 - 100, VIRTUAL_HEIGHT / 2 - 10, VIRTUAL_WIDTH, 'left')
-        love.graphics.print('2 PLayers: Press key "2"', VIRTUAL_WIDTH / 2 - 100, VIRTUAL_HEIGHT / 2 + 10, VIRTUAL_WIDTH, 'left')
-        love.graphics.print('return to main screen: Press key "0"', VIRTUAL_WIDTH / 2 - 100, VIRTUAL_HEIGHT / 2 + 30, VIRTUAL_WIDTH, 'left')
+        love.graphics.printf('Choosing game mode:', 0, VIRTUAL_HEIGHT / 2 - 40, VIRTUAL_WIDTH, 'center')
+        love.graphics.printf('1 Player (Play with AI): Press key "1"', VIRTUAL_WIDTH / 2 - 100, VIRTUAL_HEIGHT / 2 - 10, VIRTUAL_WIDTH, 'left')
+        love.graphics.printf('2 PLayers: Press key "2"', VIRTUAL_WIDTH / 2 - 100, VIRTUAL_HEIGHT / 2 + 10, VIRTUAL_WIDTH, 'left')
+        love.graphics.printf('return to main screen: Press key "0"', VIRTUAL_WIDTH / 2 - 100, VIRTUAL_HEIGHT / 2 + 30, VIRTUAL_WIDTH, 'left')
     else
         -- render welcome text
         if gameState == GAME_STATE_VALUES.START then
             love.graphics.setFont(bigFont)
-            love.graphics.print('Hello Pong', 0, VIRTUAL_HEIGHT / 2 - 40, VIRTUAL_WIDTH, 'center')
+            love.graphics.printf('Hello Pong', 0, VIRTUAL_HEIGHT / 2 - 40, VIRTUAL_WIDTH, 'center')
             love.graphics.setFont(retroFont)
-            love.graphics.print('press "Enter" to play !', 0, VIRTUAL_HEIGHT / 2 - 10, VIRTUAL_WIDTH, 'center')
+            love.graphics.printf('press "Enter" to play !', 0, VIRTUAL_HEIGHT / 2 - 10, VIRTUAL_WIDTH, 'center')
             love.graphics.setColor(0, 1, 0, 1)
-            love.graphics.print('current game mode: '..tostring(gameMode), 0, VIRTUAL_HEIGHT / 2 + 20, VIRTUAL_WIDTH, 'center')
-            love.graphics.print('press "M" key to enter game mode !', 0, VIRTUAL_HEIGHT / 2 + 35, VIRTUAL_WIDTH, 'center')
+            love.graphics.printf('current game mode: '..tostring(gameMode), 0, VIRTUAL_HEIGHT / 2 + 20, VIRTUAL_WIDTH, 'center')
+            love.graphics.printf('press "M" key to enter game mode !', 0, VIRTUAL_HEIGHT / 2 + 35, VIRTUAL_WIDTH, 'center')
         elseif gameState == GAME_STATE_VALUES.PLAY then
             love.graphics.setFont(smallFont)
-            love.graphics.print('playing...', 0, 5, VIRTUAL_WIDTH, 'center')
+            love.graphics.printf('playing...', 0, 5, VIRTUAL_WIDTH, 'center')
         elseif gameState == GAME_STATE_VALUES.SERVE then
             love.graphics.setFont(smallFont)
-            love.graphics.print('Player '..tostring(scoredPlayer)..' just scored ! - press "Enter" to continue', 0, 5, VIRTUAL_WIDTH, 'center')
+            love.graphics.printf('Player '..tostring(scoredPlayer)..' just scored ! - press "Enter" to continue', 0, 5, VIRTUAL_WIDTH, 'center')
         elseif gameState == GAME_STATE_VALUES.FINISHED then
             love.graphics.setFont(bigFont)
-            love.graphics.print('Player '..tostring(winningPlayer)..' wins the game !', 0, VIRTUAL_HEIGHT / 2 - 40, VIRTUAL_WIDTH, 'center')
+            love.graphics.printf('Player '..tostring(winningPlayer)..' wins the game !', 0, VIRTUAL_HEIGHT / 2 - 40, VIRTUAL_WIDTH, 'center')
             love.graphics.setFont(retroFont)
-            love.graphics.print('press "Enter" to restart !', 0, VIRTUAL_HEIGHT / 2 - 10, VIRTUAL_WIDTH, 'center')
+            love.graphics.printf('press "Enter" to restart !', 0, VIRTUAL_HEIGHT / 2 - 10, VIRTUAL_WIDTH, 'center')
         end
 
         if gameState ~= GAME_STATE_VALUES.START and gameState ~= GAME_STATE_VALUES.FINISHED then
@@ -273,7 +273,7 @@ function love.draw()
 
             -- render guide text
             love.graphics.setFont(smallFont)
-            love.graphics.print('The first player to score '..tostring(WINNING_POINT)..' points will win !', 0, 20, VIRTUAL_WIDTH, 'center')
+            love.graphics.printf('The first player to score '..tostring(WINNING_POINT)..' points will win !', 0, 20, VIRTUAL_WIDTH, 'center')
 
             -- render walls
             -- top walls
@@ -339,7 +339,7 @@ end
 function displayFPS()
     love.graphics.setFont(smallFont)
     love.graphics.setColor(0, 1, 0, 1)
-    -- print fps on the top left of the screen
+    -- printf fps on the top left of the screen
     love.graphics.print("FPS: "..tostring(love.timer.getFPS()), 5, 5)
 end
 
