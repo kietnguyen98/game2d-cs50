@@ -18,18 +18,18 @@ function StartState:render()
     -- draw instructions text
     love.graphics.setFont(gameFonts["medium"])
     if highlightedOption == 1 then
-        love.graphics.setColor(103 / 255, 205 / 255, 205 / 255, 205 / 255)
+        love.graphics.setColor(love.math.colorFromBytes(103, 205, 255, 255))
     end
     love.graphics.printf("START", 0, VIRTUAL_HEIGHT / 2 + 50, VIRTUAL_WIDTH, 'center')
 
     -- reset the color
-    love.graphics.setColor(255 / 255, 255 / 255, 255 / 255, 255 / 255)
+    love.graphics.setColor(1, 1, 1, 1)
 
     if highlightedOption == 2 then
-        love.graphics.setColor(103 / 255, 255 / 255, 255 / 255, 255 / 255)
+        love.graphics.setColor(love.math.colorFromBytes(103, 205, 255, 255))
     end
     love.graphics.printf("HIGH SCORE", 0, VIRTUAL_HEIGHT / 2 + 80, VIRTUAL_WIDTH, 'center')
 
     -- reset the color
-    love.graphics.setColor(255 / 255, 255 / 255, 255 / 255, 255 / 255)
+    love.graphics.setColor(1, 1, 1, 1)
 end
