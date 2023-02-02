@@ -23,3 +23,7 @@ require "src/Util"
 -- import all game objects class
 require "src/Paddle"
 require "src/Ball"
+require "src/Brick"
+
+-- import brick level maker
+require "src/LevelMaker"

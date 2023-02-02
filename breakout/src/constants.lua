@@ -9,3 +9,10 @@ VIRTUAL_HEIGHT = 243
 
 -- paddle speed
 PADDLE_SPEED = 200
+
+-- brick dimensions
+BRICK_WIDTH = 32
+BRICK_HEIGHT = 16
+
+-- bricks map
+BRICKS_MAP_GAP = 4

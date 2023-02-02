@@ -12,6 +12,9 @@ function PlayState:init()
 
     -- game pause logic value
     self.isPause = false
+
+    -- use static createMap function to generate all bricks
+    self.bricks = LevelMaker.createMap()
 end
 
 function PlayState:update(deltaTime)
@@ -46,6 +49,13 @@ function PlayState:update(deltaTime)
         self.ball.y = self.paddle.y - self.ball.height
         gameSounds['paddle-hit']:play()
     end
+
+    -- check if the ball collides with a brick
+    for k, brick in pairs(self.bricks) do
+        if brick.inPlay and self.ball:isCollides(brick) then
+            brick:hit()
+        end
+    end
 end
 
 function PlayState:render()
@@ -54,6 +64,11 @@ function PlayState:render()
 
     -- render the ball
     self.ball:render()
+
+    -- render all the brick
+    for k, brick in pairs(self.bricks) do
+        brick:render()
+    end
 
     -- if the game is paused then show the paused text
     if self.isPause then

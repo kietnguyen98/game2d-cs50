@@ -29,7 +29,8 @@ function love.load()
     -- Quads allow us to show only part of a texture and not the entire thing
     gameObjectQuads = {
         ["paddles"] = GenerateQuadsPaddles(gameTextures["main"]),
-        ["balls"] = GenerateQuadsBall(gameTextures['main'])
+        ["balls"] = GenerateQuadsBall(gameTextures['main']),
+        ["bricks"] = GenerateQuadsBricks(gameTextures['main'])
     }
 
     -- setup window screen, init virtual resolution
