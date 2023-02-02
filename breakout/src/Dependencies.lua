@@ -15,3 +15,11 @@ require "src/states/BaseState"
 
 -- import game states
 require "src/states/StartState"
+require "src/states/PlayState"
+
+-- import uitlity functions, mainly for splitting our sprite sheet
+require "src/Util"
+
+-- import all game objects class
+require "src/Paddle"
+require "src/Ball"

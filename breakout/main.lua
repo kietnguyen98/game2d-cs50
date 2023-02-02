@@ -24,6 +24,14 @@ function love.load()
         ["hearts"] = love.graphics.newImage('assets/hearts.png'),
         ["particle"] = love.graphics.newImage('assets/particle.png'),
     }
+
+    -- Quads we well generate for all of our textures;
+    -- Quads allow us to show only part of a texture and not the entire thing
+    gameObjectQuads = {
+        ["paddles"] = GenerateQuadsPaddles(gameTextures["main"]),
+        ["balls"] = GenerateQuadsBall(gameTextures['main'])
+    }
+
     -- setup window screen, init virtual resolution
     push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT,{
         vsync = true,
@@ -52,7 +60,8 @@ function love.load()
     
     -- init fsm and setup init state
     gameStateMachine = StateMachine({
-        ['start'] = function() return StartState() end
+        ['start'] = function() return StartState() end,
+        ['play'] = function() return PlayState() end,
     })
 
     -- run initial state
@@ -62,8 +71,8 @@ function love.load()
     love.keyboard.keysPressed = {}
 end
 
-function love.update()
-    gameStateMachine:update()
+function love.update(deltaTime)
+    gameStateMachine:update(deltaTime)
 
     -- reset keys pressed table
     love.keyboard.keysPressed = {}
