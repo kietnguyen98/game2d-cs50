@@ -11,9 +11,10 @@ function love.load()
     love.window.setTitle('Breakout')
     -- set up fonts
     gameFonts = {
-        ["small"] = love.graphics.newFont('fonts/halo.TTF',12),
-        ["medium"] = love.graphics.newFont('fonts/halo.TTF', 16),
-        ["large"] = love.graphics.newFont('fonts/halo.TTF', 24),
+        ["tiny"] = love.graphics.newFont('fonts/pressStart.ttf', 7),
+        ["small"] = love.graphics.newFont('fonts/pressStart.ttf', 12),
+        ["medium"] = love.graphics.newFont('fonts/pressStart.ttf', 16),
+        ["large"] = love.graphics.newFont('fonts/pressStart.ttf', 20),
     }
     love.graphics.setFont(gameFonts["small"])
     -- set up all the assets/textures in the game
@@ -30,7 +31,8 @@ function love.load()
     gameObjectQuads = {
         ["paddles"] = GenerateQuadsPaddles(gameTextures["main"]),
         ["balls"] = GenerateQuadsBall(gameTextures['main']),
-        ["bricks"] = GenerateQuadsBricks(gameTextures['main'])
+        ["bricks"] = GenerateQuadsBricks(gameTextures['main']),
+        ["hearts"] = GenerateQuadsHearts(gameTextures['hearts'])
     }
 
     -- setup window screen, init virtual resolution
@@ -62,7 +64,8 @@ function love.load()
     -- init fsm and setup init state
     gameStateMachine = StateMachine({
         ['start'] = function() return StartState() end,
-        ['play'] = function() return PlayState() end,
+        ['serve'] = function() return ServeState() end,
+        ['play'] = function() return PlayState() end
     })
 
     -- run initial state
@@ -111,4 +114,30 @@ function love.keyboard.wasPressed(key)
     else 
         return false
     end
+end
+
+function renderHealth(health)
+    local healthX = VIRTUAL_WIDTH - 120
+    local healthY = 4
+
+    -- render health left
+    for i = 1, health do
+        love.graphics.draw(gameTextures['hearts'], gameObjectQuads['hearts'][1], healthX, healthY)
+        healthX = healthX + 11
+    end
+
+    -- render missing health
+    for i = 1, 3 - health do 
+        love.graphics.draw(gameTextures['hearts'], gameObjectQuads['hearts'][2], healthX, healthY)
+        healthX = healthX + 11
+    end
+end
+
+function renderScore(score)
+    local scoreX = VIRTUAL_WIDTH - 80
+    local scoreY = 4
+
+    -- render the score
+    love.graphics.setFont(gameFonts['tiny'])
+    love.graphics.print('score: '..tostring(score), scoreX, scoreY)
 end

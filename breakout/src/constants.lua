@@ -8,7 +8,7 @@ VIRTUAL_WIDTH = 432
 VIRTUAL_HEIGHT = 243
 
 -- paddle speed
-PADDLE_SPEED = 200
+PADDLE_SPEED = 250
 
 -- brick dimensions
 BRICK_WIDTH = 32

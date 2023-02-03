@@ -16,6 +16,7 @@ require "src/states/BaseState"
 -- import game states
 require "src/states/StartState"
 require "src/states/PlayState"
+require "src/states/ServeState"
 
 -- import uitlity functions, mainly for splitting our sprite sheet
 require "src/Util"

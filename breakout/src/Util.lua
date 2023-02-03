@@ -86,3 +86,19 @@ end
 function GenerateQuadsBricks(atlas)
     return table.slice(GenerateQuads(atlas, 32, 16), 1, 21)
 end
+
+function GenerateQuadsHearts(atlas)
+    local x = 0
+    local y = 0
+
+    local counter = 1
+    local quads = {}
+
+    for i = 0, 1 do
+        quads[counter] = love.graphics.newQuad(x, y, 10, 9, atlas:getDimensions())
+        x = x + 10
+        counter = counter + 1
+    end
+
+    return quads
+end

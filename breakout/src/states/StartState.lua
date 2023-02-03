@@ -6,6 +6,11 @@ StartState = BaseState:extend()
 -- 2 = high scores
 local highlightedOption = 1
 
+function StartState:init()
+    self.health = 3
+    self.score = 0
+end
+
 function StartState:update()
     if love.keyboard.wasPressed('up') or love.keyboard.wasPressed('down') then
         highlightedOption = highlightedOption == 1 and 2 or 1
@@ -16,7 +21,13 @@ function StartState:update()
     if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
         gameSounds['select']:play()
         if highlightedOption == 1 then
-            gameStateMachine:change('play')
+            gameStateMachine:change('serve', {
+                paddle = Paddle(),
+                bricks = LevelMaker.createMap(),
+                health = self.health,
+                score = self.score
+            })
+
         elseif highlightedOption == 2 then
             gameSounds['select']:play()
             return

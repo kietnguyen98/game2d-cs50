@@ -25,12 +25,13 @@ end
 function Paddle:update(deltaTime) 
     -- keyboard input
     if love.keyboard.isDown('left') then
-    -- user press left key so move the paddle to the left
+    -- player press left key so move the paddle to the left
         self.dx = -PADDLE_SPEED
+    -- player press right key so move the paddle to the right
     elseif love.keyboard.isDown('right') then
         self.dx = PADDLE_SPEED
     else
-        -- user release moving buttons => the paddle stop
+        -- player release moving buttons => the paddle stop
         self.dx = 0
     end
 
