@@ -65,7 +65,8 @@ function love.load()
     gameStateMachine = StateMachine({
         ['start'] = function() return StartState() end,
         ['serve'] = function() return ServeState() end,
-        ['play'] = function() return PlayState() end
+        ['play'] = function() return PlayState() end,
+        ['game-over'] = function() return GameOverState() end,
     })
 
     -- run initial state
