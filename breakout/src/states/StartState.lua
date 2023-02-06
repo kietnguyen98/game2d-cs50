@@ -11,6 +11,10 @@ function StartState:init()
     self.score = 0
 end
 
+function StartState:enter()
+    self.highScoresBoard = loadHighScores()
+end
+
 function StartState:update()
     if love.keyboard.wasPressed('up') or love.keyboard.wasPressed('down') then
         highlightedOption = highlightedOption == 1 and 2 or 1
@@ -20,18 +24,21 @@ function StartState:update()
     -- change game state when user enter option
     if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
         gameSounds['select']:play()
+        -- player enter play mode
         if highlightedOption == 1 then
             gameStateMachine:change('serve', {
                 paddle = Paddle(),
                 bricks = LevelMaker.createMap(1),
                 health = self.health,
                 score = self.score,
-                level = 1
+                level = 1,
+                highScoresBoard = self.highScoresBoard
             })
-
+        -- player enter high score board mode
         elseif highlightedOption == 2 then
-            gameSounds['select']:play()
-            return
+            gameStateMachine:change('high-score', {
+                highScoresBoard = self.highScoresBoard
+            })
         end
     end
 end

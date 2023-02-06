@@ -9,11 +9,13 @@ function PlayState:enter(params)
     self.health = params.health
     self.score = params.score
     self.ball = params.ball
+    -- init ball velocity
     self.ball.dx = math.random(-200, 200)
     self.ball.dy = math.random(-60, -80)
     self.paddle = params.paddle
     self.bricks = params.bricks
     self.level = params.level
+    self.highScoresBoard = params.highScoresBoard
 end
 
 function PlayState:update(deltaTime)
@@ -42,7 +44,8 @@ function PlayState:update(deltaTime)
             score = self.score,
             paddle = self.paddle,
             ball = self.ball,
-            health = self.health
+            health = self.health,
+            highScoresBoard = self.highScoresBoard
         })
     end
 
@@ -119,15 +122,33 @@ function PlayState:update(deltaTime)
         self.health = self.health - 1
         gameSounds['hurt']:play()
         if self.health == 0 then
-            gameStateMachine:change('game-over', {
-                score = self.score
-            })
+            -- check if the player score is enough to enter the high scores board
+            local scoreIndex = 1
+            for i = 1, #self.highScoresBoard do
+                if self.score < tonumber(self.highScoresBoard[i]['score']) then
+                   scoreIndex = scoreIndex + 1 
+                end
+            end
+
+            if scoreIndex <= 10 then
+                gameStateMachine:change('enter-high-score', {
+                    highScores = self.highScoresBoard,
+                    score = self.score,
+                    scoreIndex = scoreIndex
+                })
+            else
+                gameStateMachine:change('game-over', {
+                    score = self.score
+                })
+            end
         else
             gameStateMachine:change('serve', {
                 paddle = self.paddle,
                 bricks = self.bricks,
                 health = self.health,
-                score = self.score   
+                score = self.score,
+                level = self.level,
+                highScoresBoard = self.highScoresBoard
             })
         end
     end

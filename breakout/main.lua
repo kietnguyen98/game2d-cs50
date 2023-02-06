@@ -67,7 +67,9 @@ function love.load()
         ['serve'] = function() return ServeState() end,
         ['play'] = function() return PlayState() end,
         ['game-over'] = function() return GameOverState() end,
-        ['victory'] = function() return VictoryState() end
+        ['victory'] = function() return VictoryState() end,
+        ['enter-high-score'] = function() return EnterHighScoreState() end,
+        ['high-score'] = function() return HighScoreState() end
     })
 
     -- run initial state
@@ -142,4 +144,61 @@ function renderScore(score)
     -- render the score
     love.graphics.setFont(gameFonts['tiny'])
     love.graphics.print('score: '..tostring(score), scoreX, scoreY)
+end
+
+
+--[[
+    loads highscore from a .lst file, saved in LOVE2D's default save directory in a subfolder
+    called 'breakout'.
+]]--
+
+function loadHighScores()
+    love.filesystem.setIdentity('breakout')
+
+    -- if the file doesnt exist, intialize it with some default scores 
+    if not love.filesystem.getInfo('breakout.lst') then
+        local scores = '' -- the scores must be string type
+        for i = 10, 1, -1 do
+            scores = scores..'CTO\n'
+            scores = scores..tostring(i * 100)..'\n'
+        end
+
+        -- write the scores in file
+        love.filesystem.write('breakout.lst', scores)
+    end
+
+    --
+    -- reading the high score data from file and store it in a table
+    --
+    -- flag for whether we are reading a name or not
+    local isReadingName = true
+    local currentName = nil
+    local counter = 1
+    -- initialize scores table with at least 10 blank entries
+    local scores = {}
+    
+    for i = 1, 10 do
+        -- init blank table; each will hold a name and a score
+        scores[i] = {
+            name = nil,
+            score = nil
+        }
+    end
+
+    -- iterate over each line in the file, filling in name and score in scores table
+    for line in love.filesystem.lines('breakout.lst') do
+        if isReadingName then
+            -- read the first 3 character (maximum name length) from the line
+            scores[counter]['name'] = string.sub(line, 1, 3)
+            isReadingName = false
+        else
+            scores[counter]['score'] = tonumber(line)
+            -- when we read the score line then we have finished read data of 1 player
+            counter = counter + 1
+            -- change name flag to true because the next line will be player name
+            isReadingName = true 
+        end
+    end
+
+    return scores
 end

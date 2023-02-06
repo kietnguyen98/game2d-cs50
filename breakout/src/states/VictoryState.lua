@@ -14,6 +14,7 @@ function VictoryState:enter(params)
     self.paddle = params.paddle
     self.health = params.health
     self.ball = params.ball
+    self.highScoresBoard = params.highScoresBoard
 end
 
 function VictoryState:update(deltaTime)
@@ -32,7 +33,8 @@ function VictoryState:update(deltaTime)
             health = self.health,
             score = self.score,
             ball = self.ball,
-            level = self.level + 1
+            level = self.level + 1,
+            highScoresBoard = self.highScoresBoard
         })
     end
 end
