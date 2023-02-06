@@ -23,7 +23,7 @@ function StartState:update()
         if highlightedOption == 1 then
             gameStateMachine:change('serve', {
                 paddle = Paddle(),
-                bricks = LevelMaker.createMap(),
+                bricks = LevelMaker.createMap(1),
                 health = self.health,
                 score = self.score
             })

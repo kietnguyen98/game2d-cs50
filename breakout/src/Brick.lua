@@ -27,8 +27,6 @@ end
 
 function Brick:render()
     if self.inPlay then
-        love.graphics.draw(gameTextures['main'], 
-        gameObjectQuads['bricks'][((self.color - 1) * 4) + self.tier],
-        self.x, self.y)
+        love.graphics.draw(gameTextures['main'], gameObjectQuads['bricks'][((self.color - 1) * 4) + self.tier], self.x, self.y)
     end
 end
