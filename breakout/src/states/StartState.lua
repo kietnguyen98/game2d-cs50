@@ -25,7 +25,8 @@ function StartState:update()
                 paddle = Paddle(),
                 bricks = LevelMaker.createMap(1),
                 health = self.health,
-                score = self.score
+                score = self.score,
+                level = 1
             })
 
         elseif highlightedOption == 2 then

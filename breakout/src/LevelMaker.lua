@@ -14,19 +14,20 @@ NONE = 4                -- no blocks this row
 function LevelMaker.createMap(level)
     local bricks = {}
 
-    local numRows = math.random(1, 5)
+    -- local numRows = math.random(1, 5)
+    local numRows = level
 
-    local numCols = math.random(5, 11)
+    local numCols = math.random(math.min(5, level * 2), math.min(11, level * 3))
 
     -- ensuring the num cols is always odd
     numCols = numCols % 2 == 0 and numCols + 1 or numCols
 
     -- highest possible spawned brick color in this level
     -- ensure we dont go above 3
-    local highestTier = math.min(4, math.floor(level / 5))
+    local highestTier = math.min(math.min(4, level), math.floor(level / 5))
 
     -- highest color of the highest tier
-    local highestColor = math.min(5, level % 5 + 3)
+    local highestColor = math.min(math.min(5, level), level % 5 + 3)
 
     -- iterating on each row
     for y = 1, numRows do

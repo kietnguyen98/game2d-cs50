@@ -8,7 +8,7 @@ function ServeState:enter(params)
     self.bricks = params.bricks
     self.health = params.health
     self.score = params.score
-    
+    self.level = params.level
     -- init new ball
     self.ball = Ball()
     -- init new ball skin with random value
@@ -31,6 +31,7 @@ function ServeState:update(deltaTime)
             health = self.health,
             score = self.score,
             ball = self.ball,
+            level = self.level
         })
     end
 end

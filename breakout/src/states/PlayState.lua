@@ -13,6 +13,7 @@ function PlayState:enter(params)
     self.ball.dy = math.random(-60, -80)
     self.paddle = params.paddle
     self.bricks = params.bricks
+    self.level = params.level
 end
 
 function PlayState:update(deltaTime)
@@ -34,11 +35,27 @@ function PlayState:update(deltaTime)
         end
     end        
 
+    -- check victory and change game state
+    if self:checkVictory() then
+        gameStateMachine:change('victory', {
+            level = self.level,
+            score = self.score,
+            paddle = self.paddle,
+            ball = self.ball,
+            health = self.health
+        })
+    end
+
     -- update the paddle
     self.paddle:update(deltaTime)
 
     -- update the ball
     self.ball:update(deltaTime)
+    
+    -- update all the bricks
+    for k, brick in pairs(self.bricks) do
+        brick:update(deltaTime)
+    end
     
     -- check if the ball collides with the paddle
     if self.ball:isCollides(self.paddle) then
@@ -128,6 +145,11 @@ function PlayState:render()
         brick:render()
     end
 
+    -- render all brick particle system
+    for k, brick in pairs(self.bricks) do
+        brick:renderParticles()
+    end
+
     -- render player health
     renderHealth(self.health)
     renderScore(self.score)
@@ -138,4 +160,14 @@ function PlayState:render()
         love.graphics.setFont(gameFonts['large'])
         love.graphics.printf("PAUSED", 0, VIRTUAL_HEIGHT / 2 - 20, VIRTUAL_WIDTH, 'center')
     end
+end
+
+function PlayState:checkVictory()
+    for k, brick in pairs(self.bricks) do
+        if brick.inPlay then
+            return false
+        end
+    end
+
+    return true
 end

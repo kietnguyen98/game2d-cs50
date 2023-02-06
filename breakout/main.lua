@@ -67,6 +67,7 @@ function love.load()
         ['serve'] = function() return ServeState() end,
         ['play'] = function() return PlayState() end,
         ['game-over'] = function() return GameOverState() end,
+        ['victory'] = function() return VictoryState() end
     })
 
     -- run initial state
@@ -112,7 +113,7 @@ end
 function love.keyboard.wasPressed(key)
     if love.keyboard.keysPressed[key] then
         return true
-    else 
+    else
         return false
     end
 end
