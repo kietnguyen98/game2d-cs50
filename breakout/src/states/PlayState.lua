@@ -92,8 +92,8 @@ function PlayState:update(deltaTime)
                 self.ball.y = brick.y + brick.height
             end
 
-            -- the ball hit the brick then player score once
-                self.score = self.score + 10
+            -- the ball hit the brick then player score should increase depend on the brick tier and color level
+                self.score = self.score + (brick.tier * 100 + brick.color * 25)
         end
     end
 

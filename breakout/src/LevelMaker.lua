@@ -23,7 +23,7 @@ function LevelMaker.createMap(level)
 
     -- highest possible spawned brick color in this level
     -- ensure we dont go above 3
-    local highestTier = math.min(3, math.floor(level / 5))
+    local highestTier = math.min(4, math.floor(level / 5))
 
     -- highest color of the highest tier
     local highestColor = math.min(5, level % 5 + 3)
