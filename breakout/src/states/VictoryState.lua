@@ -26,7 +26,7 @@ function VictoryState:update(deltaTime)
     self.ball.y = self.paddle.y - self.ball.height
 
     -- go to play screen when the player press enter
-    if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
+    if love.keyboard.wasPressed('space') then
         gameStateMachine:change('play', {
             paddle = self.paddle,
             bricks = LevelMaker.createMap(self.level + 1),
@@ -58,5 +58,5 @@ function VictoryState:render()
 
     -- render instruction text
     love.graphics.setFont(gameFonts['medium'])
-    love.graphics.printf('Press Enter to play !', 0, VIRTUAL_HEIGHT / 2, VIRTUAL_WIDTH, 'center')
+    love.graphics.printf('Press BACKSPACE to play !', 0, VIRTUAL_HEIGHT / 2, VIRTUAL_WIDTH, 'center')
 end

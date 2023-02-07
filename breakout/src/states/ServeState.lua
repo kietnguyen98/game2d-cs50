@@ -24,7 +24,7 @@ function ServeState:update(deltaTime)
     self.ball.x = self.paddle.x + self.paddle.width / 2 - self.ball.width / 2
     self.ball.y = self.paddle.y - self.ball.height
 
-    if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
+    if love.keyboard.wasPressed('space') then
         -- change state to play state and pass all needed arguments
         gameStateMachine:change('play', {
             paddle = self.paddle,
@@ -55,6 +55,6 @@ function ServeState:render()
     renderScore(self.score)
 
     -- render guide text
-    love.graphics.setFont(gameFonts['medium'])
-    love.graphics.printf("Press ENTER to play !", 0, VIRTUAL_HEIGHT / 2 - 20, VIRTUAL_WIDTH, 'center')
+    love.graphics.setFont(gameFonts['small'])
+    love.graphics.printf("Press BACKSPACE to play !", 0, VIRTUAL_HEIGHT / 2 - 20, VIRTUAL_WIDTH, 'center')
 end

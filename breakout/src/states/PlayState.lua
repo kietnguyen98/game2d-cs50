@@ -122,25 +122,10 @@ function PlayState:update(deltaTime)
         self.health = self.health - 1
         gameSounds['hurt']:play()
         if self.health == 0 then
-            -- check if the player score is enough to enter the high scores board
-            local scoreIndex = 1
-            for i = 1, #self.highScoresBoard do
-                if self.score < tonumber(self.highScoresBoard[i]['score']) then
-                   scoreIndex = scoreIndex + 1 
-                end
-            end
-
-            if scoreIndex <= 10 then
-                gameStateMachine:change('enter-high-score', {
-                    highScores = self.highScoresBoard,
-                    score = self.score,
-                    scoreIndex = scoreIndex
-                })
-            else
-                gameStateMachine:change('game-over', {
-                    score = self.score
-                })
-            end
+            gameStateMachine:change('game-over', {
+                score = self.score,
+                highScores = self.highScoresBoard
+            })
         else
             gameStateMachine:change('serve', {
                 paddle = self.paddle,

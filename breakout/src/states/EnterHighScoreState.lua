@@ -57,11 +57,11 @@ function EnterHighScoreState:update(deltaTime)
         local name = string.char(self.chars[1])..string.char(self.chars[2])..string.char(self.chars[3])
 
         -- go backwards through high scores table till 
-        for i = 10, self.scoreIndex - 1 do
+        for i = 10, self.scoreIndex + 1, -1 do
             -- shift those hight score players down
-            self.highScores[i + 1] = {
-                name = self.highScores[i]['name'],
-                score = self.highScores[i]['score']
+            self.highScores[i] = {
+                name = self.highScores[i - 1]['name'],
+                score = self.highScores[i - 1]['score']
             }
         end
 
@@ -69,13 +69,13 @@ function EnterHighScoreState:update(deltaTime)
         self.highScores[self.scoreIndex]['name'] = name
         self.highScores[self.scoreIndex]['score'] = self.score
 
-        -- write the new hight score table to the file
+        -- write the new high score table to the file
         local scoresStr = ''
 
         -- convert all data in hight score table to string
         for i = 1, 10 do
             scoresStr = scoresStr..self.highScores[i]['name']..'\n'
-            scoresStr = scoresStr..tostring(self.highScores[i]['name'])..'\n'
+            scoresStr = scoresStr..tostring(self.highScores[i]['score'])..'\n'
         end
 
         -- write hight score string to file
