@@ -16,6 +16,7 @@ require "src/states/BaseState"
 -- import game states
 require "src/states/StartState"
 require "src/states/PlayState"
+require "src/states/SelectPaddleState"
 require "src/states/ServeState"
 require "src/states/GameOverState"
 require "src/states/VictoryState"

@@ -32,7 +32,8 @@ function love.load()
         ["paddles"] = GenerateQuadsPaddles(gameTextures["main"]),
         ["balls"] = GenerateQuadsBall(gameTextures['main']),
         ["bricks"] = GenerateQuadsBricks(gameTextures['main']),
-        ["hearts"] = GenerateQuadsHearts(gameTextures['hearts'])
+        ["hearts"] = GenerateQuadsHearts(gameTextures['hearts']),
+        ["arrows"] = GenerateQuadsArrows(gameTextures['arrows'])
     }
 
     -- setup window screen, init virtual resolution
@@ -60,10 +61,14 @@ function love.load()
     
         ['music'] = love.audio.newSource('sounds/background_music.mp3', 'static'),
     }
+    -- play background music
+    gameSounds['music']:setLooping(true)
+    gameSounds['music']:play()
     
     -- init fsm and setup init state
     gameStateMachine = StateMachine({
         ['start'] = function() return StartState() end,
+        ['select-paddle'] = function() return SelectPaddleState() end,
         ['serve'] = function() return ServeState() end,
         ['play'] = function() return PlayState() end,
         ['game-over'] = function() return GameOverState() end,

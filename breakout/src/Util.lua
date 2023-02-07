@@ -49,7 +49,6 @@ function GenerateQuadsPaddles(atlas)
         -- prepare x and y for the next paddle
         x = 0
         y = y + 32
-       
     end
 
     return quads
@@ -100,5 +99,21 @@ function GenerateQuadsHearts(atlas)
         counter = counter + 1
     end
 
+    return quads
+end
+
+function GenerateQuadsArrows(atlas)
+    local x = 0
+    local y = 0
+
+    local counter = 1
+    local quads = {}
+
+    for i = 0, 1 do
+        quads[counter] = love.graphics.newQuad(x, y, 24, 24, atlas:getDimensions())
+        x = x + 24
+        counter = counter + 1
+    end
+    
     return quads
 end

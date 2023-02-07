@@ -39,6 +39,7 @@ function PlayState:update(deltaTime)
 
     -- check victory and change game state
     if self:checkVictory() then
+        gameSounds["victory"]:play()
         gameStateMachine:change('victory', {
             level = self.level,
             score = self.score,
@@ -127,6 +128,7 @@ function PlayState:update(deltaTime)
                 highScores = self.highScoresBoard
             })
         else
+            gameSounds["recover"]:play()
             gameStateMachine:change('serve', {
                 paddle = self.paddle,
                 bricks = self.bricks,

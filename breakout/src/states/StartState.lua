@@ -26,12 +26,9 @@ function StartState:update()
         gameSounds['select']:play()
         -- player enter play mode
         if highlightedOption == 1 then
-            gameStateMachine:change('serve', {
-                paddle = Paddle(),
-                bricks = LevelMaker.createMap(1),
+            gameStateMachine:change('select-paddle', {
                 health = self.health,
                 score = self.score,
-                level = 1,
                 highScoresBoard = self.highScoresBoard
             })
         -- player enter high score board mode

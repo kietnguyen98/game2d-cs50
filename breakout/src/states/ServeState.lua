@@ -55,6 +55,8 @@ function ServeState:render()
     renderScore(self.score)
 
     -- render guide text
+    love.graphics.setFont(gameFonts['medium'])
+    love.graphics.printf("Level "..tostring(self.level), 0, VIRTUAL_HEIGHT / 2 - 40, VIRTUAL_WIDTH, 'center')
     love.graphics.setFont(gameFonts['small'])
-    love.graphics.printf("Press BACKSPACE to play !", 0, VIRTUAL_HEIGHT / 2 - 20, VIRTUAL_WIDTH, 'center')
+    love.graphics.printf("Press BACKSPACE to play !", 0, VIRTUAL_HEIGHT / 2, VIRTUAL_WIDTH, 'center')
 end

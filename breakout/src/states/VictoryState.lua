@@ -53,10 +53,10 @@ function VictoryState:render()
     renderScore(self.score)
 
     -- render level complete text
-    love.graphics.setFont(gameFonts['large'])
+    love.graphics.setFont(gameFonts['medium'])
     love.graphics.printf("Level "..tostring(self.level).." Complete !", 0, VIRTUAL_HEIGHT / 4, VIRTUAL_WIDTH, 'center')
 
     -- render instruction text
-    love.graphics.setFont(gameFonts['medium'])
+    love.graphics.setFont(gameFonts['small'])
     love.graphics.printf('Press BACKSPACE to play !', 0, VIRTUAL_HEIGHT / 2, VIRTUAL_WIDTH, 'center')
 end
