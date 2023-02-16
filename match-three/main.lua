@@ -1,49 +1,67 @@
 -- import needed modules via dependencies
-require 'src/dependencies'
+require 'src/Dependencies'
 
 -- define main functions
 function love.load()
     -- setup graphics
     love.graphics.setDefaultFilter('nearest', 'nearest')
+    
     -- setup window title
     love.window.setTitle('match three')
+
+    -- init randome seed
+    math.randomseed(os.time())
+
     -- setup screen resolution and max dimensions
     push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT,{
         vsync = true,
         fullscreen = false,
         resizeable = true,
+        canvas = true,
     })
 
-    -- setup timer variables
-    currentSecond = 0
-    timer = 0
+    -- define game State machine
+    gameStateMachine = StateMachine(
+        {
+            ['start'] = function() return StartState() end,
+            ['begin'] = function() return BeginGameState() end,
+            ['play'] = function() return PlayState() end,
+            ['game-over'] = function() return GameOverState() end,
+        }
+    ) 
 
+    -- init start state
+    gameStateMachine:change('start')
+
+    -- init background position
+    backgroundPosX = 0
+    
     -- define player keypressed table
     love.keyboard.keysPressed = {}
 end
 
 function love.update(deltaTime)
-   -- define all of the intervals for our labels
-   intervals = {1, 2, 4, 3, 2}
+    -- scroll the background and looping it
+    backgroundPosX = backgroundPosX - BACKGROUND_SCROLL_SPEED * deltaTime
+    
+    -- reset background position if it scrolled the entire image
+    if  backgroundPosX <= -1024 + VIRTUAL_WIDTH - 4 + 51 then
+        backgroundPosX = 0
+    end
 
-   -- define all of counnters for our labels
-   counters = {0, 0, 0, 0, 0}
-
-   -- create Timer entries for each interval and counter
-   for i = 1, 5 do
-    -- anonymous function that gets every interval[i], in seconnds
-        Timer.every(intervals[i], function() 
-            counters[i] = counters[i] + 1
-        end)
-   end
-
+    -- update current game state
     -- reset keysPressed table
     love.keyboard.keysPressed = {}
 end
 
 function love.draw()
     push:apply('start')
-    love.graphics.printf('Timer: '..tostring(currentSecond), 0, VIRTUAL_HEIGHT / 2, VIRTUAL_WIDTH, 'center')
+
+    -- render the background
+    love.graphics.draw(gameTextures['background'], backgroundPosX, 0)
+
+    -- render current game state
+    gameStateMachine:render()
     push:apply('end')
 end
 
