@@ -35,3 +35,11 @@ function GenerateTileQuads(atlas)
 
     return quads
 end
+
+function drawTextShadow(text, y)
+    love.graphics.setColor(love.math.colorFromBytes(34, 32, 52, 255))
+    love.graphics.printf(text, 2, y + 1, VIRTUAL_WIDTH, 'center')
+    love.graphics.printf(text, 1, y + 1, VIRTUAL_WIDTH, 'center')
+    love.graphics.printf(text, 0, y + 1, VIRTUAL_WIDTH, 'center')
+    love.graphics.printf(text, 1, y + 2, VIRTUAL_WIDTH, 'center')
+end

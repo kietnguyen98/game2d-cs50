@@ -50,8 +50,11 @@ function love.update(deltaTime)
     end
 
     -- update current game state
+    gameStateMachine:update(deltaTime)
+
     -- reset keysPressed table
     love.keyboard.keysPressed = {}
+
 end
 
 function love.draw()
@@ -70,11 +73,20 @@ function love.resize(width, height)
 end
 
 -- handle player press any key event
+-- love.keyPress trigger when ever player press a key
 function love.keypressed(key)
     love.keyboard.keysPressed[key] = true
 
     -- close the game if player press escape button
     if love.keyboard.keysPressed["escape"] then
         love.event.quit()
+    end
+end
+
+function love.keyboard.wasPressed(key)
+    if love.keyboard.keysPressed[key] then
+        return true
+    else
+        return false
     end
 end

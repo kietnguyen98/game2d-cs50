@@ -25,9 +25,9 @@ gameSounds = {
 }
 
 gameFonts = {
-    ['small'] = love.graphics.newFont('fonts/pcsenior.ttf', 8),
-    ['medium'] = love.graphics.newFont('fonts/pcsenior.ttf', 12),
-    ['large'] = love.graphics.newFont('fonts/pcsenior.ttf', 16),
+    ['small'] = love.graphics.newFont('fonts/thebombsound.ttf', 8),
+    ['medium'] = love.graphics.newFont('fonts/thebombsound.ttf', 18),
+    ['large'] = love.graphics.newFont('fonts/thebombsound.ttf', 36),
 }
 
 gameTextures = {
