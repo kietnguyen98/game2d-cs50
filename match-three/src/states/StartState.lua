@@ -66,7 +66,7 @@ function StartState:update(deltaTime)
     end
 
     -- choose one optionn
-    if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('escape') then
+    if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
         if self.currentSelectedOption == 1 then
             -- change game state to begin game
             -- using tween function from Timer, make trasition change opacity from 0 to 1,
@@ -80,10 +80,11 @@ function StartState:update(deltaTime)
             end)
 
             -- remove  color Timer
+            -- timer is an global object, but in the next state we dont need to tween the color any more
+            -- so remove this timer reduce posibility of bug
             self.colorTimer:remove()
         end
         
-
         -- change game state to high score state
     end
 
@@ -121,8 +122,11 @@ function StartState:render()
     love.graphics.rectangle('fill', 0, 0, VIRTUAL_WIDTH, VIRTUAL_HEIGHT)
 
     self:drawTitleText(-64)
-
     self:drawGameOptions(32)
+    
+    -- make an overlay over all the this game state ui for game state transition effect
+    love.graphics.setColor(1, 1, 1, self.transitionAlpha)
+    love.graphics.rectangle('fill', 0 , 0, VIRTUAL_WIDTH, VIRTUAL_HEIGHT)
 end
 
 function StartState:drawTitleText(y)

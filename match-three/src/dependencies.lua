@@ -8,6 +8,8 @@ require 'src/utils/Constants'
 -- classes
 require 'lib/class'
 require 'src/StateMachine'
+require 'src/components/Board'
+require 'src/components/Tile'
 
 -- states
 require 'src/states/BaseState'

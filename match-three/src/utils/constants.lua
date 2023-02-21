@@ -19,3 +19,8 @@ TextOptionColor = {
     ['NORMAL'] = {48/255, 155/255, 130/255, 1},
     ['HIGHT_LIGHT'] = {99/255, 155/255, 1, 1}
 }
+
+-- overlay
+OverlayColor = {
+    ['BLACK_BLUR'] = {95/255, 205/255, 228/255, 200/255}
+}
