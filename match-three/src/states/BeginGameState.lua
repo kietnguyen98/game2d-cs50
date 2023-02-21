@@ -41,7 +41,10 @@ function BeginGameState:enter(params)
                     [self] = {levelLabelY = VIRTUAL_HEIGHT + 64}
                 }):finish(function() 
                     -- finish all the needed animation, next we need to change game state to play
-                    
+                    gameStateMachine:change('play', {
+                        level = self.level,
+                        board = self.board
+                    })
                 end)
            end)    
         end) 

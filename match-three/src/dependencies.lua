@@ -17,6 +17,7 @@ require 'src/states/BeginGameState'
 require 'src/states/StartState'
 require 'src/states/PlayState'
 require 'src/states/GameOverState'
+require 'src/components/HighlightedBorder'
 
 -- utilities
 require 'src/utils/HelperFunctions'
