@@ -22,5 +22,6 @@ TextOptionColor = {
 
 -- overlay
 OverlayColor = {
-    ['BLACK_BLUR'] = {95/255, 205/255, 228/255, 200/255}
+    ['BLACK_BLUR'] = {95/255, 205/255, 228/255, 200/255},
+    ['WHITE_BLUR'] = {255/255, 255/255, 255/255, 90/255}
 }

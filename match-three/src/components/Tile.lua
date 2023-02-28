@@ -1,11 +1,11 @@
 Tile = class()
 
-function Tile:init(x, y, color, variety)
-    -- get board position
-    self.gridX = x
-    self.gridY = y
+function Tile:init(gridX, gridY, color, variety)
+    -- get tile position to the board
+    self.gridX = gridX
+    self.gridY = gridY
 
-    -- coordinate position
+    -- coordinate position to the board
     self.x = (self.gridX - 1) * TILE_WIDTH
     self.y = (self.gridY - 1) * TILE_HEIGHT
 
@@ -29,7 +29,7 @@ function Tile:render(x, y)
     love.graphics.draw(
         gameTextures['tiles'],
         gameQuads['tiles'][self.color][self.variety],
-        x + self.x,
-        y + self.y
+        x + self.x, -- x = board position in x coordinate
+        y + self.y  -- y = board position in y coordinate
     )
 end

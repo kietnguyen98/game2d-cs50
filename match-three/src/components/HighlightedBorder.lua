@@ -27,6 +27,8 @@ function HighlightedBorder:init()
         end
         self.currentColor = self.colorSheet[self.index]
     end)
+
+    self.isShow = true
 end
 
 function HighlightedBorder:update(deltaTime)
@@ -34,7 +36,9 @@ function HighlightedBorder:update(deltaTime)
 end
 
 function HighlightedBorder:render(x, y)
-    love.graphics.setColor(self.currentColor)
-    love.graphics.setLineWidth(3)
-    love.graphics.rectangle('line', x, y, TILE_WIDTH, TILE_HEIGHT, 4)
+    if self.isShow then
+        love.graphics.setColor(self.currentColor)
+        love.graphics.setLineWidth(3)
+        love.graphics.rectangle('line', x, y, TILE_WIDTH, TILE_HEIGHT, 4)        
+    end
 end
