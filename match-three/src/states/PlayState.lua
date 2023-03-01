@@ -15,6 +15,17 @@ function PlayState:init()
     
     -- state variable for accept player input
     self.canInput = true
+
+    -- init goal score 
+    self.goalScore = 0
+    self.currentScore = 0
+
+    self.timer = 60
+
+    -- start a timer
+    Timer.every(2, function()
+        self.timer = self.timer - 1
+    end)
 end
 
 function PlayState:enter(params)
@@ -22,10 +33,22 @@ function PlayState:enter(params)
     self.level = params.level
     -- init game tiles board
     self.board = params.board
-
+    self.currentScore = params.score
+    self.goalScore =  params.level * 1000
 end
 
 function PlayState:update(deltaTime)
+    -- check current play state's winning condition
+    if(self.currentScore >= self.goalScore) then
+        -- remove current Timer
+        Timer.clear()
+
+        -- change to begin game state with new level
+        gameStateMachine:change('begin',{
+            level = self.level + 1,
+            score = self.currentScore
+        })
+    end
 
     if self.canInput then
             -- handle player input to move and change the current highlighted tile
@@ -98,12 +121,16 @@ function PlayState:calculateMatches()
         self.highlightedBorder.isShow = false
         self.canInput = false
 
+        -- update current score before remove all the matches
+        for k, match in pairs(matches) do
+            self.currentScore = self.currentScore + #match * 50
+        end
         -- remove all the matches in the board
         self.board:removeMatches()
 
         -- shift all the tiles above removed matches go down
         local faillingTweens = self.board:getTilesFallingDownTable()
-        Timer.tween(0.5, faillingTweens):finish(function() 
+        Timer.tween(0.75, faillingTweens):finish(function() 
             self.highlightedBorder.isShow = true
             self.canInput = true
         end)
@@ -141,4 +168,22 @@ function PlayState:render()
         self.board.x + self.highlightedTileX * TILE_WIDTH,
         self.board.y + self.highlightedTileY * TILE_HEIGHT
     )
+
+    -- render GUI overlay
+    love.graphics.setColor(OverlayColor.BLACK_BLUR)
+    love.graphics.rectangle('fill', 10, 15, 192, 110, 8)
+    -- render GUI text 
+    love.graphics.setColor(TextOptionColor.HIGHT_LIGHT)
+    love.graphics.setFont(gameFonts['medium'])
+    love.graphics.printf('Level: '..tostring(self.level), 20, 25, 182, 'left')
+    love.graphics.printf('score: '..tostring(self.currentScore), 20, 50, 182, 'left')
+    love.graphics.setColor(TextOptionColor.NORMAL)
+    love.graphics.printf('goal: '..tostring(self.goalScore), 20, 75, 182, 'left')
+    if(self.timer > 5) then
+        love.graphics.setColor(TextOptionColor.HIGHT_LIGHT)
+    else
+        love.graphics.setColor(GlobalColor.RED)
+    end
+    love.graphics.printf('Timer: '..tostring(self.timer), 20, 100, 182, 'left')
+
 end

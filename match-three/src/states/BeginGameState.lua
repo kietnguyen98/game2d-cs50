@@ -15,7 +15,7 @@ end
 function BeginGameState:enter(params)
     -- get the init level of the game
     self.level = params.level
-
+    self.score = params.score and params.score or 0 
     --
     -- the animation in this state will be fade in white screen
     -- and there will be and level text drop down
@@ -43,7 +43,8 @@ function BeginGameState:enter(params)
                     -- finish all the needed animation, next we need to change game state to play
                     gameStateMachine:change('play', {
                         level = self.level,
-                        board = self.board
+                        board = self.board,
+                        score = self.score
                     })
                 end)
            end)    
@@ -66,7 +67,7 @@ function BeginGameState:render()
 
     -- render level label
     -- draw label background with a black blur rectangle overlay
-    love.graphics.setColor(OverlayColor.BLACK_BLUR)
+    love.graphics.setColor(OverlayColor.GREEN_BLUR)
     love.graphics.rectangle('fill', 0, self.levelLabelY, VIRTUAL_WIDTH, 64)
     love.graphics.setColor(1, 1, 1, 1)
     love.graphics.setFont(gameFonts['large'])
