@@ -43,3 +43,11 @@ function drawTextShadow(text, y)
     love.graphics.printf(text, 0, y + 1, VIRTUAL_WIDTH, 'center')
     love.graphics.printf(text, 1, y + 2, VIRTUAL_WIDTH, 'center')
 end
+
+function getLevelScoreGap(level)
+    if level == 0 then
+        return  0
+    else
+        return 2 * getLevelScoreGap(level - 1) + 1
+    end
+end

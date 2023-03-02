@@ -26,6 +26,8 @@ function PlayState:init()
     Timer.every(2, function()
         self.timer = self.timer - 1
     end)
+
+    self.firstCalculate = true
 end
 
 function PlayState:enter(params)
@@ -34,7 +36,14 @@ function PlayState:enter(params)
     -- init game tiles board
     self.board = params.board
     self.currentScore = params.score
-    self.goalScore =  params.level * 1000
+    -- increase goal score after each level
+    self.goalScore =  params.level * 500 + getLevelScoreGap(params.level) * 100
+
+     -- calculate matches for the first time in play state
+     if self.board and self.firstCalculate then
+        self.firstCalculate = false
+        self:calculateMatches()
+    end
 end
 
 function PlayState:update(deltaTime)
@@ -46,6 +55,13 @@ function PlayState:update(deltaTime)
         -- change to begin game state with new level
         gameStateMachine:change('begin',{
             level = self.level + 1,
+            score = self.currentScore
+        })
+    end
+
+    -- check game over logic
+    if self.timer == 0 then
+        gameStateMachine:change('game-over',{
             score = self.currentScore
         })
     end
@@ -114,29 +130,30 @@ function PlayState:update(deltaTime)
 end
 
 function PlayState:calculateMatches()
+    -- first calculate
     local matches = self.board:calculateMatches()
 
-    if matches then
-        -- remove the highlighted border
-        self.highlightedBorder.isShow = false
-        self.canInput = false
+    while matches do
+         -- remove the highlighted border
+         self.highlightedBorder.isShow = false
+         self.canInput = false
+ 
+         -- update current score before remove all the matches
+         for k, match in pairs(matches) do
+             self.currentScore = self.currentScore + #match * 50
+         end
+         -- remove all the matches in the board
+         self.board:removeMatches()
+ 
+         -- shift all the tiles above removed matches go down
+         local faillingTweens = self.board:getTilesFallingDownTable()
+         Timer.tween(0.75, faillingTweens):finish(function() 
+             self.highlightedBorder.isShow = true
+             self.canInput = true
+         end)
 
-        -- update current score before remove all the matches
-        for k, match in pairs(matches) do
-            self.currentScore = self.currentScore + #match * 50
-        end
-        -- remove all the matches in the board
-        self.board:removeMatches()
-
-        -- shift all the tiles above removed matches go down
-        local faillingTweens = self.board:getTilesFallingDownTable()
-        Timer.tween(0.75, faillingTweens):finish(function() 
-            self.highlightedBorder.isShow = true
-            self.canInput = true
-        end)
-    else
-        self.highlightedBorder.isShow = true
-        self.canInput = true
+        -- recalculate for other matches after board updated
+        matches = self.board:calculateMatches()
     end
 end
 

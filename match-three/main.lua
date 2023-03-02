@@ -31,7 +31,10 @@ function love.load()
     ) 
 
     -- init start state
-    gameStateMachine:change('start')
+    -- gameStateMachine:change('start')
+    gameStateMachine:change('game-over',{
+        score = 200
+    })
 
     -- init background position
     backgroundPosX = 0
