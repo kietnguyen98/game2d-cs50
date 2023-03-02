@@ -25,6 +25,11 @@ function PlayState:init()
     -- start a timer
     Timer.every(2, function()
         self.timer = self.timer - 1
+        if self.timer <= 5 then
+            gameSounds['warning_tick']:play()
+        else
+            gameSounds['tick']:play()
+        end
     end)
 
     self.firstCalculate = true
@@ -49,18 +54,22 @@ end
 function PlayState:update(deltaTime)
     -- check current play state's winning condition
     if(self.currentScore >= self.goalScore) then
-        -- remove current Timer
+        self.canInput = false
+        -- clear Timer
         Timer.clear()
 
         -- change to begin game state with new level
-        gameStateMachine:change('begin',{
+          gameStateMachine:change('begin',{
             level = self.level + 1,
             score = self.currentScore
         })
     end
 
     -- check game over logic
-    if self.timer == 0 then
+    if self.timer <= 0 then
+        -- clear Timer
+        Timer.clear()
+
         gameStateMachine:change('game-over',{
             score = self.currentScore
         })
@@ -80,6 +89,7 @@ function PlayState:update(deltaTime)
     
         -- handle player to select title
         if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
+            gameSounds['tile_select']:play()
             local selectedTile = self.board.tiles[self.highlightedTileY + 1][self.highlightedTileX + 1]
             -- check if there is a chosen tile and it is the same with the selected 
             if self.currentChosenTile then
@@ -147,7 +157,7 @@ function PlayState:calculateMatches()
  
          -- shift all the tiles above removed matches go down
          local faillingTweens = self.board:getTilesFallingDownTable()
-         Timer.tween(0.75, faillingTweens):finish(function() 
+         Timer.tween(1, faillingTweens):finish(function() 
              self.highlightedBorder.isShow = true
              self.canInput = true
          end)
@@ -188,19 +198,19 @@ function PlayState:render()
 
     -- render GUI overlay
     love.graphics.setColor(OverlayColor.BLACK_BLUR)
-    love.graphics.rectangle('fill', 10, 15, 192, 110, 8)
+    love.graphics.rectangle('fill', 10, 11, 152, 110, 8)
     -- render GUI text 
     love.graphics.setColor(TextOptionColor.HIGHT_LIGHT)
     love.graphics.setFont(gameFonts['medium'])
-    love.graphics.printf('Level: '..tostring(self.level), 20, 25, 182, 'left')
-    love.graphics.printf('score: '..tostring(self.currentScore), 20, 50, 182, 'left')
+    love.graphics.printf('Level: '..tostring(self.level), 20, 21, 142, 'left')
+    love.graphics.printf('score: '..tostring(self.currentScore), 20, 46, 142, 'left')
     love.graphics.setColor(TextOptionColor.NORMAL)
-    love.graphics.printf('goal: '..tostring(self.goalScore), 20, 75, 182, 'left')
+    love.graphics.printf('goal: '..tostring(self.goalScore), 20, 71, 142, 'left')
     if(self.timer > 5) then
         love.graphics.setColor(TextOptionColor.HIGHT_LIGHT)
     else
         love.graphics.setColor(GlobalColor.RED)
     end
-    love.graphics.printf('Timer: '..tostring(self.timer), 20, 100, 182, 'left')
+    love.graphics.printf('Timer: '..tostring(self.timer), 20, 96, 142, 'left')
 
 end

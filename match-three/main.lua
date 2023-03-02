@@ -30,11 +30,15 @@ function love.load()
         }
     ) 
 
+
+    -- run game background music
+    gameSounds['background_music']:setLooping(true)
+    gameSounds['background_music']:play()
     -- init start state
-    -- gameStateMachine:change('start')
-    gameStateMachine:change('game-over',{
-        score = 200
-    })
+    gameStateMachine:change('start')
+    -- gameStateMachine:change('game-over',{
+    --     score = 200
+    -- })
 
     -- init background position
     backgroundPosX = 0

@@ -12,6 +12,8 @@ end
 
 function GameOverState:enter(params)
     self.currentScore = params.score
+    -- apply sound effect
+    gameSounds['game_over']:play()
 end
 
 function GameOverState:update(deltaTime)
@@ -21,6 +23,7 @@ function GameOverState:update(deltaTime)
     })
     -- change to start state when ever user press enter key
     if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
+        gameSounds['select_option']:play()
         gameStateMachine:change('start')
     end
 
@@ -37,7 +40,7 @@ function GameOverState:render()
     -- render text shadow
     drawTextShadow('GAME OVER', 80)
     -- render the text
-    love.graphics.setColor(GlobalColor.BLACK_RED)
+    love.graphics.setColor(GlobalColor.DARK_RED)
     love.graphics.printf('GAME OVER', VIRTUAL_WIDTH / 2 - 128, 80, 256, 'center')
     
     love.graphics.setColor(TextOptionColor.NORMAL)
@@ -45,7 +48,6 @@ function GameOverState:render()
     love.graphics.printf('Your score: '..tostring(self.currentScore), VIRTUAL_WIDTH / 2 - 128, 140, 256, 'center')
     love.graphics.setColor(48/255, 155/255, 130/255, self.gameOverTextAlpha)
     love.graphics.printf('Press "Enter"', VIRTUAL_WIDTH / 2 - 128, 164, 256, 'center')
-
      -- render foregrounnd black overlay which fill all the screen 
      -- to implement screen trasition animation
      love.graphics.setColor(0, 0, 0, self.transitionAlpha)

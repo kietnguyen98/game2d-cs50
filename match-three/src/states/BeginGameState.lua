@@ -30,6 +30,9 @@ function BeginGameState:enter(params)
     }):finish(
         -- after that make the level text drop downn animation
         function() 
+            -- apply sound effect
+            gameSounds['level_up']:play()
+
             Timer.tween(0.5, {
                 [self] = {levelLabelY = (VIRTUAL_HEIGHT - 64) / 2}
             }):finish(

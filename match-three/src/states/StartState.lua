@@ -63,10 +63,12 @@ function StartState:update(deltaTime)
     -- change menu option
     if love.keyboard.wasPressed('up') or love.keyboard.wasPressed('down') then
         self.currentSelectedOption = self.currentSelectedOption == 1 and 2 or 1
+        gameSounds['change_option']:play()
     end
 
     -- choose one optionn
     if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
+        gameSounds['select_option']:play()
         if self.currentSelectedOption == 1 then
             -- change game state to begin game
             -- using tween function from Timer, make trasition change opacity from 0 to 1,

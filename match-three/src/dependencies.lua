@@ -24,7 +24,15 @@ require 'src/utils/HelperFunctions'
 
 -- game objects
 gameSounds = {
-    
+    ['background_music'] = love.audio.newSource('sounds/background.mp3', 'static'),
+    ['change_option'] = love.audio.newSource('sounds/change_option.wav', 'static'),
+    ['select_option'] = love.audio.newSource('sounds/select_option.wav', 'static'),
+    ['explosion'] = love.audio.newSource('sounds/explosion.wav', 'static'),
+    ['tick'] = love.audio.newSource('sounds/tick.wav', 'static'),
+    ['warning_tick'] = love.audio.newSource('sounds/warning_tick.wav', 'static'),
+    ['tile_select'] = love.audio.newSource('sounds/tile_select.wav', 'static'),
+    ['level_up'] = love.audio.newSource('sounds/level_up.wav', 'static'),
+    ['game_over'] = love.audio.newSource('sounds/game_over.wav', 'static'),
 }
 
 gameFonts = {

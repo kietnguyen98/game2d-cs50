@@ -24,6 +24,21 @@ function Board:initializeTiles()
 end
 
 function Board:render()
+    -- render the board border annd background
+    -- shadow
+    love.graphics.setColor(GlobalColor.LIGHT_BLACK)
+    love.graphics.rectangle('fill', self.x, self.y, 8 * TILE_WIDTH + 10, 8 * TILE_HEIGHT + 10, 5)
+  
+    -- background
+    love.graphics.setColor(GlobalColor.DARK_GRAY)
+    love.graphics.rectangle('fill', self.x - 5, self.y - 5, 8 * TILE_WIDTH + 10, 8 * TILE_HEIGHT + 10, 5)
+
+    -- border
+    love.graphics.setColor(GlobalColor.LIGHT_GRAY)
+    love.graphics.setLineWidth(1)
+    love.graphics.rectangle('line', self.x - 5, self.y - 5, 8 * TILE_WIDTH + 10, 8 * TILE_HEIGHT + 10, 5)
+
+    -- render all the tiles in the board
     for y = 1, #self.tiles do
         for x = 1, #self.tiles[y] do
             if self.tiles[y][x] then
@@ -149,9 +164,10 @@ function Board:removeMatches()
     if #self.matches > 0 then
         for i, matches in pairs(self.matches) do
             for j, match in pairs(matches) do
-                print(match)
                 self.tiles[match.gridY][match.gridX] = nil
             end
+            -- apply sound effect
+            gameSounds['explosion']:play()
         end
     end
 
