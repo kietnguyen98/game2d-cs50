@@ -5,11 +5,10 @@ function BeginGameState:init()
     -- during transition, chage it's opacity from 1 to 0 => make fade in effect
     self.transitionAlpha = 1
 
-    -- create the board on the screen, align it on the right side
-    self.board = Board(VIRTUAL_WIDTH - 272, 16)
-
     -- init level label with init height
     self.levelLabelY = -64
+
+    self.board = nil
 end
 
 function BeginGameState:enter(params)
@@ -21,7 +20,17 @@ function BeginGameState:enter(params)
     -- and there will be and level text drop down
     -- then change the game state to start
     --
+
+    -- flag which check if the game has just start
+    self.isStart = params.isStart
     
+    if self.isStart then 
+        -- create the board on the screen, align it on the right side
+        self.board = Board(VIRTUAL_WIDTH - 272, 16, self.level)
+    else
+        self.board = params.currentBoard
+    end
+
     -- to make these animations we will use chaining effect
     -- first make the fade in animation
 

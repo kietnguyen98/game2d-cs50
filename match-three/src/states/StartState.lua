@@ -77,7 +77,8 @@ function StartState:update(deltaTime)
                 [self] = { transitionAlpha = 1}
             }):finish(function() 
                 gameStateMachine:change('begin',{
-                    level = 1
+                    level = 1,
+                    isStart = true
                 })
             end)
 

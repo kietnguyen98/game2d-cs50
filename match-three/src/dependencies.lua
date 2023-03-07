@@ -34,6 +34,7 @@ gameSounds = {
     ['tile_select'] = love.audio.newSource('sounds/tile_select.wav', 'static'),
     ['level_up'] = love.audio.newSource('sounds/level_up.wav', 'static'),
     ['game_over'] = love.audio.newSource('sounds/game_over.wav', 'static'),
+    ['level_complete'] = love.audio.newSource('sounds/level_complete.wav', 'static'),
 }
 
 gameFonts = {

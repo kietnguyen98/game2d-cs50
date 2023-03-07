@@ -1,10 +1,10 @@
 Board = class()
 
-function Board:init(x, y)
+function Board:init(x, y, level)
     -- init board with x, y dimension
     self.x = x    
     self.y = y
-    
+    self.level = level
     -- init matches table to manage all the tile in this board
     self.matches = {}
     self:initializeTiles()
@@ -23,7 +23,7 @@ function Board:initializeTiles()
             local tileColor = math.random(18)
 
             -- create a new tile at x and y position  with a random color and variety
-            table.insert(self.tiles[tileY], tileX, Tile(tileX, tileY, tileColor, math.random(6)))
+            table.insert(self.tiles[tileY], tileX, Tile(tileX, tileY, tileColor, self.level))
        
             -- create a new particle with the same x, y position and same color at the new tile
             table.insert(self.particles[tileY], tileX, Particle(tileX, tileY, tileColor))
@@ -188,7 +188,6 @@ function Board:removeMatches()
 
                 -- remove the tile from the tiles table after the animation is done
                 self.tiles[match.gridY][match.gridX] = nil
-
             end
             -- apply sound effect
             gameSounds['explosion']:play()
@@ -199,7 +198,7 @@ function Board:removeMatches()
     self.matches = {}
 end
 
-function Board:getTilesFallingDownTable()
+function Board:getTilesFallingDownTable(level)
     -- tween table, with tiles as key and their x and y as values
     local tweens = {}
 
@@ -254,7 +253,7 @@ function Board:getTilesFallingDownTable()
         end
     end
 
-
+    -- generate new tile above the board
     -- preparing the above tiles to replace those tiles which have been destroyed
     for x = 1, 8 do
         local blankYGrid = 0
@@ -265,7 +264,7 @@ function Board:getTilesFallingDownTable()
             if not tile then
                 blankYGrid = blankYGrid + 1
                 -- create a new tile to replace the nill tile
-                local newTile = Tile(x, y, math.random(1, 18), math.random(1, 6))
+                local newTile = Tile(x, y, math.random(1, 18), level)
                 -- update new tile's y value for tweening effect
                 newTile.y = blankYGrid * -32
                 -- add new tile to tiles list

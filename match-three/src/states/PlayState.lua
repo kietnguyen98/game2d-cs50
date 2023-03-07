@@ -24,15 +24,20 @@ function PlayState:init()
 
     -- start a timer
     Timer.every(2, function()
-        self.timer = self.timer - 1
-        if self.timer <= 5 then
-            gameSounds['warning_tick']:play()
-        else
-            gameSounds['tick']:play()
+        -- check if player finish current level then stop countdown\
+        if not self:isFinishCurrentLevel() then
+            self.timer = self.timer - 1
+            
+            if self.timer <= 5 then
+                gameSounds['warning_tick']:play()
+            else
+                gameSounds['tick']:play()
+            end
         end
     end)
 
     self.firstCalculate = true
+    self.isTweening = false
 end
 
 function PlayState:enter(params)
@@ -51,22 +56,30 @@ function PlayState:enter(params)
     end
 end
 
-function PlayState:update(deltaTime)
-    -- check current play state's winning condition
-    if(self.currentScore >= self.goalScore) then
+function PlayState:isFinishCurrentLevel()
+    return self.currentScore >= self.goalScore
+end
+
+function PlayState:checkLevelUp()
+  -- check current play state's winning condition
+    if self:isFinishCurrentLevel() and not self.isTweening then
         self.canInput = false
         -- clear Timer
         Timer.clear()
-
+          
         -- change to begin game state with new level
-          gameStateMachine:change('begin',{
+        gameStateMachine:change('begin', {
             level = self.level + 1,
-            score = self.currentScore
+            score = self.currentScore,
+            currentBoard = self.board,
+            isStart = false
         })
     end
+end
 
-    -- check game over logic
-    if self.timer <= 0 then
+function PlayState:checkGameOver()
+     -- check game over logic
+     if self.timer <= 0 then
         -- clear Timer
         Timer.clear()
 
@@ -74,7 +87,9 @@ function PlayState:update(deltaTime)
             score = self.currentScore
         })
     end
+end
 
+function PlayState:update(deltaTime)
     if self.canInput then
             -- handle player input to move and change the current highlighted tile
         if love.keyboard.wasPressed('up') then
@@ -140,6 +155,11 @@ function PlayState:update(deltaTime)
         end
     end
 
+    -- check game play state
+    self:checkGameOver()
+    self:checkLevelUp()
+
+    -- update components and Timer
     Timer.update(deltaTime)
     self.highlightedBorder:update(deltaTime)
     self.board:update(deltaTime)
@@ -156,21 +176,42 @@ function PlayState:calculateMatches()
          self.canInput = false
  
          -- update current score before remove all the matches
+        -- for each tile in the match, add 1s to player's timer  
          for k, match in pairs(matches) do
-             self.currentScore = self.currentScore + #match * 50
+            for i, tile in pairs(match) do
+                self.currentScore = self.currentScore + 50 + (tile.variety - 1) * 10
+            end
+            self.timer = self.timer + #match
          end
 
         -- remove all the matches in the board
         self.board:removeMatches()
 
         -- shift all the tiles above removed matches go down
-        local faillingTweens = self.board:getTilesFallingDownTable()
+        local faillingTweens = self.board:getTilesFallingDownTable(self.level)
         
-        Timer.tween(1, faillingTweens):finish(function() 
+        self.isTweening = true
+        Timer.tween(1, faillingTweens):finish(function()
+
             self.highlightedBorder.isShow = true
             self.canInput = true
-            -- recalculate for other matches after board updated
+
+            if self:isFinishCurrentLevel() then
+                -- stop background music and play level complete sound effect
+                love.audio.stop(gameSounds['background_music'])
+                gameSounds['level_complete']:play()
+            end
+            
+            Timer.after(1.5, function()
+                -- delay 0.5s for finish particle animation
+                self.isTweening = false
+                -- resume background music
+                if self:isFinishCurrentLevel() then
+                    love.audio.play(gameSounds['background_music'])
+                end
+            end)
         end)
+        
         matches = self.board:calculateMatches()
     end
 end

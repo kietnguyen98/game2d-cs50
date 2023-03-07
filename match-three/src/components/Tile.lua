@@ -10,8 +10,8 @@ function Tile:init(gridX, gridY, color, variety)
     self.y = (self.gridY - 1) * TILE_HEIGHT
 
     -- color and variety
-    self.color = color
-    self.variety = variety
+    self.color = color 
+    self.variety = variety > 6 and 6 or variety
 end
 
 function Tile:render(x, y)
