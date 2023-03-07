@@ -113,11 +113,16 @@ function PlayState:update(deltaTime)
                         self.currentChosenTile.gridY = selectedTile.gridY
                         selectedTile.gridX = tempCurrentGridX
                         selectedTile.gridY = tempCurrentGridY
+
+                        -- swap the color of the particle in 2 tile position
+                        self.board.particles[self.currentChosenTile.gridY][self.currentChosenTile.gridX].color = self.currentChosenTile.color
+                        self.board.particles[selectedTile.gridY][selectedTile.gridX].color = selectedTile.color
+
                         -- swap tiles in the tiles board
                         self.board.tiles[self.currentChosenTile.gridY][self.currentChosenTile.gridX] = self.currentChosenTile
                         self.board.tiles[selectedTile.gridY][selectedTile.gridX] = selectedTile
                    
-                   
+                        
                         Timer.tween(0.2, {
                             [self.currentChosenTile] = {x = selectedTile.x, y = selectedTile.y},
                             [selectedTile] = {x = self.currentChosenTile.x, y = self.currentChosenTile.y}
@@ -137,12 +142,14 @@ function PlayState:update(deltaTime)
 
     Timer.update(deltaTime)
     self.highlightedBorder:update(deltaTime)
+    self.board:update(deltaTime)
 end
 
 function PlayState:calculateMatches()
     -- first calculate
     local matches = self.board:calculateMatches()
 
+    -- matches exist
     while matches do
          -- remove the highlighted border
          self.highlightedBorder.isShow = false
@@ -152,17 +159,18 @@ function PlayState:calculateMatches()
          for k, match in pairs(matches) do
              self.currentScore = self.currentScore + #match * 50
          end
-         -- remove all the matches in the board
-         self.board:removeMatches()
- 
-         -- shift all the tiles above removed matches go down
-         local faillingTweens = self.board:getTilesFallingDownTable()
-         Timer.tween(1, faillingTweens):finish(function() 
-             self.highlightedBorder.isShow = true
-             self.canInput = true
-         end)
 
-        -- recalculate for other matches after board updated
+        -- remove all the matches in the board
+        self.board:removeMatches()
+
+        -- shift all the tiles above removed matches go down
+        local faillingTweens = self.board:getTilesFallingDownTable()
+        
+        Timer.tween(1, faillingTweens):finish(function() 
+            self.highlightedBorder.isShow = true
+            self.canInput = true
+            -- recalculate for other matches after board updated
+        end)
         matches = self.board:calculateMatches()
     end
 end

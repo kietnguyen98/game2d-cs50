@@ -10,6 +10,8 @@ require 'lib/class'
 require 'src/StateMachine'
 require 'src/components/Board'
 require 'src/components/Tile'
+require 'src/components/HighlightedBorder'
+require 'src/components/Particle'
 
 -- states
 require 'src/states/BaseState'
@@ -17,7 +19,6 @@ require 'src/states/BeginGameState'
 require 'src/states/StartState'
 require 'src/states/PlayState'
 require 'src/states/GameOverState'
-require 'src/components/HighlightedBorder'
 
 -- utilities
 require 'src/utils/HelperFunctions'
@@ -44,6 +45,7 @@ gameFonts = {
 gameTextures = {
     ['background'] = love.graphics.newImage('assets/background.png'),
     ['tiles'] = love.graphics.newImage('assets/match3.png'),
+    ['particle'] = love.graphics.newImage('assets/particle.png')
 }
 
 gameQuads = {

@@ -11,14 +11,22 @@ function Board:init(x, y)
 end
 
 function Board:initializeTiles()
+    -- initialize tiles table
     self.tiles = {}
+    -- initialize tile particle table
+    self.particles = {}
 
     for tileY = 1, 8 do
         self.tiles[tileY] = {}
+        self.particles[tileY] = {}
         for tileX = 1, 8 do
-            
+            local tileColor = math.random(18)
+
             -- create a new tile at x and y position  with a random color and variety
-            table.insert(self.tiles[tileY], tileX, Tile(tileX, tileY, math.random(18), math.random(6)))
+            table.insert(self.tiles[tileY], tileX, Tile(tileX, tileY, tileColor, math.random(6)))
+       
+            -- create a new particle with the same x, y position and same color at the new tile
+            table.insert(self.particles[tileY], tileX, Particle(tileX, tileY, tileColor))
         end
     end
 end
@@ -44,6 +52,17 @@ function Board:render()
             if self.tiles[y][x] then
                 self.tiles[y][x]:render(self.x, self.y)
             end
+
+            self.particles[y][x]:render(self.x, self.y)
+        end
+    end
+end
+
+function Board:update(deltaTime)
+    -- update each particle in the board
+    for y = 1, #self.tiles do
+        for x = 1, #self.tiles[y] do
+            self.particles[y][x]:update(deltaTime)
         end
     end
 end
@@ -164,7 +183,12 @@ function Board:removeMatches()
     if #self.matches > 0 then
         for i, matches in pairs(self.matches) do
             for j, match in pairs(matches) do
+                -- emit the particle to apply the destruction effect
+                self.particles[match.gridY][match.gridX]:emit()
+
+                -- remove the tile from the tiles table after the animation is done
                 self.tiles[match.gridY][match.gridX] = nil
+
             end
             -- apply sound effect
             gameSounds['explosion']:play()
@@ -207,6 +231,10 @@ function Board:getTilesFallingDownTable()
                         x = currentTile.x, -- the x position remain the same while we the tiles falling down only in y coordinate
                         y = (spaceGridY - 1) * TILE_HEIGHT 
                     }
+
+                    -- update current particle color which position is the same 
+                    -- as currennt tile to new tile color
+                    self.particles[spaceGridY][x].color = currentTile.color
                 
                     -- reset state
                     isSpace = false
@@ -242,6 +270,10 @@ function Board:getTilesFallingDownTable()
                 newTile.y = blankYGrid * -32
                 -- add new tile to tiles list
                 self.tiles[y][x] = newTile
+                
+                -- update current particle color which position is the same 
+                -- as currennt tile to new tile color
+                self.particles[y][x].color = newTile.color
                 
                 -- add to tween table
                 tweens[newTile] = {
