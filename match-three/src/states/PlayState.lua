@@ -170,7 +170,7 @@ function PlayState:calculateMatches()
     local matches = self.board:calculateMatches()
 
     -- matches exist
-    while matches do
+    if matches then
          -- remove the highlighted border
          self.highlightedBorder.isShow = false
          self.canInput = false
@@ -209,10 +209,12 @@ function PlayState:calculateMatches()
                 if self:isFinishCurrentLevel() then
                     love.audio.play(gameSounds['background_music'])
                 end
+
+                self:calculateMatches()
             end)
         end)
         
-        matches = self.board:calculateMatches()
+        -- matches = self.board:calculateMatches()
     end
 end
 

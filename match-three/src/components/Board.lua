@@ -59,12 +59,36 @@ function Board:render()
 end
 
 function Board:update(deltaTime)
+    -- update each tile in the board
+    for y = 1, #self.tiles do
+        for x = 1, #self.tiles[y] do
+            if self.tiles[y][x] then
+                self.tiles[y][x]:update(deltaTime)
+            end
+        end
+    end
+    
     -- update each particle in the board
     for y = 1, #self.tiles do
         for x = 1, #self.tiles[y] do
             self.particles[y][x]:update(deltaTime)
         end
     end
+end
+
+function Board:calculateShinyMatches(matchDirection, currentGridY, currentGridX)
+    local match = {}
+    for xi = 1, 8 do
+        if matchDirection == "col" then
+            if xi ~= currentGridX then
+                table.insert(match, self.tiles[currentGridY][xi])
+            end
+        elseif matchDirection == "row" then
+            table.insert(match, self.tiles[currentGridY][xi])
+        end
+    end
+
+    return match
 end
 
 function Board:calculateMatches()
@@ -98,6 +122,11 @@ function Board:calculateMatches()
                     local match = {}
                     for xi = x - 1, x - matchNum, -1 do
                         table.insert(match, self.tiles[y][xi])
+                        if self.tiles[y][xi].isShiny then
+                            match = {}
+                            table.insert(matches, self:calculateShinyMatches('row', y, xi))
+                            break
+                        end
                     end
 
                     -- insert the new match to matches table
@@ -117,10 +146,16 @@ function Board:calculateMatches()
 
         -- we are at the last tile in a row, the 8th tile
         -- after iterate all tiles in the row, check if there is any match
+        -- that is placed in the end of the row
         if matchNum >= 3 then
             local match = {}
             for xi = 8, 8 - matchNum + 1, -1 do
                 table.insert(match, self.tiles[y][xi])
+                if self.tiles[y][xi].isShiny then
+                    match = {}
+                    table.insert(matches, self:calculateShinyMatches('row', y, xi))
+                    break
+                end
             end
             
             table.insert(matches, match)
@@ -149,6 +184,10 @@ function Board:calculateMatches()
 
                     for yi = y - 1, y - matchNum, -1 do
                         table.insert(match, self.tiles[yi][x])
+                        if self.tiles[yi][x].isShiny then
+                            local rowMatch = {}
+                            table.insert(matches, self:calculateShinyMatches('col', yi, x))
+                        end
                     end
 
                     table.insert(matches, match)
@@ -167,6 +206,10 @@ function Board:calculateMatches()
 
             for yi = 8, 8 - matchNum + 1, -1 do
                 table.insert(match, self.tiles[yi][x])
+                if self.tiles[yi][x].isShiny then
+                    local rowMatch = {}
+                    table.insert(matches, self:calculateShinyMatches('col', yi, x))
+                end
             end
 
             table.insert(matches, match)

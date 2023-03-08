@@ -46,7 +46,8 @@ gameFonts = {
 gameTextures = {
     ['background'] = love.graphics.newImage('assets/background.png'),
     ['tiles'] = love.graphics.newImage('assets/match3.png'),
-    ['particle'] = love.graphics.newImage('assets/particle.png')
+    ['particle'] = love.graphics.newImage('assets/particle.png'),
+    ['shiny_layer'] = love.graphics.newImage('assets/shiny.png')
 }
 
 gameQuads = {

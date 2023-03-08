@@ -12,6 +12,21 @@ function Tile:init(gridX, gridY, color, variety)
     -- color and variety
     self.color = color 
     self.variety = variety > 6 and 6 or variety
+
+    self.isShiny = math.random(1, 20) > 19
+
+    if self.isShiny then
+        self.shinyAlpha = 0.8
+        Timer.every(0.4, function()
+            self.shinyAlpha = self.shinyAlpha == 0.3 and 0.1 or 0.3
+        end)
+    end
+end
+
+function Tile:update(deltaTime)
+    -- if self.isShiny then
+    --     Timer.update(deltaTime)
+    -- end
 end
 
 function Tile:render(x, y)
@@ -32,4 +47,9 @@ function Tile:render(x, y)
         x + self.x, -- x = board position in x coordinate
         y + self.y  -- y = board position in y coordinate
     )
+
+    -- render a shiny layer on above the tile if it is a shiny tile
+    if self.isShiny then
+        love.graphics.draw(gameTextures['shiny_layer'], x + self.x, y + self.y)
+    end
 end
