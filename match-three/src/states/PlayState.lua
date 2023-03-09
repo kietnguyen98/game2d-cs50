@@ -51,8 +51,10 @@ function PlayState:enter(params)
 
      -- calculate matches for the first time in play state
      if self.board and self.firstCalculate then
-        self.firstCalculate = false
-        self:calculateMatches()
+        Timer.after(1,function()
+            self.firstCalculate = false
+            self:calculateMatches()
+        end)
     end
 end
 
@@ -128,28 +130,54 @@ function PlayState:update(deltaTime)
                         self.currentChosenTile.gridY = selectedTile.gridY
                         selectedTile.gridX = tempCurrentGridX
                         selectedTile.gridY = tempCurrentGridY
-
-                        -- swap the color of the particle in 2 tile position
-                        self.board.particles[self.currentChosenTile.gridY][self.currentChosenTile.gridX].color = self.currentChosenTile.color
-                        self.board.particles[selectedTile.gridY][selectedTile.gridX].color = selectedTile.color
-
+               
                         -- swap tiles in the tiles board
                         self.board.tiles[self.currentChosenTile.gridY][self.currentChosenTile.gridX] = self.currentChosenTile
                         self.board.tiles[selectedTile.gridY][selectedTile.gridX] = selectedTile
                    
-                        
-                        Timer.tween(0.2, {
+                        Timer.tween(0.25, {
                             [self.currentChosenTile] = {x = selectedTile.x, y = selectedTile.y},
                             [selectedTile] = {x = self.currentChosenTile.x, y = self.currentChosenTile.y}
-                        }):finish(function() 
-                            -- after switch reset current chosen tile to nil
-                            self.currentChosenTile = nil
-                            self:calculateMatches()
+                        }):finish(function()
+                            Timer.after(0.25, function() 
+                                if not self.board:calculateMatches() then
+                                    -- there is no matches, reswap two tiles
+                                    -- reswap grid position of two tiles
+                                    local tempCurrentGridX = self.currentChosenTile.gridX
+                                    local tempCurrentGridY = self.currentChosenTile.gridY
+                                    self.currentChosenTile.gridX = selectedTile.gridX
+                                    self.currentChosenTile.gridY = selectedTile.gridY
+                                    selectedTile.gridX = tempCurrentGridX
+                                    selectedTile.gridY = tempCurrentGridY
+                                    
+                                    -- swap tiles in the tiles board
+                                    self.board.tiles[self.currentChosenTile.gridY][self.currentChosenTile.gridX] = self.currentChosenTile
+                                    self.board.tiles[selectedTile.gridY][selectedTile.gridX] = selectedTile
+                                    
+                                    -- apply sound effect
+                                    gameSounds['tile_swap_error']:play()
+                                    Timer.after(0.25, function()
+                                        Timer.tween(0.25, {
+                                            [self.currentChosenTile] = {x = selectedTile.x, y = selectedTile.y},
+                                            [selectedTile] = {x = self.currentChosenTile.x, y = self.currentChosenTile.y}
+                                        })
+                                        -- after swap 2 tiles success reset current chosen tile to nil
+                                        self.currentChosenTile = nil
+                                    end)
+                                else
+                                    gameSounds['tile_swap_success']:play()
+                                    Timer.after(0.25, function()
+                                        self:calculateMatches()
+                                        -- after swap 2 tiles success reset current chosen tile to nil
+                                        self.currentChosenTile = nil
+                                    end)
+                                end
+                            end)
                         end)
                     end
                 end
             else
-                -- if there is not tile hightlighted, the just highlight it
+                -- if there is not tile hightlighted, just highlight it
                 self.currentChosenTile = selectedTile
             end
         end
@@ -192,10 +220,6 @@ function PlayState:calculateMatches()
         
         self.isTweening = true
         Timer.tween(1, faillingTweens):finish(function()
-
-            self.highlightedBorder.isShow = true
-            self.canInput = true
-
             if self:isFinishCurrentLevel() then
                 -- stop background music and play level complete sound effect
                 love.audio.stop(gameSounds['background_music'])
@@ -205,6 +229,9 @@ function PlayState:calculateMatches()
             Timer.after(1.5, function()
                 -- delay 0.5s for finish particle animation
                 self.isTweening = false
+                self.highlightedBorder.isShow = true
+                self.canInput = true
+
                 -- resume background music
                 if self:isFinishCurrentLevel() then
                     love.audio.play(gameSounds['background_music'])
@@ -213,8 +240,6 @@ function PlayState:calculateMatches()
                 self:calculateMatches()
             end)
         end)
-        
-        -- matches = self.board:calculateMatches()
     end
 end
 
@@ -249,7 +274,11 @@ function PlayState:render()
 
     -- render GUI overlay
     love.graphics.setColor(OverlayColor.BLACK_BLUR)
-    love.graphics.rectangle('fill', 10, 11, 152, 110, 8)
+    love.graphics.rectangle('fill', 10, 11, 152, 85, 8)
+
+    love.graphics.setColor(OverlayColor.BLACK_BLUR)
+    love.graphics.rectangle('fill', 10, VIRTUAL_HEIGHT - 11 - 30, 152, 30, 8)
+
     -- render GUI text 
     love.graphics.setColor(TextOptionColor.HIGHT_LIGHT)
     love.graphics.setFont(gameFonts['medium'])
@@ -257,11 +286,11 @@ function PlayState:render()
     love.graphics.printf('score: '..tostring(self.currentScore), 20, 46, 142, 'left')
     love.graphics.setColor(TextOptionColor.NORMAL)
     love.graphics.printf('goal: '..tostring(self.goalScore), 20, 71, 142, 'left')
+    -- timer
     if(self.timer > 5) then
         love.graphics.setColor(TextOptionColor.HIGHT_LIGHT)
     else
         love.graphics.setColor(GlobalColor.RED)
     end
-    love.graphics.printf('Timer: '..tostring(self.timer), 20, 96, 142, 'left')
-
+    love.graphics.printf('Timer: '..timerDisplay(self.timer), 20, VIRTUAL_HEIGHT - 11 - 22, 142, 'left')
 end

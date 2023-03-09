@@ -36,6 +36,16 @@ GlobalColor = {
     ['LIGHT_BLACK'] = {26/255, 26/255, 26/255, 1}
 }
 
+TileColorList = {
+    [1] = 1,
+    [2] = 4,
+    [3] = 9,
+    [4] = 11,
+    [5] = 12,
+    [6] = 14,
+    [7] = 17,
+}
+
 -- bricks particle colors pallete
 PARTICLE_COLOR_PALLETES = {
     -- 18 palletes equal to 18 tile color

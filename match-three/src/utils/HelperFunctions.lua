@@ -51,3 +51,9 @@ function getLevelScoreGap(level)
         return 2 * getLevelScoreGap(level - 1) + 1
     end
 end
+
+function timerDisplay(timer) 
+    local minutes = math.floor(timer / 60)
+    local seconds = timer - minutes * 60
+    return (minutes < 10 and "0"..tostring(minutes) or tostring(minutes))..":"..(seconds < 10 and "0"..tostring(seconds) or tostring(seconds))
+end

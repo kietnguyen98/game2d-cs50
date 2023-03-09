@@ -20,13 +20,13 @@ function Board:initializeTiles()
         self.tiles[tileY] = {}
         self.particles[tileY] = {}
         for tileX = 1, 8 do
-            local tileColor = math.random(18)
+            local tileColor = math.random(#TileColorList)
 
             -- create a new tile at x and y position  with a random color and variety
-            table.insert(self.tiles[tileY], tileX, Tile(tileX, tileY, tileColor, self.level))
+            table.insert(self.tiles[tileY], tileX, Tile(tileX, tileY, TileColorList[tileColor], self.level))
        
             -- create a new particle with the same x, y position and same color at the new tile
-            table.insert(self.particles[tileY], tileX, Particle(tileX, tileY, tileColor))
+            table.insert(self.particles[tileY], tileX, Particle(tileX, tileY, TileColorList[tileColor]))
         end
     end
 end
@@ -307,7 +307,7 @@ function Board:getTilesFallingDownTable(level)
             if not tile then
                 blankYGrid = blankYGrid + 1
                 -- create a new tile to replace the nill tile
-                local newTile = Tile(x, y, math.random(1, 18), level)
+                local newTile = Tile(x, y, TileColorList[math.random(#TileColorList)], level)
                 -- update new tile's y value for tweening effect
                 newTile.y = blankYGrid * -32
                 -- add new tile to tiles list
