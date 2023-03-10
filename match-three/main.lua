@@ -27,6 +27,8 @@ function love.load()
             ['begin'] = function() return BeginGameState() end,
             ['play'] = function() return PlayState() end,
             ['game-over'] = function() return GameOverState() end,
+            ['high-scores'] = function() return HighScoresState() end,
+            ['enter-high-scores'] = function() return EnterHighScoresState() end,
         }
     ) 
 

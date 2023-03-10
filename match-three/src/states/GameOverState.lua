@@ -12,6 +12,7 @@ end
 
 function GameOverState:enter(params)
     self.currentScore = params.score
+    self.highScoresBoard = params.highScoresBoard
     -- apply sound effect
     gameSounds['game_over']:play()
 end
@@ -24,7 +25,29 @@ function GameOverState:update(deltaTime)
     -- change to start state when ever user press enter key
     if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
         gameSounds['select_option']:play()
-        gameStateMachine:change('start')
+        -- check if player's high score is enough to enter the high score board,
+        -- should return the index position in high score board
+        local isHighScore = false
+        local scoreIndex = 1
+
+        for i = 1, #self.highScoresBoard do
+            if self.currentScore >= self.highScoresBoard[i]['scores'] then
+                scoreIndex = i
+                isHighScore = true
+                break
+            end
+        end
+
+        if isHighScore then
+            gameSounds['high-score']:play()
+            gameStateMachine:change('enter-high-scores', {
+                highScoresBoard = self.highScoresBoard,
+                score = self.currentScore,
+                scoreIndex = scoreIndex
+            })
+        else
+            gameStateMachine:change('start')
+        end
     end
 
     Timer.update(deltaTime)

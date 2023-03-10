@@ -51,6 +51,8 @@ function StartState:init()
 
     -- if the state is in trasition effect, then input / select options will be disabled
     self.isTransition = false
+
+    self.highScoresBoard = loadHighScores()
 end
 
 function StartState:enter(params)
@@ -76,9 +78,10 @@ function StartState:update(deltaTime)
             Timer.tween(1, {
                 [self] = { transitionAlpha = 1}
             }):finish(function() 
-                gameStateMachine:change('begin',{
+                gameStateMachine:change('begin', {
                     level = 1,
-                    isStart = true
+                    isStart = true,
+                    highScoresBoard = self.highScoresBoard
                 })
             end)
 
@@ -89,6 +92,13 @@ function StartState:update(deltaTime)
         end
         
         -- change game state to high score state
+        Timer.tween(1, {
+            [self] = { transitionAlpha = 1}
+        }):finish(function() 
+            gameStateMachine:change('high-scores', {
+                highScoresBoard = self.highScoresBoard
+            })
+        end)
     end
 
     -- update Timer

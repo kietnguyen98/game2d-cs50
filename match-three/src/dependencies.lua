@@ -19,6 +19,8 @@ require 'src/states/BeginGameState'
 require 'src/states/StartState'
 require 'src/states/PlayState'
 require 'src/states/GameOverState'
+require 'src/states/HighScoresState'
+require 'src/states/EnterHighScoresState'
 
 -- utilities
 require 'src/utils/HelperFunctions'
@@ -37,6 +39,7 @@ gameSounds = {
     ['level_up'] = love.audio.newSource('sounds/level_up.wav', 'static'),
     ['game_over'] = love.audio.newSource('sounds/game_over.wav', 'static'),
     ['level_complete'] = love.audio.newSource('sounds/level_complete.wav', 'static'),
+    ['high-score'] = love.audio.newSource('sounds/high_score.wav', 'static'),
 }
 
 gameFonts = {

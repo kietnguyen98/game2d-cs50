@@ -15,6 +15,8 @@ function BeginGameState:enter(params)
     -- get the init level of the game
     self.level = params.level
     self.score = params.score and params.score or 0 
+    self.highScoresBoard = params.highScoresBoard
+
     --
     -- the animation in this state will be fade in white screen
     -- and there will be and level text drop down
@@ -56,7 +58,8 @@ function BeginGameState:enter(params)
                     gameStateMachine:change('play', {
                         level = self.level,
                         board = self.board,
-                        score = self.score
+                        score = self.score,
+                        highScoresBoard = self.highScoresBoard
                     })
                 end)
            end)    

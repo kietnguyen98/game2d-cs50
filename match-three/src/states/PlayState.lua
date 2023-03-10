@@ -20,7 +20,7 @@ function PlayState:init()
     self.goalScore = 0
     self.currentScore = 0
 
-    self.timer = 60
+    self.timer = 3
 
     -- start a timer
     Timer.every(2, function()
@@ -49,6 +49,8 @@ function PlayState:enter(params)
     -- increase goal score after each level
     self.goalScore =  params.level * 500 + getLevelScoreGap(params.level) * 100
 
+    self.highScoresBoard = params.highScoresBoard
+
      -- calculate matches for the first time in play state
      if self.board and self.firstCalculate then
         Timer.after(1,function()
@@ -74,6 +76,7 @@ function PlayState:checkLevelUp()
             level = self.level + 1,
             score = self.currentScore,
             currentBoard = self.board,
+            highScoresBoard = self.highScoresBoard,
             isStart = false
         })
     end
@@ -86,7 +89,8 @@ function PlayState:checkGameOver()
         Timer.clear()
 
         gameStateMachine:change('game-over',{
-            score = self.currentScore
+            score = self.currentScore,
+            highScoresBoard = self.highScoresBoard
         })
     end
 end

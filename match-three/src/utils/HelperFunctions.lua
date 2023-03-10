@@ -57,3 +57,44 @@ function timerDisplay(timer)
     local seconds = timer - minutes * 60
     return (minutes < 10 and "0"..tostring(minutes) or tostring(minutes))..":"..(seconds < 10 and "0"..tostring(seconds) or tostring(seconds))
 end
+
+function loadHighScores()
+    love.filesystem.setIdentity('match-three')
+
+    if not love.filesystem.getInfo('match-three.lst') then
+        local scores = ''
+        for i = 10, 1, -1 do
+            scores = scores..'Unkn\n'
+            scores = scores..'10'..'\n'
+        end
+
+        love.filesystem.write('match-three.lst', scores)
+    end
+
+    -- reading data
+    local isReadingName = true
+    local currentName = nil
+    local counter = 1
+
+    local scores = {}
+    
+    for i = 1, 10 do
+        table.insert(scores, {
+            name = nil,
+            score = nil
+        })
+    end
+
+    for line in love.filesystem.lines('match-three.lst') do
+        if isReadingName then
+            scores[counter]['name'] = string.sub(line, 1, 4)
+            isReadingName = false
+        else
+            scores[counter]['scores'] = tonumber(line)
+            counter = counter + 1
+            isReadingName = true
+        end
+    end
+
+    return scores
+end
