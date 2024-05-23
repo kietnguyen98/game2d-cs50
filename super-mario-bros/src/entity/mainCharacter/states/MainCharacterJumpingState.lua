@@ -19,16 +19,6 @@ end
 function MainCharacterJumpingState:exit()
 end
 
-function MainCharacterJumpingState:moveLeft(player, deltaTime)
-    player.x = player.x - CHARACTER_SPEED * deltaTime
-    player.direction = "left"
-end
-
-function MainCharacterJumpingState:moveRight(player, deltaTime)
-    player.x = player.x + CHARACTER_SPEED * deltaTime
-    player.direction = "right"
-end
-
 function MainCharacterJumpingState:update(deltaTime)
     self.player.currentAnimation:update(deltaTime)
 
@@ -43,9 +33,9 @@ function MainCharacterJumpingState:update(deltaTime)
 
     -- continue moving when player is still Jumping
     if love.keyboard.isDown("left") then
-        self:moveLeft(self.player, deltaTime)
+        self.player:moveLeft(deltaTime)
     elseif love.keyboard.isDown("right") then
-        self:moveRight(self.player, deltaTime)
+        self.player:moveRight(deltaTime)
     end
 
     if self.player.dy == 0 then

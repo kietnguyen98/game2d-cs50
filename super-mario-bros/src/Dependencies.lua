@@ -10,12 +10,12 @@ require "src/constants"
 
 -- init ingame entity class
 require "src/Animation"
-require "src/MainCharacter"
+require "src/LevelMaker"
+require "src/Tile"
 require "src/Tiles"
 
-
 -- init states
-require "lib/StateMachine" 
+require "lib/StateMachine"
 require "lib/BaseState"
 -- game states
 

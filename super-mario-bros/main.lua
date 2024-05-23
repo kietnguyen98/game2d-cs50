@@ -31,11 +31,12 @@ function love.load()
 
     -- init world
     -- tiles
-    tiles = Tiles()
+    tilesMap = LevelMaker:GenerateWorldLevel(MAP_WIDTH, MAP_HEIGHT)
 
     -- init entities
     local characterSheet = love.graphics.newImage("assets/mario_and_items.png")
     local characterQuads = GenerateQuadsCharacter(characterSheet)
+
     mainCharacter = MainCharacterEntity({
         sheet = characterSheet,
         quads = characterQuads,
@@ -54,7 +55,7 @@ function love.load()
                 return MainCharacterJumpingState(mainCharacter)
             end
         }),
-        map = tiles
+        tilesMap = tilesMap
     })
 
     mainCharacter:changeState("idle")
@@ -65,8 +66,14 @@ end
 
 function love.update(deltaTime)
     -- update entities
-    tiles:update(deltaTime)
+    tilesMap:update(deltaTime)
     mainCharacter:update(deltaTime)
+
+    if mainCharacter.x <= 0 then
+        mainCharacter.x = 0
+    elseif mainCharacter.x >= tilesMap.width * TILE_WIDTH - mainCharacter.width then
+        mainCharacter.x = tilesMap.width * TILE_WIDTH - mainCharacter.width
+    end
 
     -- update camera
     -- should use math.floor to remove decimal part (if exist) => integer only to prevent
@@ -85,7 +92,7 @@ function love.draw()
     love.graphics.translate(cameraScrollX, 0)
 
     -- draw tiles map on screen
-    tiles:render()
+    tilesMap:render()
     mainCharacter:render()
     push:finish()
 end

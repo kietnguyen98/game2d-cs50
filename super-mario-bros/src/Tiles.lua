@@ -1,30 +1,26 @@
 Tiles = class()
 
-function Tiles:init()
-    self.tileSheet = love.graphics.newImage('assets/blocks.png');
-    self.tileQuads = GenerateQuadsTile(self.tileSheet)
-    self.tiles = GenerateWorldLevel(MAP_WIDTH, MAP_HEIGHT)
-    self.width = #self.tiles
-    self.height = #self.tiles[1]
+function Tiles:init(def)
+    self.width = def.width
+    self.height = def.height
+    self.tiles = {}
 end
 
 function Tiles:update(deltaTime)
 end
 
 function Tiles:render()
-    for x = 1, MAP_WIDTH do
-        for y = 1, MAP_HEIGHT do
-            local tile = self.tiles[x][y]
-
-            love.graphics.draw(self.tileSheet, self.tileQuads[tile.quadId], (x - 1) * TILE_WIDTH, (y - 1) * TILE_HEIGHT)
+    for x = 1, self.width do
+        for y = 1, self.height do
+            self.tiles[x][y]:render()
         end
     end
 end
 
-function Tiles:getTileFromCharacterPos(characterX, characterY)
-    if characterX < 0 or characterX > self.width * TILE_WIDTH or characterY < 0 or characterY > self.height * TILE_HEIGHT then
+function Tiles:getTileFromPosition(x, y)
+    if x < 0 or x > self.width * TILE_WIDTH or y < 0 or y > self.height * TILE_HEIGHT then
         return nil
-    else 
-        return self.tiles[characterX / TILE_WIDTH + 1][characterY / TILE_HEIGHT + 1]
+    else
+        return self.tiles[math.floor(x / TILE_WIDTH) + 1][math.floor(y / TILE_HEIGHT) + 1]
     end
 end
