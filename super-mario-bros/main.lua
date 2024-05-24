@@ -53,6 +53,9 @@ function love.load()
             end,
             ['jumping'] = function()
                 return MainCharacterJumpingState(mainCharacter)
+            end,
+            ['falling'] = function()
+                return MainCharacterFallingState(mainCharacter)
             end
         }),
         tilesMap = tilesMap

@@ -12,8 +12,8 @@ MAP_HEIGHT = 10
 SKY_MAX_INDEX = 8
 PILAR_HEIGHT = 2
 
--- should be a value that JUMP_VELOCITY % GRAVITY_FORCE !== 0 
-GRAVITY_FORCE = 9
+-- should be a value that JUMP_VELOCITY % GRAVITY !== 0 
+GRAVITY = 9
 
 -- tile's ID
 GROUND_INDEX = 1
@@ -26,6 +26,10 @@ COLLIDABLE_TILE_INDEX = {GROUND_INDEX, GROUND_TOPPER_INDEX, BRICK_INDEX}
 -- tile's size
 TILE_WIDTH = 16
 TILE_HEIGHT = 16
+
+-- game object's size
+GAME_OBJECT_WIDTH = 16
+GAME_OBJECT_HEIGHT = 16
 
 -- camera
 cameraScroll = 0;

@@ -13,6 +13,7 @@ require "src/Animation"
 require "src/LevelMaker"
 require "src/Tile"
 require "src/Tiles"
+require "src/GameObject"
 
 -- init states
 require "lib/StateMachine"

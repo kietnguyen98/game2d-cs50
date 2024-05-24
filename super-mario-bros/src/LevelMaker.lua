@@ -4,6 +4,7 @@ function LevelMaker:GenerateWorldLevel(mapWidth, mapHeight)
     local tileSheet = love.graphics.newImage('assets/blocks.png')
     local tileQuads = GenerateQuadsTile(tileSheet)
     local tiles = {}
+    local objects = {}
 
     -- first all of tiles should be fill with blank 
     for x = 1, mapWidth do
@@ -30,8 +31,23 @@ function LevelMaker:GenerateWorldLevel(mapWidth, mapHeight)
             goto continue
         end
 
+        -- generate ground
+        local groundStartIndex = SKY_MAX_INDEX
+        local groundEndIndex = mapHeight
+        for y = groundStartIndex, groundEndIndex do
+            tiles[x][y] = Tile({
+                tileSheet = tileSheet,
+                tileQuads = tileQuads,
+                id = y == groundStartIndex and GROUND_TOPPER_INDEX or GROUND_INDEX,
+                x = x,
+                y = y,
+                topper = y == groundStartIndex
+            })
+        end
+
+        -- generate game objects
         -- generate pilar 
-        local shouldGeneratePilar = math.random(5) == 1
+        local shouldGeneratePilar = math.random(7) == 1
         if shouldGeneratePilar then
             local pilarStartIndex = SKY_MAX_INDEX - PILAR_HEIGHT - 1
             local pilarEndIndex = SKY_MAX_INDEX - 1
@@ -45,23 +61,10 @@ function LevelMaker:GenerateWorldLevel(mapWidth, mapHeight)
                     topper = y == pilarStartIndex
                 })
             end
+            -- remove topper on ground when there is a pilar on it 
+            tiles[x][SKY_MAX_INDEX].id = GROUND_INDEX
+            tiles[x][SKY_MAX_INDEX].topper = false
         end
-
-        -- generate ground
-        local groundStartIndex = SKY_MAX_INDEX
-        local groundEndIndex = mapHeight
-        for y = groundStartIndex, groundEndIndex do
-            local shouldGenerateGroundTopper = (not shouldGeneratePilar) and (y == groundStartIndex)
-            tiles[x][y] = Tile({
-                tileSheet = tileSheet,
-                tileQuads = tileQuads,
-                id = shouldGenerateGroundTopper and GROUND_TOPPER_INDEX or GROUND_INDEX,
-                x = x,
-                y = y,
-                topper = shouldGenerateGroundTopper
-            })
-        end
-
         ::continue::
     end
 

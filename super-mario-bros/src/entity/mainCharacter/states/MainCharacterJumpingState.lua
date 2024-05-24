@@ -22,13 +22,13 @@ end
 function MainCharacterJumpingState:update(deltaTime)
     self.player.currentAnimation:update(deltaTime)
 
-    -- update character on jumping  
-    self.player.dy = self.player.dy + GRAVITY_FORCE
+    -- update character position on jumping  
+    self.player.dy = self.player.dy + GRAVITY
     self.player.y = self.player.y + self.player.dy * deltaTime
 
-    if self.player.y > (SKY_MAX_INDEX - 1) * TILE_HEIGHT - CHARACTER_HEIGHT then
-        self.player.y = (SKY_MAX_INDEX - 1) * TILE_HEIGHT - CHARACTER_HEIGHT
-        self.player.dy = 0
+    -- change player state to falling when on top of jumping state
+    if self.player.dy > 0 then
+        self.player:changeState("falling")
     end
 
     -- continue moving when player is still Jumping
