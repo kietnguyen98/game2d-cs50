@@ -25,12 +25,12 @@ function MainCharacterFallingState:update(deltaTime)
 
     -- check for any tiles below character with can stop character from falling
     local diffFromPlayerAndTileInWidth = (self.player.width - TILE_WIDTH) / 2
-    local tileBottomLeft = self.player.tilesMap:getTileFromPosition(self.player.x + diffFromPlayerAndTileInWidth + 1,
+    local tileBottomLeft = self.player.tilesMap:getTileFromPosition(self.player.x + diffFromPlayerAndTileInWidth + 3,
         self.player.y + self.player.height)
     local tileBottomRight = self.player.tilesMap:getTileFromPosition(
-        self.player.x + self.player.width - diffFromPlayerAndTileInWidth - 1, self.player.y + self.player.height)
+        self.player.x + self.player.width - diffFromPlayerAndTileInWidth - 3, self.player.y + self.player.height)
 
-    -- if any tiles beneath player and is solid, stop the player
+    -- if any tiles beneath player exist and it is solid, stop the player from falling
     if (tileBottomLeft and tileBottomLeft:isCollidable()) or (tileBottomRight and tileBottomRight:isCollidable()) then
         -- stop falling
         self.player.dy = 0

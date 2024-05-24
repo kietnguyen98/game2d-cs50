@@ -18,7 +18,10 @@ require "src/GameObject"
 -- init states
 require "lib/StateMachine"
 require "lib/BaseState"
+
 -- game states
+require "src/gameState/PlayState"
+require "src/gameState/StartState"
 
 -- init entities
 require "src/entity/Entity"

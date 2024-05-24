@@ -5,6 +5,12 @@ SUPER MARIO BROS GAME DEVELOPMENT
 ]] --
 require 'src/Dependencies'
 
+BACKGROUND = {
+    MOUTAINS_1 = love.graphics.newImage("assets/background_mountains_1.png"),
+    MOUTAINS_2 = love.graphics.newImage("assets/background_mountains_2.png"),
+    CLOUDS = love.graphics.newImage("assets/background_clouds.png")
+}
+
 function love.load()
     -- init randomseed for random function
     math.randomseed(os.time())
@@ -22,10 +28,6 @@ function love.load()
         vsync = true
     })
 
-    backgroundR = 102 / 255
-    backgroundG = 217 / 255
-    backgroundB = 255 / 255
-
     -- setup keyboard to keep track of which keys have been pressed in last frame
     love.keyboard.keysPressed = {}
 
@@ -42,6 +44,8 @@ function love.load()
         quads = characterQuads,
         x = VIRTUAL_WIDTH / 2 - CHARACTER_WIDTH / 2,
         y = (SKY_MAX_INDEX - 1) * TILE_HEIGHT - CHARACTER_HEIGHT,
+        dx = 0,
+        dy = 0,
         width = CHARACTER_WIDTH,
         height = CHARACTER_HEIGHT,
         stateMachine = StateMachine({
@@ -81,18 +85,28 @@ function love.update(deltaTime)
     -- update camera
     -- should use math.floor to remove decimal part (if exist) => integer only to prevent
     -- being fractional point in world space
-    cameraScrollX = -math.floor(mainCharacter.x) + VIRTUAL_WIDTH / 2 - CHARACTER_WIDTH / 2
+    cameraScrollX = math.min((MAP_WIDTH) * TILE_WIDTH - VIRTUAL_WIDTH,
+        math.max(0, math.floor(mainCharacter.x) - VIRTUAL_WIDTH / 2 + CHARACTER_WIDTH / 2))
 
     -- reset keys pressed table
     love.keyboard.keysPressed = {}
 end
 
 function love.draw()
-    -- call every frame to render every things we need
     push:start()
-    -- first clear screen with a random GRB color
-    love.graphics.clear(backgroundR, backgroundG, backgroundB, 1)
-    love.graphics.translate(cameraScrollX, 0)
+
+    -- background
+    love.graphics.draw(BACKGROUND.MOUTAINS_1, 0, 0, 0, VIRTUAL_WIDTH / BACKGROUND.MOUTAINS_1:getWidth(),
+        VIRTUAL_HEIGHT / BACKGROUND.MOUTAINS_1:getHeight())
+    love.graphics.draw(BACKGROUND.MOUTAINS_2, 0, 0, 0, VIRTUAL_WIDTH / BACKGROUND.MOUTAINS_2:getWidth(),
+        VIRTUAL_HEIGHT / BACKGROUND.MOUTAINS_2:getHeight())
+    love.graphics.draw(BACKGROUND.CLOUDS, 0, 0, 0, VIRTUAL_WIDTH / BACKGROUND.CLOUDS:getWidth() / 2,
+        VIRTUAL_HEIGHT / BACKGROUND.CLOUDS:getHeight() / 4)
+    love.graphics.draw(BACKGROUND.CLOUDS, VIRTUAL_WIDTH / 2, 0, 0, VIRTUAL_WIDTH / BACKGROUND.CLOUDS:getWidth() / 2,
+        VIRTUAL_HEIGHT / BACKGROUND.CLOUDS:getHeight() / 4)
+
+    -- update camera
+    love.graphics.translate(-cameraScrollX, 0)
 
     -- draw tiles map on screen
     tilesMap:render()

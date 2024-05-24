@@ -36,6 +36,8 @@ function MainCharacterMovingState:update(deltaTime)
 
         if (tileBottomLeft and not tileBottomLeft:isCollidable()) and
             (tileBottomRight and not tileBottomRight:isCollidable()) then
+            -- top character from moving
+            self.player.dy = 0
             self.player:changeState("falling")
         elseif love.keyboard.isDown("left") then
             self.player:moveLeft(deltaTime)
