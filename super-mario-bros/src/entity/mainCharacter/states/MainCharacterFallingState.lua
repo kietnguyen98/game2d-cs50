@@ -51,6 +51,8 @@ function MainCharacterFallingState:update(deltaTime)
         -- else: continue moving when player is still falling 
         -- and keep checking for collision left and right
 
+    elseif self.player.y > (self.player.tilesMap.height + 1) * TILE_HEIGHT then
+        gameStateMachine:change("start")
     elseif love.keyboard.isDown("left") then
         self.player:moveLeft(deltaTime)
     elseif love.keyboard.isDown("right") then

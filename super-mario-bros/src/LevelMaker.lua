@@ -22,14 +22,18 @@ function LevelMaker:GenerateWorldLevel(mapWidth, mapHeight)
     end
 
     -- next loop for each column and start generate pilar / ground
+    local maxChasmInARow = 0
     for x = 1, mapWidth do
 
         -- generate chasm
         -- check we should render a chasm on this column
-        if math.random(7) == 1 then
+        if x ~= 1 and math.random(7) == 1 and maxChasmInARow < 2 then
             -- if yes just skip this column
+            maxChasmInARow = maxChasmInARow + 1
             goto continue
         end
+
+        maxChasmInARow = 0
 
         -- generate ground
         local groundStartIndex = SKY_MAX_INDEX
@@ -47,7 +51,7 @@ function LevelMaker:GenerateWorldLevel(mapWidth, mapHeight)
 
         -- generate game objects
         -- generate pilar 
-        local shouldGeneratePilar = math.random(7) == 1
+        local shouldGeneratePilar = math.random(5) == 1
         if shouldGeneratePilar then
             local pilarStartIndex = SKY_MAX_INDEX - PILAR_HEIGHT - 1
             local pilarEndIndex = SKY_MAX_INDEX - 1

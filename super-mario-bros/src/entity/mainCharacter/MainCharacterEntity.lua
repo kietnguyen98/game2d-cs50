@@ -7,6 +7,13 @@ end
 
 function MainCharacterEntity:update(deltaTime)
     Entity.update(self, deltaTime)
+
+    -- constraint main character to not go out of the mapHeight
+    if self.x >= self.tilesMap.width * TILE_WIDTH - self.width then
+        self.x = self.tilesMap.width * TILE_WIDTH - self.width
+    elseif self.x <= 0 then
+        self.x = 0
+    end
 end
 
 function MainCharacterEntity:render()

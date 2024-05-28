@@ -8,16 +8,16 @@ require "src/Util"
 -- init constants
 require "src/constants"
 
+-- init states
+require "lib/StateMachine"
+require "lib/BaseState"
+
 -- init ingame entity class
 require "src/Animation"
 require "src/LevelMaker"
 require "src/Tile"
 require "src/Tiles"
 require "src/GameObject"
-
--- init states
-require "lib/StateMachine"
-require "lib/BaseState"
 
 -- game states
 require "src/gameState/PlayState"
