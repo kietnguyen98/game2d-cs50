@@ -27,6 +27,9 @@ function Entity:init(def)
 
     -- reference to tilesMap so we can check fo collisions
     self.tilesMap = def.tilesMap
+
+    -- reference to game objects so we can check fo collisions
+    self.gameObjects = def.gameObjects
 end
 
 function Entity:changeState(state, params)

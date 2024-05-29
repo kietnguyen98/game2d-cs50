@@ -61,3 +61,46 @@ function GenerateQuadsCharacter(atlas)
 
     return quads
 end
+
+function GenerateQuadsGameObject(atlas)
+    local quads = {}
+    local GAME_OBJECT_HEIGHT = 16
+    local GAME_OBJECT_WIDTH = 16
+
+    -- bush
+    local bushX = 16 * 23
+    local bushY = 16 * 6
+
+    quads[BUSH_INDEX] = love.graphics.newQuad(bushX, bushY, GAME_OBJECT_WIDTH, 2 * GAME_OBJECT_HEIGHT,
+        atlas:getDimensions())
+
+    -- plump
+    local plumpX = 16 * 16
+    local plumpY = 16 * 6
+
+    quads[PLUMP_INDEX] = love.graphics.newQuad(plumpX, plumpY, 2 * GAME_OBJECT_WIDTH, 2 * GAME_OBJECT_HEIGHT,
+        atlas:getDimensions())
+
+    -- top brick
+    local brickX = 16 * 0
+    local brickY = 16 * 0
+
+    quads[BRICK_INDEX] = love.graphics.newQuad(brickX, brickY, GAME_OBJECT_WIDTH, GAME_OBJECT_HEIGHT,
+        atlas:getDimensions())
+
+    -- top question brick
+    for k, v in pairs(BRICK_QUESTION_INDEX) do
+        local x = 16 * 6
+        local y = 16 * 11
+        quads[v] = love.graphics.newQuad(x + k * 16, y, GAME_OBJECT_WIDTH, GAME_OBJECT_HEIGHT, atlas:getDimensions())
+    end
+
+    -- coin
+    local coinX = 16 * 9
+    local coinY = 16 * 11
+
+    quads[COIN_INDEX] = love.graphics
+                            .newQuad(coinX, coinY, GAME_OBJECT_WIDTH, GAME_OBJECT_HEIGHT, atlas:getDimensions())
+
+    return quads
+end

@@ -3,7 +3,9 @@ PlayState = BaseState:extend()
 function PlayState:init()
     self.width = MAP_WIDTH
     self.height = MAP_HEIGHT
-    self.tilesMap = LevelMaker:GenerateWorldLevel(self.width, self.height)
+    self.worldLevel = LevelMaker:GenerateWorldLevel(self.width, self.height)
+    self.tilesMap = self.worldLevel['tilesMap']
+    self.gameObjects = self.worldLevel['objects']
     self.characterSheet = love.graphics.newImage("assets/mario_and_items.png")
     self.characterQuads = GenerateQuadsCharacter(self.characterSheet)
     self.mainCharacter = MainCharacterEntity({
@@ -29,7 +31,8 @@ function PlayState:init()
                 return MainCharacterFallingState(self.mainCharacter)
             end
         }),
-        tilesMap = self.tilesMap
+        tilesMap = self.tilesMap,
+        gameObjects = self.gameObjects
     })
     self.mainCharacter:changeState("falling")
     self.cameraScrollX = 0
@@ -77,9 +80,16 @@ function PlayState:renderBackground()
     end
 end
 
+function PlayState:renderGameObjects()
+    for i = 1, #self.gameObjects do
+        self.gameObjects[i]:render()
+    end
+end
+
 function PlayState:render()
     self:renderCamera()
     self:renderBackground()
     self.tilesMap:render()
     self.mainCharacter:render()
+    self:renderGameObjects()
 end

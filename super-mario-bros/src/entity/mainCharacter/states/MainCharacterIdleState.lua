@@ -19,14 +19,15 @@ function MainCharacterIdleState:exit()
 end
 
 function MainCharacterIdleState:update(deltaTime)
+
     self.player.currentAnimation:update(deltaTime)
+
     if love.keyboard.isDown("left") or love.keyboard.isDown("right") then
         self.player:changeState("moving")
-    end
-
-    if love.keyboard.wasPressed("space") then
+    elseif love.keyboard.wasPressed("space") then
         self.player:changeState("jumping")
     end
+
 end
 
 function MainCharacterIdleState:render()

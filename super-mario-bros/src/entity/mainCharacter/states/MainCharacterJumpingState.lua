@@ -38,8 +38,21 @@ function MainCharacterJumpingState:update(deltaTime)
         self.player:moveRight(deltaTime)
     end
 
-    if self.player.dy == 0 then
-        self.player:changeState("idle")
+    -- check if player collides with any object above the head then should falling down if object is solid
+    for k, object in pairs(self.player.gameObjects) do
+        if object:collides(self.player) then
+            if object.solid then
+                -- set the main player to fall down
+                self.player.y = object.y + object.height
+                self.player:changeState("falling")
+                -- if the object is collidable so we can collide it
+                if object.collidable then
+                    object:onCollide()
+                end
+            elseif object.consumable then
+                table.remove(self.player.gameObjects, k)
+            end
+        end
     end
 end
 
