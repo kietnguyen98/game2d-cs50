@@ -39,7 +39,7 @@ function MainCharacterJumpingState:update(deltaTime)
     end
 
     -- check if player collides with any object above the head then should falling down if object is solid
-    for k, object in pairs(self.player.gameObjects) do
+    for k, object in pairs(self.player.objects) do
         if object:collides(self.player) then
             if object.solid then
                 -- set the main player to fall down
@@ -50,7 +50,7 @@ function MainCharacterJumpingState:update(deltaTime)
                     object:onCollide()
                 end
             elseif object.consumable then
-                table.remove(self.player.gameObjects, k)
+                table.remove(self.player.objects, k)
             end
         end
     end

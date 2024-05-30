@@ -61,7 +61,7 @@ function MainCharacterFallingState:update(deltaTime)
     end
 
     -- check if collide with any game object and stay on top of that object
-    for k, object in pairs(self.player.gameObjects) do
+    for k, object in pairs(self.player.objects) do
         if object:collides(self.player) then
             if object.solid then
                 -- stop falling an put the player just on top the object
@@ -74,7 +74,7 @@ function MainCharacterFallingState:update(deltaTime)
                 end
                 -- consume object if object is consumable
             elseif object.consumable then
-                table.remove(self.player.gameObjects, k)
+                table.remove(self.player.objects, k)
             end
         end
     end

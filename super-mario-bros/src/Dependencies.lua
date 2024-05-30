@@ -3,7 +3,10 @@ push = require "lib/push"
 require "lib/class"
 
 -- init utilities
-require "src/Util"
+require "src/utilities/GenerateQuads"
+require "src/utilities/GenerateObjects"
+require "src/utilities/GenerateTiles"
+require "src/utilities/GenerateEnemies"
 
 -- init constants
 require "src/constants"
@@ -14,23 +17,32 @@ require "lib/BaseState"
 
 -- init ingame entity class
 require "src/Animation"
-require "src/LevelMaker"
 require "src/Tile"
 require "src/Tiles"
 require "src/GameObject"
 
+-- init level and map maker
+require "src/LevelMaker"
+
+-- game entities
+-- base entity class
+require "src/Entity"
+-- main character entity class
+require "src/entities/mainCharacter/MainCharacterEntity"
+require "src/entities/turtle/TurtleEntity"
+
 -- game states
-require "src/gameState/PlayState"
-require "src/gameState/StartState"
-
--- init entities
-require "src/entity/Entity"
-
--- main character
-require "src/entity/mainCharacter/states/MainCharacterFallingState"
-require "src/entity/mainCharacter/states/MainCharacterMovingState"
-require "src/entity/mainCharacter/states/MainCharacterIdleState"
-require "src/entity/mainCharacter/states/MainCharacterJumpingState"
-
+require "src/gameStates/PlayState"
+require "src/gameStates/StartState"
 -- entity states
-require "src/entity/mainCharacter/MainCharacterEntity"
+-- main character state
+require "src/entities/mainCharacter/states/MainCharacterFallingState"
+require "src/entities/mainCharacter/states/MainCharacterMovingState"
+require "src/entities/mainCharacter/states/MainCharacterIdleState"
+require "src/entities/mainCharacter/states/MainCharacterJumpingState"
+-- enemies state 
+-- turtle
+require "src/entities/turtle/states/TurtleIdleState"
+require "src/entities/turtle/states/TurtleChasingState"
+require "src/entities/turtle/states/TurtleMovingState"
+require "src/entities/turtle/states/TurtleShrinkState"

@@ -78,12 +78,12 @@ end
 function MainCharacterEntity:checkObjectCollisions()
     local collidedObjects = {}
 
-    for k, object in pairs(self.gameObjects) do
+    for k, object in pairs(self.objects) do
         if object:collides(self) then
             if object.solid then
                 table.insert(collidedObjects, object)
             elseif object.consumable then
-                table.remove(self.gameObjects, k)
+                table.remove(self.objects, k)
             end
         end
     end

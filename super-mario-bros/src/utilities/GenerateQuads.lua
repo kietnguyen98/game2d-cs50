@@ -62,7 +62,30 @@ function GenerateQuadsCharacter(atlas)
     return quads
 end
 
-function GenerateQuadsGameObject(atlas)
+function GenerateQuadsEnemy(atlas)
+    local x = 16 * 4 - 10
+    local y = 16 * 10 - 5
+
+    local TURTLE_DEFAULT_QUAD_HEIGHT = 24
+    local TURTLE_DEFAULT_QUAD_WIDTH = 18
+
+    local TURTLE_SHRINK_QUAD_HEIGHT = 24
+    local TURTLE_SHRINK_QUAD_WIDTH = 18
+
+    local counter = 1
+    local quads = {}
+
+    for i = 1, 6 do
+        quads[counter] = love.graphics.newQuad(x, y, i < 5 and TURTLE_DEFAULT_QUAD_WIDTH or TURTLE_SHRINK_QUAD_WIDTH,
+            i < 5 and TURTLE_DEFAULT_QUAD_HEIGHT or TURTLE_SHRINK_HEIGHT, atlas:getDimensions())
+        x = x + TURTLE_SHRINK_QUAD_WIDTH
+        counter = counter + 1
+    end
+
+    return quads
+end
+
+function GenerateQuadsObject(atlas)
     local quads = {}
     local GAME_OBJECT_HEIGHT = 16
     local GAME_OBJECT_WIDTH = 16

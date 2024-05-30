@@ -1,0 +1,2 @@
+function GenerateEnemyTurtle()
+end

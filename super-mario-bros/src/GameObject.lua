@@ -14,6 +14,7 @@ function GameObject:init(def)
     self.collidable = def.collidable
     self.onCollide = def.onCollide
     self.consumable = def.consumable
+    self.onConsume = def.onConsume
     self.solid = def.solid
 
     self.hitTimes = def.hitTimes
