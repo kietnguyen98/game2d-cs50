@@ -1,6 +1,6 @@
 LevelMaker = class()
 
-function LevelMaker:GenerateWorldLevel(mapWidth, mapHeight, mainPlayer)
+function LevelMaker:GenerateWorldLevel(mapWidth, mapHeight, mainCharacter)
     local blockTileSheet = love.graphics.newImage('assets/blocks.png')
     local enemiesTileSheet = love.graphics.newImage('assets/enemies.png')
     local tileQuads = GenerateQuadsTile(blockTileSheet)
@@ -58,14 +58,17 @@ function LevelMaker:GenerateWorldLevel(mapWidth, mapHeight, mainPlayer)
                     objects = objects,
                     stateMachine = StateMachine({
                         ['idle'] = function()
-                            return TurtleIdleState(turtle, mainPlayer)
+                            return TurtleIdleState(turtle, mainCharacter)
                         end,
                         ['moving'] = function()
-                            return TurtleMovingState(turtle, mainPlayer, tilesMap)
+                            return TurtleMovingState(turtle, mainCharacter, tilesMap)
+                        end,
+                        ['chasing'] = function()
+                            return TurtleChasingState(turtle, mainCharacter, tilesMap)
                         end
                     })
                 })
-                turtle:changeState("moving")
+                turtle:changeState("idle")
                 table.insert(enemies, turtle)
             end
         end

@@ -32,7 +32,7 @@ function PlayState:init()
         })
     })
     -- get world with tiles map, game objects, enemies
-    self.worldLevel = LevelMaker:GenerateWorldLevel(self.width, self.height)
+    self.worldLevel = LevelMaker:GenerateWorldLevel(self.width, self.height, self.mainCharacter)
     self.tilesMap = self.worldLevel['tilesMap']
     self.objects = self.worldLevel['objects']
     self.enemies = self.worldLevel['enemies']
