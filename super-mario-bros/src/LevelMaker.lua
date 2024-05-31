@@ -65,6 +65,9 @@ function LevelMaker:GenerateWorldLevel(mapWidth, mapHeight, mainCharacter)
                         end,
                         ['chasing'] = function()
                             return TurtleChasingState(turtle, mainCharacter, tilesMap)
+                        end,
+                        ['shrink'] = function()
+                            return TurtleShrinkState(turtle, mainCharacter)
                         end
                     })
                 })

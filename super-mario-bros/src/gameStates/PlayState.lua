@@ -39,6 +39,7 @@ function PlayState:init()
     -- setup character
     self.mainCharacter.tilesMap = self.tilesMap
     self.mainCharacter.objects = self.objects
+    self.mainCharacter.enemies = self.enemies
     self.mainCharacter:changeState("falling")
     -- init camera
     self.cameraScrollX = 0

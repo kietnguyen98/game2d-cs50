@@ -30,6 +30,12 @@ function Entity:init(def)
 
     -- reference to game objects so we can check fo collisions
     self.objects = def.objects
+
+    -- reference to enemies if entity is main character
+    self.enemies = def.enemies
+
+    self.consumable = false
+    self.onConsume = def.onConsume
 end
 
 function Entity:changeState(state, params)

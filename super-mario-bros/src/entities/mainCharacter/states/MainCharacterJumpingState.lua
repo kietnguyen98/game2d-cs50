@@ -12,8 +12,8 @@ function MainCharacterJumpingState:init(player)
     self.player.currentAnimation = self.animation
 end
 
-function MainCharacterJumpingState:enter()
-    self.player.dy = JUMP_VELOCITY
+function MainCharacterJumpingState:enter(params)
+    self.player.dy = (params and params.jumpVelocity) and params.jumpVelocity or CHARACTER_JUMP_VELOCITY
 end
 
 function MainCharacterJumpingState:exit()

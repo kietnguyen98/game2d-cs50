@@ -39,7 +39,7 @@ function GeneratePilar(tileSheet, tileQuads, tiles, mapWidth, mapHeight, colInde
 end
 
 function GeneratePlump(tileSheet, objectQuads, objects, mapWidth, mapHeight, colIndex)
-    table.insert(objects, GameObject({
+    table.insert(objects, Object({
         objectSheet = tileSheet,
         objectQuads = objectQuads,
         id = PLUMP_INDEX,
@@ -56,13 +56,15 @@ end
 function GenerateTopBrick(tileSheet, objectQuads, objects, mapWidth, mapHeight, colIndex)
     -- for question brick with coin
     function GenerateQuestionBrickCoin(tileSheet, objectQuads, objects, topBrickX, topBrickY)
-        table.insert(objects, GameObject({
+        table.insert(objects, Object({
             objectSheet = tileSheet,
             objectQuads = objectQuads,
             id = COIN_INDEX,
             x = topBrickX,
             -- minus 2 so the coin will have a space to the question brick
             y = topBrickY - GAME_OBJECT_HEIGHT - 2,
+            width = GAME_OBJECT_WIDTH,
+            height = GAME_OBJECT_HEIGHT,
             collidable = false,
             consumable = true,
             solid = false,
@@ -76,7 +78,7 @@ function GenerateTopBrick(tileSheet, objectQuads, objects, mapWidth, mapHeight, 
         local shouldGenerateQuestionBrick = math.random(3) == 1
         local topBrickX = ((colIndex - 1) + (j - 1)) * GAME_OBJECT_WIDTH
         local topBrickY = (TOP_BRICK_Y_POSITION - 1) * GAME_OBJECT_HEIGHT - 4
-        table.insert(objects, GameObject({
+        table.insert(objects, Object({
             objectSheet = tileSheet,
             objectQuads = objectQuads,
             id = shouldGenerateQuestionBrick and BRICK_QUESTION_INDEX[0] or BRICK_INDEX,
@@ -84,6 +86,8 @@ function GenerateTopBrick(tileSheet, objectQuads, objects, mapWidth, mapHeight, 
             -- should minus 2 to keep the distance from top brick and pilar >= main player height
             -- then the player can always go pass the top brick and pilar if they spawn at the same row
             y = topBrickY,
+            width = GAME_OBJECT_WIDTH,
+            height = GAME_OBJECT_HEIGHT,
             collidable = shouldGenerateQuestionBrick,
             consumable = false,
             solid = true,

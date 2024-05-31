@@ -26,13 +26,10 @@ function MainCharacterMovingState:update(deltaTime)
     else
         -- should check for any tile under character
         -- if there is not any tile -> character fall
-        -- player width = 18
-        -- tile width = 16
-        local diffFromPlayerAndTile = self.player.width - TILE_WIDTH
         local tileBottomLeft = self.player.tilesMap:getTileFromPosition(self.player.x + 1,
             self.player.y + self.player.height)
-        local tileBottomRight = self.player.tilesMap:getTileFromPosition(
-            self.player.x + self.player.width - diffFromPlayerAndTile - 1, self.player.y + self.player.height)
+        local tileBottomRight = self.player.tilesMap:getTileFromPosition(self.player.x + self.player.width - 1,
+            self.player.y + self.player.height)
 
         -- should check for player is collide with any game object
         -- shift player down then check and then reset player position

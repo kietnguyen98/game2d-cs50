@@ -9,11 +9,14 @@ function MainCharacterEntity:update(deltaTime)
     Entity.update(self, deltaTime)
 
     -- constraint main character to not go out of the mapHeight
-    local diffFromPlayerAndTile = self.width - TILE_WIDTH
-    if self.x >= self.tilesMap.width * TILE_WIDTH - (self.width - diffFromPlayerAndTile) then
-        self.x = self.tilesMap.width * TILE_WIDTH - (self.width - diffFromPlayerAndTile)
+    if self.x >= self.tilesMap.width * TILE_WIDTH - self.width then
+        self.x = self.tilesMap.width * TILE_WIDTH - self.width
     elseif self.x <= 0 then
         self.x = 0
+    end
+
+    if #self.enemies > 0 then
+        self:checkEnemyCollisions()
     end
 end
 
@@ -39,7 +42,7 @@ function MainCharacterEntity:checkLeftCollisions(deltaTime)
 
     if (topLeftTile and bottomLeftTile) and (topLeftTile:isCollidable() or bottomLeftTile:isCollidable()) then
         -- collide
-        -- should reset player position to the most right side of the collide object
+        -- should reset player position to the most right side of the collide tile
         self.x = topLeftTile.x * topLeftTile.width - 1
     else
         -- should check for collide with any solid object
@@ -54,15 +57,13 @@ function MainCharacterEntity:checkLeftCollisions(deltaTime)
 end
 
 function MainCharacterEntity:checkRightCollisions(deltaTime)
-    local diffFromPlayerAndTile = self.width - TILE_WIDTH
-    local topRightTile = self.tilesMap:getTileFromPosition(self.x + self.width - diffFromPlayerAndTile - 1, self.y + 1)
-    local bottomRightTile = self.tilesMap:getTileFromPosition(self.x + self.width - diffFromPlayerAndTile - 1,
-        self.y + self.height - 1)
+    local topRightTile = self.tilesMap:getTileFromPosition(self.x + self.width - 1, self.y + 1)
+    local bottomRightTile = self.tilesMap:getTileFromPosition(self.x + self.width - 1, self.y + self.height - 1)
 
     if (topRightTile and bottomRightTile) and (topRightTile:isCollidable() or bottomRightTile:isCollidable()) then
         -- collide
         -- should reset player position to the most right side of the collide object
-        self.x = (topRightTile.x - 1) * topRightTile.width - (self.width - diffFromPlayerAndTile)
+        self.x = (topRightTile.x - 1) * topRightTile.width - self.width
     else
         -- should check for collide with any solid object
         -- if exist collision then the player cannot move right
@@ -89,4 +90,34 @@ function MainCharacterEntity:checkObjectCollisions()
     end
 
     return collidedObjects
+end
+
+function MainCharacterEntity:checkEnemyCollisions()
+    for k, enemy in pairs(self.enemies) do
+        if enemy:collides(self) then
+            -- check if main character has collide on top of the enemy
+            if (self.y + self.height > enemy.y) and (self.y + self.height < enemy.y + enemy.height) and
+                (self.x + self.width / 2 > enemy.x) and (self.x + self.width / 2 < enemy.x + enemy.width) then
+                -- check if main player is in falling state
+                if self.dy > 0 then
+                    -- check if enemy is consumable or not  
+                    if enemy.consumable then
+                        table.remove(self.enemies, k)
+                    else
+                        -- should switch main player to jumping state   
+                        self:changeState("jumping", {
+                            jumpVelocity = CHARACTER_BOUNCE_VELOCITY
+                        })
+                        -- change enemy state
+                        enemy:changeState("shrink")
+                    end
+                end
+            else
+                -- collide but not on the top
+                if enemy.consumable then
+                    table.remove(self.enemies, k)
+                end
+            end
+        end
+    end
 end

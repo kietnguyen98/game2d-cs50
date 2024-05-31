@@ -19,7 +19,7 @@ require "lib/BaseState"
 require "src/Animation"
 require "src/Tile"
 require "src/Tiles"
-require "src/GameObject"
+require "src/Object"
 
 -- init level and map maker
 require "src/LevelMaker"

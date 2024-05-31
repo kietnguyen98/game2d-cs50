@@ -69,15 +69,16 @@ function GenerateQuadsEnemy(atlas)
     local TURTLE_DEFAULT_QUAD_HEIGHT = 24
     local TURTLE_DEFAULT_QUAD_WIDTH = 18
 
-    local TURTLE_SHRINK_QUAD_HEIGHT = 24
+    local TURTLE_SHRINK_QUAD_HEIGHT = 16
     local TURTLE_SHRINK_QUAD_WIDTH = 18
 
     local counter = 1
     local quads = {}
 
     for i = 1, 6 do
-        quads[counter] = love.graphics.newQuad(x, y, i < 5 and TURTLE_DEFAULT_QUAD_WIDTH or TURTLE_SHRINK_QUAD_WIDTH,
-            i < 5 and TURTLE_DEFAULT_QUAD_HEIGHT or TURTLE_SHRINK_HEIGHT, atlas:getDimensions())
+        quads[counter] = love.graphics.newQuad(x, i < 5 and y or y + 8,
+            i < 5 and TURTLE_DEFAULT_QUAD_WIDTH or TURTLE_SHRINK_QUAD_WIDTH,
+            i < 5 and TURTLE_DEFAULT_QUAD_HEIGHT or TURTLE_SHRINK_QUAD_HEIGHT, atlas:getDimensions())
         x = x + TURTLE_SHRINK_QUAD_WIDTH
         counter = counter + 1
     end
