@@ -75,12 +75,14 @@ function GenerateQuadsEnemy(atlas)
 
     local MUSHROOM_QUAD_WIDTH = 16 * 1 + 2
     local MUSHROOM_QUAD_HEIGHT = 16 * 1
+    local MUSHROOM_SHRINK_QUAD_HEIGHT = 8
 
     local mushroomCounter = 1
 
-    for i = 1, 6 do
-        quads['mushroom'][mushroomCounter] = love.graphics.newQuad(mushroomX, mushroomY, MUSHROOM_QUAD_WIDTH,
-            MUSHROOM_QUAD_HEIGHT, atlas:getDimensions())
+    for i = 1, 3 do
+        quads['mushroom'][mushroomCounter] = love.graphics.newQuad(mushroomX,
+            mushroomCounter < 3 and mushroomY or mushroomY + 8, MUSHROOM_QUAD_WIDTH, mushroomCounter < 3 and
+                MUSHROOM_QUAD_HEIGHT or MUSHROOM_SHRINK_QUAD_HEIGHT, atlas:getDimensions())
         mushroomX = mushroomX + MUSHROOM_QUAD_WIDTH
         mushroomCounter = mushroomCounter + 1
     end

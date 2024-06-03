@@ -22,10 +22,16 @@ function GenerateEnemyMushroom(enemies, enemiesTileSheet, quads, tilesMap, objec
             end,
             ['chasing'] = function()
                 return MushroomChasingState(mushroom, mainCharacter)
+            end,
+            ['shrink'] = function()
+                return MushroomShrinkState(mushroom, mainCharacter)
             end
         }),
-        colidable = false,
-        consumable = false
+        collidable = true,
+        consumable = false,
+        onCollide = function()
+            mushroom:changeState("shrink")
+        end
     })
     mushroom:changeState("idle")
     table.insert(enemies, mushroom)

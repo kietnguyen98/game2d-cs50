@@ -47,6 +47,7 @@ require "src/entities/mainCharacter/states/MainCharacterJumpingState"
 require "src/entities/enemies/mushroom/states/MushroomIdleState"
 require "src/entities/enemies/mushroom/states/MushroomMovingState"
 require "src/entities/enemies/mushroom/states/MushroomChasingState"
+require "src/entities/enemies/mushroom/states/MushroomShrinkState"
 -- turtle
 require "src/entities/enemies/turtle/states/TurtleIdleState"
 require "src/entities/enemies/turtle/states/TurtleChasingState"

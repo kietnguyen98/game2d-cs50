@@ -48,7 +48,7 @@ function LevelMaker:GenerateWorldLevel(mapWidth, mapHeight, mainCharacter)
                 -- has a chance to generate turtle enenmy on solid ground
                 GenerateEnemyTurtle(enemies, enemiesTileSheet, enemiesQuads['turtle'], tilesMap, objects, mainCharacter,
                     colIndex)
-            elseif math.random(9) == 1 then
+            elseif math.random(10) == 1 then
                 -- has a chance to generate mushroom enemy on solid ground
                 GenerateEnemyMushroom(enemies, enemiesTileSheet, enemiesQuads['mushroom'], tilesMap, objects,
                     mainCharacter, colIndex)
