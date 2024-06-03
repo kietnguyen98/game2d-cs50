@@ -74,6 +74,7 @@ function MainCharacterFallingState:update(deltaTime)
                 end
                 -- consume object if object is consumable
             elseif object.consumable then
+                object:onConsume()
                 table.remove(self.player.objects, k)
             end
         end

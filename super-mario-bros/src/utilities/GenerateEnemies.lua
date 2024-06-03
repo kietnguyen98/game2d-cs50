@@ -31,6 +31,11 @@ function GenerateEnemyMushroom(enemies, enemiesTileSheet, quads, tilesMap, objec
         consumable = false,
         onCollide = function()
             mushroom:changeState("shrink")
+            mushroom.collidable = false
+            mushroom.consumable = true
+            mushroom.onConsume = function()
+                mainCharacter.score = mainCharacter.score + 100
+            end
         end
     })
     mushroom:changeState("idle")
@@ -70,6 +75,11 @@ function GenerateEnemyTurtle(enemies, enemiesTileSheet, quads, tilesMap, objects
         consumable = false,
         onCollide = function()
             turtle:changeState("shrink")
+            turtle.collidable = false
+            turtle.consumable = true
+            turtle.onConsume = function()
+                mainCharacter.score = mainCharacter.score + 150
+            end
         end
     })
     turtle:changeState("idle")

@@ -50,6 +50,7 @@ function MainCharacterJumpingState:update(deltaTime)
                     object:onCollide()
                 end
             elseif object.consumable then
+                object.onConsume()
                 table.remove(self.player.objects, k)
             end
         end

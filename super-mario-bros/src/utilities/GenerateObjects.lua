@@ -54,7 +54,7 @@ function GeneratePlump(tileSheet, objectQuads, objects, mapWidth, mapHeight, col
 end
 
 -- for question brick with coin
-function GenerateQuestionBrickCoin(tileSheet, objectQuads, objects, topBrickX, topBrickY)
+function GenerateQuestionBrickCoin(tileSheet, objectQuads, objects, topBrickX, topBrickY, mainCharacter)
     table.insert(objects, Object({
         objectSheet = tileSheet,
         objectQuads = objectQuads,
@@ -68,11 +68,12 @@ function GenerateQuestionBrickCoin(tileSheet, objectQuads, objects, topBrickX, t
         consumable = true,
         solid = false,
         onConsume = function()
+            mainCharacter.score = mainCharacter.score + 100
         end
     }))
 end
 
-function GenerateTopBrick(tileSheet, objectQuads, objects, mapWidth, mapHeight, colIndex)
+function GenerateTopBrick(tileSheet, objectQuads, objects, mapWidth, mapHeight, colIndex, mainCharacter)
     local TopBrickLength = math.random(2, 3)
     for j = 1, TopBrickLength do
         local shouldGenerateQuestionBrick = math.random(3) == 1
@@ -101,7 +102,8 @@ function GenerateTopBrick(tileSheet, objectQuads, objects, mapWidth, mapHeight, 
                         -- should spawn coin if player hit question brick 2 times 
                         local shouldGenerateCoin = math.random(2) == 1
                         if shouldGenerateCoin then
-                            GenerateQuestionBrickCoin(tileSheet, objectQuads, objects, topBrickX, topBrickY)
+                            GenerateQuestionBrickCoin(tileSheet, objectQuads, objects, topBrickX, topBrickY,
+                                mainCharacter)
                         end
                     end
                 end

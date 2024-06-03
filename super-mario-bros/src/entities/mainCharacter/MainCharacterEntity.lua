@@ -84,6 +84,7 @@ function MainCharacterEntity:checkObjectCollisions()
             if object.solid then
                 table.insert(collidedObjects, object)
             elseif object.consumable then
+                object:onConsume()
                 table.remove(self.objects, k)
             end
         end
@@ -110,13 +111,12 @@ function MainCharacterEntity:checkEnemyCollisions()
                         })
                         -- change enemy state
                         enemy:onCollide()
-                        enemy.collidable = false
-                        enemy.consumable = true
                     end
                 end
             else
                 -- collide but not on the top
                 if enemy.consumable then
+                    enemy:onConsume()
                     table.remove(self.enemies, k)
                 end
             end

@@ -120,7 +120,13 @@ function PlayState:renderEnemies()
 end
 
 function PlayState:renderPlayerScore()
+    love.graphics.setFont(fontExtraSmall)
+    love.graphics.setColor(0, 0, 0, 255)
+    love.graphics.printf('Your score: ' .. tostring(self.mainCharacter.score), self.cameraScrollX + 4, 4, VIRTUAL_WIDTH,
+        'left')
 
+    -- reset color
+    love.graphics.setColor(255, 255, 255, 255)
 end
 
 function PlayState:render()
@@ -130,4 +136,5 @@ function PlayState:render()
     self.mainCharacter:render()
     self:renderObjects()
     self:renderEnemies()
+    self:renderPlayerScore()
 end

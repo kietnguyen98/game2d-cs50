@@ -43,9 +43,9 @@ function StartState:render()
     -- title on screen
     love.graphics.setFont(fontMedium)
     love.graphics.setColor(0, 0, 0, 255)
-    love.graphics.printf('Press Enter to play game !', 0, VIRTUAL_HEIGHT / 2 + 2, VIRTUAL_WIDTH, 'center')
+    love.graphics.printf('Press Enter to play game !', 0, VIRTUAL_HEIGHT / 3 + 2, VIRTUAL_WIDTH, 'center')
     love.graphics.setColor(255, 255, 255, 255)
-    love.graphics.printf('Press Enter to play game !', 0, VIRTUAL_HEIGHT / 2, VIRTUAL_WIDTH, 'center')
+    love.graphics.printf('Press Enter to play game !', 0, VIRTUAL_HEIGHT / 3, VIRTUAL_WIDTH, 'center')
     -- reset color
     love.graphics.setColor(255, 255, 255, 255)
 end

@@ -59,7 +59,7 @@ function LevelMaker:GenerateWorldLevel(mapWidth, mapHeight, mainCharacter)
         local shouldGenerateTopBrick = colIndex ~= 1 and colIndex < mapWidth - 3 and math.random(10) == 1
 
         if shouldGenerateTopBrick then
-            GenerateTopBrick(blockTileSheet, objectQuads, objects, mapWidth, mapHeight, colIndex)
+            GenerateTopBrick(blockTileSheet, objectQuads, objects, mapWidth, mapHeight, colIndex, mainCharacter)
         end
 
         if chasmNum > 0 or hasGeneratePlump then
