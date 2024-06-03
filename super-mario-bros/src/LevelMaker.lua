@@ -40,39 +40,18 @@ function LevelMaker:GenerateWorldLevel(mapWidth, mapHeight, mainCharacter)
                 -- generate plump
                 GeneratePlump(blockTileSheet, objectQuads, objects, mapWidth, mapHeight, colIndex)
                 hasGeneratePlump = true
-                -- generate enemies here
-            elseif math.random(5) == 1 then
-                local turtle
-                turtle = TurtleEntity({
-                    sheet = enemiesTileSheet,
-                    quads = enemiesQuads,
-                    x = (colIndex - 1) * TILE_WIDTH,
-                    y = (SKY_MAX_INDEX - 1) * TILE_HEIGHT - TURTLE_DEFAULT_HEIGHT * TURTLE_SCALE_RATIO,
-                    width = TURTLE_DEFAULT_WIDTH,
-                    height = TURTLE_DEFAULT_HEIGHT,
-                    scaleRatio = TURTLE_SCALE_RATIO,
-                    dx = 0,
-                    dy = 0,
-                    direction = "left",
-                    tilesMap = tilesMap,
-                    objects = objects,
-                    stateMachine = StateMachine({
-                        ['idle'] = function()
-                            return TurtleIdleState(turtle, mainCharacter)
-                        end,
-                        ['moving'] = function()
-                            return TurtleMovingState(turtle, mainCharacter, tilesMap)
-                        end,
-                        ['chasing'] = function()
-                            return TurtleChasingState(turtle, mainCharacter, tilesMap)
-                        end,
-                        ['shrink'] = function()
-                            return TurtleShrinkState(turtle, mainCharacter)
-                        end
-                    })
-                })
-                turtle:changeState("idle")
-                table.insert(enemies, turtle)
+                -- has a chance to generate cannibal enemy on plump
+                if math.random(3) == 1 then
+                    GenerateEnemyCannibal(enemies, enemiesTileSheet, enemiesQuads['cannibal'], mainCharacter, colIndex)
+                end
+            elseif math.random(12) == 1 then
+                -- has a chance to generate turtle enenmy on solid ground
+                GenerateEnemyTurtle(enemies, enemiesTileSheet, enemiesQuads['turtle'], tilesMap, objects, mainCharacter,
+                    colIndex)
+            elseif math.random(9) == 1 then
+                -- has a chance to generate mushroom enemy on solid ground
+                GenerateEnemyMushroom(enemies, enemiesTileSheet, enemiesQuads['mushroom'], tilesMap, objects,
+                    mainCharacter, colIndex)
             end
         end
 

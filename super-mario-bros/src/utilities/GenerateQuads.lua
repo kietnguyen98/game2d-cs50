@@ -63,8 +63,31 @@ function GenerateQuadsCharacter(atlas)
 end
 
 function GenerateQuadsEnemy(atlas)
-    local x = 16 * 4 - 10
-    local y = 16 * 10 - 5
+    local quads = {
+        ['mushroom'] = {},
+        ['turtle'] = {},
+        ['cannibal'] = {}
+    }
+
+    -- mushroom enemy
+    local mushroomX = 16 * 0
+    local mushroomY = 16 * 6 - 4
+
+    local MUSHROOM_QUAD_WIDTH = 16 * 1 + 2
+    local MUSHROOM_QUAD_HEIGHT = 16 * 1
+
+    local mushroomCounter = 1
+
+    for i = 1, 6 do
+        quads['mushroom'][mushroomCounter] = love.graphics.newQuad(mushroomX, mushroomY, MUSHROOM_QUAD_WIDTH,
+            MUSHROOM_QUAD_HEIGHT, atlas:getDimensions())
+        mushroomX = mushroomX + MUSHROOM_QUAD_WIDTH
+        mushroomCounter = mushroomCounter + 1
+    end
+
+    -- turtle enemy
+    local turtleX = 16 * 4 - 10
+    local turtleY = 16 * 10 - 5
 
     local TURTLE_DEFAULT_QUAD_HEIGHT = 24
     local TURTLE_DEFAULT_QUAD_WIDTH = 18
@@ -72,15 +95,30 @@ function GenerateQuadsEnemy(atlas)
     local TURTLE_SHRINK_QUAD_HEIGHT = 16
     local TURTLE_SHRINK_QUAD_WIDTH = 18
 
-    local counter = 1
-    local quads = {}
+    local turtleCounter = 1
 
     for i = 1, 6 do
-        quads[counter] = love.graphics.newQuad(x, i < 5 and y or y + 8,
-            i < 5 and TURTLE_DEFAULT_QUAD_WIDTH or TURTLE_SHRINK_QUAD_WIDTH,
-            i < 5 and TURTLE_DEFAULT_QUAD_HEIGHT or TURTLE_SHRINK_QUAD_HEIGHT, atlas:getDimensions())
-        x = x + TURTLE_SHRINK_QUAD_WIDTH
-        counter = counter + 1
+        quads['turtle'][turtleCounter] = love.graphics.newQuad(turtleX, i < 5 and turtleY or turtleY + 8, i < 5 and
+            TURTLE_DEFAULT_QUAD_WIDTH or TURTLE_SHRINK_QUAD_WIDTH, i < 5 and TURTLE_DEFAULT_QUAD_HEIGHT or
+            TURTLE_SHRINK_QUAD_HEIGHT, atlas:getDimensions())
+        turtleX = turtleX + TURTLE_SHRINK_QUAD_WIDTH
+        turtleCounter = turtleCounter + 1
+    end
+
+    -- cannibal enemy
+    local cannibalX = 16 * 10 + 2
+    local cannibalY = 16 * 3
+
+    local CANNIBAL_QUAD_WIDTH = 18
+    local CANNIBAL_QUAD_HEIGHT = 24
+
+    local cannibalCounter = 1
+
+    for i = 1, 2 do
+        quads['cannibal'][cannibalCounter] = love.graphics.newQuad(cannibalX, cannibalY, CANNIBAL_QUAD_WIDTH,
+            CANNIBAL_QUAD_HEIGHT, atlas:getDimensions())
+        cannibalX = cannibalX + CANNIBAL_QUAD_WIDTH
+        cannibalCounter = cannibalCounter + 1
     end
 
     return quads

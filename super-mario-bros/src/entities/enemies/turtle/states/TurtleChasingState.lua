@@ -1,9 +1,8 @@
 TurtleChasingState = BaseState()
 
-function TurtleChasingState:init(turtle, mainCharacter, tilesMap)
+function TurtleChasingState:init(turtle, mainCharacter)
     self.turtle = turtle
     self.mainCharacter = mainCharacter
-    self.tilesMap = tilesMap
     self.animation = Animation({
         frames = {3, 4},
         interval = 0.15

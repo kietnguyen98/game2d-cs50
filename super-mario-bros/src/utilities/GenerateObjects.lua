@@ -53,31 +53,31 @@ function GeneratePlump(tileSheet, objectQuads, objects, mapWidth, mapHeight, col
     }))
 end
 
-function GenerateTopBrick(tileSheet, objectQuads, objects, mapWidth, mapHeight, colIndex)
-    -- for question brick with coin
-    function GenerateQuestionBrickCoin(tileSheet, objectQuads, objects, topBrickX, topBrickY)
-        table.insert(objects, Object({
-            objectSheet = tileSheet,
-            objectQuads = objectQuads,
-            id = COIN_INDEX,
-            x = topBrickX,
-            -- minus 2 so the coin will have a space to the question brick
-            y = topBrickY - GAME_OBJECT_HEIGHT - 2,
-            width = GAME_OBJECT_WIDTH,
-            height = GAME_OBJECT_HEIGHT,
-            collidable = false,
-            consumable = true,
-            solid = false,
-            onConsume = function()
-            end
-        }))
-    end
+-- for question brick with coin
+function GenerateQuestionBrickCoin(tileSheet, objectQuads, objects, topBrickX, topBrickY)
+    table.insert(objects, Object({
+        objectSheet = tileSheet,
+        objectQuads = objectQuads,
+        id = COIN_INDEX,
+        x = topBrickX,
+        -- minus 2 so the coin will have a space to the question brick
+        y = topBrickY - GAME_OBJECT_HEIGHT - 2,
+        width = GAME_OBJECT_WIDTH,
+        height = GAME_OBJECT_HEIGHT,
+        collidable = false,
+        consumable = true,
+        solid = false,
+        onConsume = function()
+        end
+    }))
+end
 
+function GenerateTopBrick(tileSheet, objectQuads, objects, mapWidth, mapHeight, colIndex)
     local TopBrickLength = math.random(2, 3)
     for j = 1, TopBrickLength do
         local shouldGenerateQuestionBrick = math.random(3) == 1
         local topBrickX = ((colIndex - 1) + (j - 1)) * GAME_OBJECT_WIDTH
-        local topBrickY = (TOP_BRICK_Y_POSITION - 1) * GAME_OBJECT_HEIGHT - 4
+        local topBrickY = (TOP_BRICK_Y_POSITION - 1) * GAME_OBJECT_HEIGHT - TILE_HEIGHT / 2
         table.insert(objects, Object({
             objectSheet = tileSheet,
             objectQuads = objectQuads,
@@ -92,7 +92,7 @@ function GenerateTopBrick(tileSheet, objectQuads, objects, mapWidth, mapHeight, 
             consumable = false,
             solid = true,
             hitTimes = 0,
-            onCollide = not shouldGenerateQuestionBrick and nil or function(self)
+            onCollide = shouldGenerateQuestionBrick and function(self)
                 if self.hitTimes < 2 then
                     self.hitTimes = self.hitTimes + 1
                     self.id = BRICK_QUESTION_INDEX[self.hitTimes]

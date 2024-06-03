@@ -26,12 +26,11 @@ function TurtleIdleState:update(deltaTime)
         -- if main player is nearby then should switch state to chasing
         if math.floor(math.abs(self.turtle.x - self.mainCharacter.x) / TILE_WIDTH) <= TURTLE_CHASING_WIDTH_RANGE then
             self.turtle:changeState("chasing")
-        else
-            -- change state to moving
-            -- select a random direction for moving
-            self.turtle.direction = math.random(2) == 1 and "left" or "right"
-            self.turtle:changeState("moving")
         end
+        -- change state to moving
+        -- select a random direction for moving
+        self.turtle.direction = math.random(2) == 1 and "left" or "right"
+        self.turtle:changeState("moving")
     end
 end
 

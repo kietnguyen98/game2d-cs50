@@ -29,7 +29,9 @@ require "src/LevelMaker"
 require "src/Entity"
 -- main character entity class
 require "src/entities/mainCharacter/MainCharacterEntity"
-require "src/entities/turtle/TurtleEntity"
+require "src/entities/enemies/mushroom/MushroomEntity"
+require "src/entities/enemies/cannibal/CannibalEntity"
+require "src/entities/enemies/turtle/TurtleEntity"
 
 -- game states
 require "src/gameStates/PlayState"
@@ -41,8 +43,15 @@ require "src/entities/mainCharacter/states/MainCharacterMovingState"
 require "src/entities/mainCharacter/states/MainCharacterIdleState"
 require "src/entities/mainCharacter/states/MainCharacterJumpingState"
 -- enemies state 
+-- mushroom
+require "src/entities/enemies/mushroom/states/MushroomIdleState"
+require "src/entities/enemies/mushroom/states/MushroomMovingState"
+require "src/entities/enemies/mushroom/states/MushroomChasingState"
 -- turtle
-require "src/entities/turtle/states/TurtleIdleState"
-require "src/entities/turtle/states/TurtleChasingState"
-require "src/entities/turtle/states/TurtleMovingState"
-require "src/entities/turtle/states/TurtleShrinkState"
+require "src/entities/enemies/turtle/states/TurtleIdleState"
+require "src/entities/enemies/turtle/states/TurtleChasingState"
+require "src/entities/enemies/turtle/states/TurtleMovingState"
+require "src/entities/enemies/turtle/states/TurtleShrinkState"
+-- cannibal
+require "src/entities/enemies/cannibal/states/CannibalIdleState"
+require "src/entities/enemies/cannibal/states/CannibalAttackState"

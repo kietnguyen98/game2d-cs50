@@ -1,17 +1,19 @@
-TurtleEntity = Entity:extend()
+MushroomEntity = Entity:extend()
 
-function TurtleEntity:init(def)
+function MushroomEntity:init(def)
     Entity.init(self, def)
     self.scaleRatio = def.scaleRatio
-    self.height = self.height * self.scaleRatio
-    self.width = self.width * self.scaleRatio
+    self.collidable = def.collidable
+    self.consumable = def.consumable
+    self.onCollide = def.onCollide
+    self.onConsume = def.onConsume
 end
 
-function TurtleEntity:update(deltaTime)
+function MushroomEntity:update(deltaTime)
     Entity.update(self, deltaTime)
 end
 
-function TurtleEntity:render()
+function MushroomEntity:render()
     love.graphics.draw( -- draw object
     self.sheet, self.quads[self.currentAnimation:getCurrentFrame()], -- position of object on x axis
     self.x + self.width / 2, -- position of object on y axis
@@ -23,7 +25,7 @@ function TurtleEntity:render()
     self.height / self.scaleRatio / 2)
 end
 
-function TurtleEntity:checkObjectCollisions()
+function MushroomEntity:checkObjectCollisions()
     local collidedObjects = {}
 
     for k, object in pairs(self.objects) do

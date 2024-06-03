@@ -96,7 +96,7 @@ function MainCharacterEntity:checkEnemyCollisions()
     for k, enemy in pairs(self.enemies) do
         if enemy:collides(self) then
             -- check if main character has collide on top of the enemy
-            if (self.y + self.height > enemy.y) and (self.y + self.height < enemy.y + enemy.height) and
+            if enemy.collidable and (self.y + self.height > enemy.y) and (self.y + self.height < enemy.y + enemy.height) and
                 (self.x + self.width / 2 > enemy.x) and (self.x + self.width / 2 < enemy.x + enemy.width) then
                 -- check if main player is in falling state
                 if self.dy > 0 then
@@ -109,7 +109,9 @@ function MainCharacterEntity:checkEnemyCollisions()
                             jumpVelocity = CHARACTER_BOUNCE_VELOCITY
                         })
                         -- change enemy state
-                        enemy:changeState("shrink")
+                        enemy:onCollide()
+                        enemy.collidable = false
+                        enemy.consumable = true
                     end
                 end
             else

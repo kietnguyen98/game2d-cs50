@@ -1,8 +1,7 @@
 TurtleMovingState = BaseState()
 
-function TurtleMovingState:init(turtle, mainCharacter, tilesMap)
+function TurtleMovingState:init(turtle, mainCharacter)
     self.turtle = turtle
-    self.tilesMap = tilesMap
     self.mainCharacter = mainCharacter
     self.animation = Animation({
         frames = {1, 2},
@@ -79,9 +78,9 @@ function TurtleMovingState:update(deltaTime)
             -- reset moving timer, switch direction
             self.movingTimer = 0
             self.turtle.direction = "left"
-        elseif self.turtle.x > (self.tilesMap.width - 1) * TILE_WIDTH - self.turtle.width then
+        elseif self.turtle.x > (self.turtle.tilesMap.width - 1) * TILE_WIDTH - self.turtle.width then
             -- reset position
-            self.turtle.x = (self.tilesMap.width - 1) * TILE_WIDTH - self.turtle.width
+            self.turtle.x = (self.turtle.tilesMap.width - 1) * TILE_WIDTH - self.turtle.width
             -- reset moving timer, switch direction
             self.movingTimer = 0
             self.turtle.direction = "left"
