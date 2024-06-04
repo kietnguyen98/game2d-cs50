@@ -11,6 +11,8 @@ function TurtleShrinkState:init(turtle, mainCharacter)
 end
 
 function TurtleShrinkState:enter(params)
+    self.dx = 0
+    self.dy = 0
     self.turtle.width = TURTLE_SHRINK_WIDTH * self.turtle.scaleRatio
     self.turtle.height = TURTLE_SHRINK_HEIGHT * self.turtle.scaleRatio
     self.turtle.y = (SKY_MAX_INDEX - 1) * TILE_HEIGHT - self.turtle.height

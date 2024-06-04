@@ -17,8 +17,9 @@ end
 function MushroomChasingState:update(deltaTime)
     self.mushroom.currentAnimation:update(deltaTime)
 
-    -- check if main player is out of chasing range of entity
-    if math.floor(math.abs(self.mainCharacter.x - self.mushroom.x) / TILE_WIDTH) > MUSHROOM_CHASING_WIDTH_RANGE then
+    -- check if main player is out of chasing range of entity or main player is immortal
+    if (math.floor(math.abs(self.mainCharacter.x - self.mushroom.x) / TILE_WIDTH) > MUSHROOM_CHASING_WIDTH_RANGE) or
+        self.mainCharacter.isImmortal then
         self.mushroom:changeState("moving")
     end
 

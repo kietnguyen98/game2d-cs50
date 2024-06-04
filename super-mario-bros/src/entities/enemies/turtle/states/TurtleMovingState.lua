@@ -21,9 +21,10 @@ end
 function TurtleMovingState:update(deltaTime)
     self.turtle.currentAnimation:update(deltaTime)
 
-    -- check if main player are in chasing range of entity
+    -- check if main player are in chasing range of entity and not in immortal state
     -- then turn entity to chasing state
-    if math.floor(math.abs(self.mainCharacter.x - self.turtle.x) / 16) <= TURTLE_CHASING_WIDTH_RANGE then
+    if (math.floor(math.abs(self.mainCharacter.x - self.turtle.x) / 16) <= TURTLE_CHASING_WIDTH_RANGE) and
+        not self.mainCharacter.isImmortal then
         self.turtle:changeState("chasing")
     end
 

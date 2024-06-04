@@ -23,8 +23,9 @@ function MushroomIdleState:update(deltaTime)
 
     -- wait for period then switch to moving state
     if self.idleTimer > self.idleDuration then
-        -- check if main player is out of chasing range of entity
-        if math.floor(math.abs(self.mainCharacter.x - self.mushroom.x) / TILE_WIDTH) < MUSHROOM_CHASING_WIDTH_RANGE then
+        -- check if main player is out of chasing range of entity and not in immortal state
+        if (math.floor(math.abs(self.mainCharacter.x - self.mushroom.x) / TILE_WIDTH) < MUSHROOM_CHASING_WIDTH_RANGE) and
+            not self.mainCharacter.isImmortal then
             self.mushroom:changeState("chasing")
         end
         -- change state to moving

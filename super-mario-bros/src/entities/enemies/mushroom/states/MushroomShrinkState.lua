@@ -10,6 +10,8 @@ function MushroomShrinkState:init(mushroom)
 end
 
 function MushroomShrinkState:enter(params)
+    self.dx = 0
+    self.dy = 0
     self.mushroom.height = MUSHROOM_SHRINK_HEIGHT * self.mushroom.scaleRatio
     self.mushroom.y = (SKY_MAX_INDEX - 1) * TILE_HEIGHT - self.mushroom.height
 end

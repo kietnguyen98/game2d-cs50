@@ -23,8 +23,9 @@ function TurtleIdleState:update(deltaTime)
 
     -- wait for a period then turn in to moving state
     if self.idleTimer > self.idleDuration then
-        -- if main player is nearby then should switch state to chasing
-        if math.floor(math.abs(self.turtle.x - self.mainCharacter.x) / TILE_WIDTH) <= TURTLE_CHASING_WIDTH_RANGE then
+        -- if main player is nearby then should switch state to chasing and not in immortal state
+        if (math.floor(math.abs(self.turtle.x - self.mainCharacter.x) / TILE_WIDTH) <= TURTLE_CHASING_WIDTH_RANGE) and
+            not self.mainCharacter.isImmortal then
             self.turtle:changeState("chasing")
         end
         -- change state to moving

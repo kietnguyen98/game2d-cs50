@@ -28,6 +28,9 @@ function PlayState:init()
             end,
             ['falling'] = function()
                 return MainCharacterFallingState(self.mainCharacter)
+            end,
+            ['bounce'] = function()
+                return MainCharacterBounceState(self.mainCharacter)
             end
         })
     })

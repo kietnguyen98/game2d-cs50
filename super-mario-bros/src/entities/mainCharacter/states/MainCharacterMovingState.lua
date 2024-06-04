@@ -1,7 +1,7 @@
 MainCharacterMovingState = BaseState:extend()
 
-function MainCharacterMovingState:init(entity)
-    self.player = entity
+function MainCharacterMovingState:init(player)
+    self.player = player
 
     self.animation = Animation({
         frames = {5, 6, 7, 6},

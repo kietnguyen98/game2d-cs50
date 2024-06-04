@@ -42,6 +42,8 @@ require "src/entities/mainCharacter/states/MainCharacterFallingState"
 require "src/entities/mainCharacter/states/MainCharacterMovingState"
 require "src/entities/mainCharacter/states/MainCharacterIdleState"
 require "src/entities/mainCharacter/states/MainCharacterJumpingState"
+require "src/entities/mainCharacter/states/MainCharacterBounceState"
+
 -- enemies state 
 -- mushroom
 require "src/entities/enemies/mushroom/states/MushroomIdleState"

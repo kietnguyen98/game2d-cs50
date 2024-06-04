@@ -17,8 +17,9 @@ end
 function CannibalAttackState:update(deltaTime)
     self.cannibal.currentAnimation:update(deltaTime)
 
-    -- if main player leave entity attack range 
-    if math.floor(math.abs(self.mainCharacter.x - self.cannibal.x) / TILE_WIDTH) > CANNIBAL_ATTACK_WIDTH_RANGE then
+    -- if main player leave entity attack range or main player is immortal
+    if (math.floor(math.abs(self.mainCharacter.x - self.cannibal.x) / TILE_WIDTH) > CANNIBAL_ATTACK_WIDTH_RANGE) or
+        self.mainCharacter.isImmortal then
         self.cannibal:changeState("idle")
     end
 end
