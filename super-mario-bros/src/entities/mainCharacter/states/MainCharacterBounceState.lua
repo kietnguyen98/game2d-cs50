@@ -17,7 +17,6 @@ end
 
 function MainCharacterBounceState:enter(params)
     self.bounceVelocity = CHARACTER_BOUNCE_BACK_VELOCITY
-    self.player.isHurt = true
     self.enemyDirection = params.enemyDirection
     self.collidedPart = params.collidedPart
 end

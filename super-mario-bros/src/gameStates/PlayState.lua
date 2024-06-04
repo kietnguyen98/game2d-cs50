@@ -7,6 +7,8 @@ function PlayState:init()
     -- init character
     self.characterSheet = love.graphics.newImage("assets/mario_and_items.png")
     self.characterQuads = GenerateQuadsCharacter(self.characterSheet)
+    self.lifeQuads = GenerateQuadsStar(self.characterSheet)
+    self.fireQuads = GenerateQuadsFire(self.characterSheet)
     self.mainCharacter = MainCharacterEntity({
         sheet = self.characterSheet,
         quads = self.characterQuads,
@@ -44,6 +46,25 @@ function PlayState:init()
     self.mainCharacter.objects = self.objects
     self.mainCharacter.enemies = self.enemies
     self.mainCharacter:changeState("falling")
+    -- init final point
+    self.finalPoint = FinalPointEntity({
+        sheet = self.characterSheet,
+        quads = self.fireQuads,
+        x = (self.tilesMap.width - 1) * TILE_WIDTH - (FINAL_POINT_WIDTH - TILE_HEIGHT) / 2,
+        y = (SKY_MAX_INDEX - 1) * TILE_HEIGHT - FINAL_POINT_HEIGHT,
+        dx = 0,
+        dy = 0,
+        width = FINAL_POINT_WIDTH,
+        height = FINAL_POINT_HEIGHT,
+        scaleRatio = FINAL_POINT_SCALE_RATIO,
+        stateMachine = StateMachine({
+            ['idle'] = function()
+                return FinalPointIdleState(self.finalPoint, self.mainCharacter)
+            end
+        })
+    })
+    -- setup final point
+    self.finalPoint:changeState("idle")
     -- init camera
     self.cameraScrollX = 0
     self.cameraScrollY = 0
@@ -73,8 +94,22 @@ function PlayState:update(deltaTime)
     -- update entities
     self.tilesMap:update(deltaTime)
     self.mainCharacter:update(deltaTime)
+    self.finalPoint:update(deltaTime)
     self:updateObjects(deltaTime)
     self:updateEnemies(deltaTime)
+
+    -- change game states when player out of lives
+    if self.mainCharacter.lives == 0 and not self.mainCharacter.isHurt then
+        gameStateMachine:change("start")
+    end
+
+    -- check if main player get to final point and change game state
+    if self.finalPoint:collides(self.mainCharacter) then
+        gameStateMachine:change("finish", {
+            score = self.mainCharacter.score,
+            lives = self.mainCharacter.lives
+        })
+    end
 
     -- update camera
     -- should use math.floor to remove decimal part (if exist) => integer only to prevent
@@ -125,11 +160,26 @@ end
 function PlayState:renderPlayerScore()
     love.graphics.setFont(fontExtraSmall)
     love.graphics.setColor(0, 0, 0, 255)
-    love.graphics.printf('Your score: ' .. tostring(self.mainCharacter.score), self.cameraScrollX + 4, 4, VIRTUAL_WIDTH,
+    love.graphics.printf('Score: ' .. tostring(self.mainCharacter.score), 72 + self.cameraScrollX, 4, VIRTUAL_WIDTH,
         'left')
 
     -- reset color
     love.graphics.setColor(255, 255, 255, 255)
+end
+
+function PlayState:renderPlayerLives()
+    love.graphics.setFont(fontExtraSmall)
+    love.graphics.setColor(0, 0, 0, 255)
+    love.graphics.printf('Lives: ', self.cameraScrollX + 4, 4, VIRTUAL_WIDTH, 'left')
+    -- reset color
+    love.graphics.setColor(255, 255, 255, 255)
+
+    if self.mainCharacter.lives > 0 then
+        for i = 1, self.mainCharacter.lives do
+            love.graphics.draw(self.characterSheet, self.lifeQuads[4], 28 + self.cameraScrollX + (i - 1) * 10, 2, 0,
+                0.5, 0.5)
+        end
+    end
 end
 
 function PlayState:render()
@@ -137,7 +187,9 @@ function PlayState:render()
     self:renderBackground()
     self.tilesMap:render()
     self.mainCharacter:render()
+    self.finalPoint:render()
     self:renderObjects()
     self:renderEnemies()
     self:renderPlayerScore()
+    self:renderPlayerLives()
 end

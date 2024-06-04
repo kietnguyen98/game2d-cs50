@@ -4,6 +4,7 @@ MAXIMUM_IMMORTAL_DURATION = 2
 
 function MainCharacterEntity:init(def)
     self.score = 0
+    self.lives = 3
     self.isHurt = false
     self.isImmortal = false
     self.immortalTimmer = 0
@@ -181,6 +182,8 @@ function MainCharacterEntity:checkEnemyCollisions()
                     self.dy = 0
                     -- cant consume enemy or collide with enemy but not on top
                     -- player get hurt and bounce
+                    self.isHurt = true
+                    self.lives = self.lives - 1
                     self:changeState("bounce", {
                         enemyDirection = enemy.direction,
                         collidedPart = (self.x + self.width / 2) < (enemy.x + enemy.width / 2) and "left" or "right"

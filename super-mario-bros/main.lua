@@ -20,10 +20,10 @@ function love.load()
 
     -- init font
     fontExtraSmall = love.graphics.newFont('fonts/font.ttf', 8)
-    fontSmall = love.graphics.newFont('fonts/supermario85dxsuper.ttf', 16)
-    fontMedium = love.graphics.newFont('fonts/supermario85dxsuper.ttf', 24)
-    fontLarge = love.graphics.newFont('fonts/supermario85dxsuper.ttf', 32)
-    fontExtraLarge = love.graphics.newFont('fonts/supermario85dxsuper.ttf', 40)
+    fontSmall = love.graphics.newFont('fonts/font.ttf', 16)
+    fontMedium = love.graphics.newFont('fonts/font.ttf', 24)
+    fontLarge = love.graphics.newFont('fonts/font.ttf', 32)
+    fontExtraLarge = love.graphics.newFont('fonts/font.ttf', 40)
 
     -- game state
     gameStateMachine = StateMachine({
@@ -32,6 +32,9 @@ function love.load()
         end,
         ['play'] = function()
             return PlayState()
+        end,
+        ['finish'] = function()
+            return FinishState()
         end
     })
 

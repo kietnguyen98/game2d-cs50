@@ -168,3 +168,37 @@ function GenerateQuadsObject(atlas)
 
     return quads
 end
+
+function GenerateQuadsStar(atlas)
+    local quads = {}
+    local x = 0
+    local y = 16 * 8 - 2
+    local STAR_WIDTH = 18
+    local STAR_HEIGHT = 18
+    local counter = 1
+
+    for i = 1, 4 do
+        quads[counter] = love.graphics.newQuad(x, y, STAR_WIDTH, STAR_HEIGHT, atlas:getDimensions())
+        counter = counter + 1
+        x = x + STAR_WIDTH
+    end
+
+    return quads
+end
+
+function GenerateQuadsFire(atlas)
+    local quads = {}
+    local x = 0
+    local y = 16 * 9
+    local FIRE_WIDTH = 18
+    local FIRE_HEIGHT = 18
+    local counter = 1
+
+    for i = 1, 4 do
+        quads[counter] = love.graphics.newQuad(x, y, FIRE_WIDTH, FIRE_HEIGHT, atlas:getDimensions())
+        counter = counter + 1
+        x = x + FIRE_WIDTH
+    end
+
+    return quads
+end

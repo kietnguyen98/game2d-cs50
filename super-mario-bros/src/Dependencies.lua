@@ -32,10 +32,12 @@ require "src/entities/mainCharacter/MainCharacterEntity"
 require "src/entities/enemies/mushroom/MushroomEntity"
 require "src/entities/enemies/cannibal/CannibalEntity"
 require "src/entities/enemies/turtle/TurtleEntity"
+require "src/entities/finalPoint/FinalPointEntity"
 
 -- game states
 require "src/gameStates/PlayState"
 require "src/gameStates/StartState"
+require "src/gameStates/FinishState"
 -- entity states
 -- main character state
 require "src/entities/mainCharacter/states/MainCharacterFallingState"
@@ -43,7 +45,6 @@ require "src/entities/mainCharacter/states/MainCharacterMovingState"
 require "src/entities/mainCharacter/states/MainCharacterIdleState"
 require "src/entities/mainCharacter/states/MainCharacterJumpingState"
 require "src/entities/mainCharacter/states/MainCharacterBounceState"
-
 -- enemies state 
 -- mushroom
 require "src/entities/enemies/mushroom/states/MushroomIdleState"
@@ -58,3 +59,5 @@ require "src/entities/enemies/turtle/states/TurtleShrinkState"
 -- cannibal
 require "src/entities/enemies/cannibal/states/CannibalIdleState"
 require "src/entities/enemies/cannibal/states/CannibalAttackState"
+-- final point
+require "src/entities/finalPoint/states/FinalPointIdleState"
