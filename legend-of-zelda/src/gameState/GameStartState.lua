@@ -1,13 +1,13 @@
 GameStartState = BaseState()
 
 function GameStartState:init()
-    self.timer = 0
-    self.colorTimer = 0
-    self.delayDuration = 2
-    self.isCountdown = false
 end
 
 function GameStartState:enter(params)
+    self.timer = 0
+    self.colorTimer = 0
+    self.delayDuration = 1.5
+    self.isCountdown = false
 end
 
 function GameStartState:update(deltaTime)
@@ -28,6 +28,7 @@ function GameStartState:update(deltaTime)
         self.timer = 0
         self.colorTimer = 0
         self.isCountdown = false
+        gameStateMachine:change("play")
     end
 end
 

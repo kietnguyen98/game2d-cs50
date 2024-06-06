@@ -22,6 +22,9 @@ function love.load()
     gameStateMachine = StateMachine({
         ["start"] = function()
             return GameStartState()
+        end,
+        ["play"] = function()
+            return GamePlayState()
         end
     })
 
