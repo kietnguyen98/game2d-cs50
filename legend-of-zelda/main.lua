@@ -18,6 +18,15 @@ function love.load()
         canvas = false
     })
 
+    -- init game state machine
+    gameStateMachine = StateMachine({
+        ["start"] = function()
+            return GameStartState()
+        end
+    })
+
+    gameStateMachine:change("start")
+
     -- setup keyboard to keep track of which keys have been pressed in last frame
     love.keyboard.keysPressed = {}
 end
@@ -27,12 +36,15 @@ function love.resize(width, height)
 end
 
 function love.update(deltaTime)
+    -- update current game state
+    gameStateMachine:update(deltaTime)
     -- reset keys pressed table
     love.keyboard.keysPressed = {}
 end
 
 function love.draw()
     push:start()
+    gameStateMachine:render()
     push:finish()
 end
 
