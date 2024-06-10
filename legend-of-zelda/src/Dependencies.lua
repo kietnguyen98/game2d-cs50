@@ -1,3 +1,4 @@
+-- [GENERAL NEEDED MODULES]
 -- libraries
 require "lib/class"
 push = require "lib/push"
@@ -5,13 +6,30 @@ push = require "lib/push"
 require "src/Utils"
 -- contants
 require "src/Constants"
--- init state machine
+-- needed classes
 require "src/StateMachine"
 require "src/BaseState"
--- init game state
+require "src/Animation"
+
+-- [GAME STATES]
 require "src/gameState/GameStartState"
 require "src/gameState/GamePlayState"
--- world
+
+-- [WORLD]
 require "src/world/Dungeon"
 require "src/world/Room"
 require "src/world/Gateway"
+
+-- [GAME ENTITIES]
+-- game entity definitions
+require "src/entity/entityDefinition/EntityModelDefinitions"
+-- entity
+require "src/entity/entityDefinition/Entity"
+-- main player  
+require "src/entity/entityDefinition/Player"
+-- game entity states
+-- entity
+-- main player
+require "src/entity/entityState/Player/PlayerIdleState"
+require "src/entity/entityState/Player/PlayerMovingState"
+require "src/entity/entityState/Player/PlayerSwingSwordState"
