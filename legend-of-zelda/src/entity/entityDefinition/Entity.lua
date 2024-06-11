@@ -30,8 +30,33 @@ function Entity:changeState(state)
     self.stateMachine:change(state)
 end
 
-function Entity:changeAnimation(newAnimation)
+function Entity:checkWallCollisions()
+    local MAP_BOUNDARIES = {
+        ['TOP'] = MAP_OFFSET_TOP,
+        ['BOTTOM'] = MAP_HEIGHT * TILE_HEIGHT - TILE_HEIGHT,
+        ['LEFT'] = TILE_WIDTH,
+        ['RIGHT'] = (MAP_WIDTH - 1) * TILE_WIDTH - TILE_WIDTH
+    }
 
+    if self.direction == ENTITY_DIRECTION_VALUES.UP then
+        if self.y < MAP_BOUNDARIES.TOP then
+            return true
+        end
+    elseif self.direction == ENTITY_DIRECTION_VALUES.DOWN then
+        if self.y > MAP_BOUNDARIES.BOTTOM then
+            return true
+        end
+    elseif self.direction == ENTITY_DIRECTION_VALUES.LEFT then
+        if self.x < MAP_BOUNDARIES.LEFT then
+            return true
+        end
+    elseif self.direction == ENTITY_DIRECTION_VALUES.RIGHT then
+        if self.x > MAP_BOUNDARIES.RIGHT then
+            return true
+        end
+    end
+
+    return false
 end
 
 function Entity:collides(target)

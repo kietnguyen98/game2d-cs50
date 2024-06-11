@@ -53,12 +53,28 @@ function PlayerMovingState:update(deltaTime)
     -- move player
     if self.player.direction == ENTITY_DIRECTION_VALUES.UP then
         self.player.y = self.player.y - self.player.movingSpeed * deltaTime
+        if self.player:checkWallCollisions() then
+            -- reset position
+            self.player.y = self.player.y + self.player.movingSpeed * deltaTime
+        end
     elseif self.player.direction == ENTITY_DIRECTION_VALUES.DOWN then
         self.player.y = self.player.y + self.player.movingSpeed * deltaTime
+        if self.player:checkWallCollisions() then
+            -- reset position
+            self.player.y = self.player.y - self.player.movingSpeed * deltaTime
+        end
     elseif self.player.direction == ENTITY_DIRECTION_VALUES.LEFT then
         self.player.x = self.player.x - self.player.movingSpeed * deltaTime
+        if self.player:checkWallCollisions() then
+            -- reset position
+            self.player.x = self.player.x + self.player.movingSpeed * deltaTime
+        end
     elseif self.player.direction == ENTITY_DIRECTION_VALUES.RIGHT then
         self.player.x = self.player.x + self.player.movingSpeed * deltaTime
+        if self.player:checkWallCollisions() then
+            -- reset position
+            self.player.x = self.player.x - self.player.movingSpeed * deltaTime
+        end
     end
 
     if love.keyboard.wasPressed(KEYBOARD_BUTTON_VALUES.SPACE) then

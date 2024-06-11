@@ -55,12 +55,44 @@ function EntityMovingState:update(deltaTime)
     -- move the entity
     if self.entity.direction == ENTITY_DIRECTION_VALUES.UP then
         self.entity.y = self.entity.y - self.entity.movingSpeed * deltaTime
+        if self.entity:checkWallCollisions() then
+            -- reset position
+            self.entity.y = self.entity.y + self.entity.movingSpeed * deltaTime
+            -- reverse direction
+            self.entity.direction = ENTITY_DIRECTION_VALUES.DOWN
+            -- update new animation
+            self.entity.currentAnimation = self.animations[self.entity.direction]
+        end
     elseif self.entity.direction == ENTITY_DIRECTION_VALUES.DOWN then
         self.entity.y = self.entity.y + self.entity.movingSpeed * deltaTime
+        if self.entity:checkWallCollisions() then
+            -- reset position
+            self.entity.y = self.entity.y - self.entity.movingSpeed * deltaTime
+            -- reverse direction
+            self.entity.direction = ENTITY_DIRECTION_VALUES.UP
+            -- update new animation
+            self.entity.currentAnimation = self.animations[self.entity.direction]
+        end
     elseif self.entity.direction == ENTITY_DIRECTION_VALUES.LEFT then
         self.entity.x = self.entity.x - self.entity.movingSpeed * deltaTime
+        if self.entity:checkWallCollisions() then
+            -- reset position
+            self.entity.x = self.entity.x + self.entity.movingSpeed * deltaTime
+            -- reverse direction
+            self.entity.direction = ENTITY_DIRECTION_VALUES.RIGHT
+            -- update new animation
+            self.entity.currentAnimation = self.animations[self.entity.direction]
+        end
     elseif self.entity.direction == ENTITY_DIRECTION_VALUES.RIGHT then
         self.entity.x = self.entity.x + self.entity.movingSpeed * deltaTime
+        if self.entity:checkWallCollisions() then
+            -- reset position
+            self.entity.x = self.entity.x - self.entity.movingSpeed * deltaTime
+            -- reverse direction
+            self.entity.direction = ENTITY_DIRECTION_VALUES.LEFT
+            -- update new animation
+            self.entity.currentAnimation = self.animations[self.entity.direction]
+        end
     end
 end
 
