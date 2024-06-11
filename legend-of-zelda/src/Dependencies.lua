@@ -33,3 +33,6 @@ require "src/entity/entityDefinition/Player"
 require "src/entity/entityState/Player/PlayerIdleState"
 require "src/entity/entityState/Player/PlayerMovingState"
 require "src/entity/entityState/Player/PlayerSwingSwordState"
+-- other entity
+require "src/entity/entityState/EntityIdleState"
+require "src/entity/entityState/EntityMovingState"

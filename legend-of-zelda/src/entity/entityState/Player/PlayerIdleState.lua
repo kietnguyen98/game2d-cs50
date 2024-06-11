@@ -23,8 +23,8 @@ function PlayerIdleState:init(player)
 end
 
 function PlayerIdleState:enter(params)
-    self.player.textureName = PLAYER_TEXTURE_KEYS.WALK
-    self.player.quadsName = PLAYER_QUADS_KEYS.WALK
+    self.player.textureName = TEXTURE_KEYS.PLAYER_WALK
+    self.player.quadsName = QUADS_KEYS.PLAYER_WALK
 
     self.player.currentAnimation = self.animations[self.player.direction]
 end

@@ -17,6 +17,9 @@ function Entity:init(def)
 
     self.health = def.health
     self.isDead = false
+
+    self.textureName = def.textureName
+    self.quadsName = def.quadsName
 end
 
 function Entity:update(deltaTime)
@@ -38,4 +41,7 @@ function Entity:collides(target)
 end
 
 function Entity:render()
+    love.graphics.draw(gameTextures[self.textureName],
+        gameQuads[self.quadsName][self.currentAnimation:getCurrentFrame()], math.floor(self.x - self.offsetX),
+        math.floor(self.y - self.offsetY))
 end

@@ -11,7 +11,7 @@ function GameStartState:enter(params)
 end
 
 function GameStartState:update(deltaTime)
-    if love.keyboard.wasPressed("enter") or love.keyboard.wasPressed("return") then
+    if love.keyboard.wasPressed(KEYBOARD_BUTTON_VALUES.ENTER) or love.keyboard.wasPressed(KEYBOARD_BUTTON_VALUES.RETURN) then
         self.isCountdown = true
     end
 
@@ -33,7 +33,8 @@ function GameStartState:update(deltaTime)
 end
 
 function GameStartState:render()
-    love.graphics.draw(gameTextures["background"], 0, 0, 0, VIRTUAL_WIDTH / gameTextures["background"]:getWidth(),
+    love.graphics.draw(gameTextures[TEXTURE_KEYS.BACKGROUND], 0, 0, 0,
+        VIRTUAL_WIDTH / gameTextures[TEXTURE_KEYS.BACKGROUND]:getWidth(),
         VIRTUAL_HEIGHT / gameTextures["background"]:getHeight())
 
     -- welcome text

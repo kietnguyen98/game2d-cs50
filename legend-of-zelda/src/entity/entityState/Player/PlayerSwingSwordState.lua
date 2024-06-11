@@ -37,8 +37,8 @@ function PlayerSwingSwordState:clearPlayerOffset()
 end
 
 function PlayerSwingSwordState:enter(params)
-    self.player.textureName = PLAYER_TEXTURE_KEYS.SWING_SWORD
-    self.player.quadsName = PLAYER_QUADS_KEYS.SWING_SWORD
+    self.player.textureName = TEXTURE_KEYS.PLAYER_SWING_SWORD
+    self.player.quadsName = QUADS_KEYS.PLAYER_SWING_SWORD
 
     self.player.currentAnimation = self.animations[self.player.direction]
     self:initPlayerOffset()

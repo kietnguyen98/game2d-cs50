@@ -7,6 +7,9 @@ function Room:init(def)
     self.tiles = {}
     -- init wall and floor for the room
     self:initializeWallAndFloor()
+    -- init enemies 
+    self.enemies = {}
+    self:generateEnemies()
 end
 
 function Room:initializeWallAndFloor()
@@ -45,14 +48,52 @@ function Room:initializeWallAndFloor()
     end
 end
 
+function Room:generateEnemies()
+    local ENEMY_KEYS = {ENTITY_NAME_KEYS.SKELETON}
+    for x = 2, self.width - 1 do
+        for y = 2, self.height - 1 do
+            -- give a chance to generate enemy
+            if math.random(20) == 1 then
+                local key = ENEMY_KEYS[math.random(1, #ENEMY_KEYS)]
+                local newEnemy = Entity({
+                    x = x * TILE_WIDTH,
+                    y = y * TILE_HEIGHT,
+                    movingSpeed = ENTITY_DEFINITIONS[key].movingSpeed,
+                    animations = ENTITY_DEFINITIONS[key].animations,
+                    textureName = TEXTURE_KEYS.ENTITIES,
+                    quadsName = QUADS_KEYS.ENTITIES
+                })
+                newEnemy.stateMachine = StateMachine({
+                    [ENTITY_STATE_KEYS.IDLE] = function()
+                        return EntityIdleState(newEnemy, math.random(0, 1))
+                    end,
+                    [ENTITY_STATE_KEYS.MOVING] = function()
+                        return EntityMovingState(newEnemy)
+                    end
+                })
+
+                newEnemy:changeState(ENTITY_STATE_KEYS.IDLE)
+                table.insert(self.enemies, newEnemy)
+            end
+        end
+    end
+end
+
 function Room:update(deltaTime)
+    for k, v in pairs(self.enemies) do
+        v:update(deltaTime)
+    end
 end
 
 function Room:render()
     for x = 1, self.width do
         for y = 1, self.height do
-            love.graphics.draw(gameTextures['map-tile-sheet'], gameQuads['map-tile-sheet'][self.tiles[x][y].id],
+            love.graphics.draw(gameTextures[TEXTURE_KEYS.MAP_TILE], gameQuads[QUADS_KEYS.MAP_TILE][self.tiles[x][y].id],
                 (x - 1) * TILE_WIDTH, self.offsetTop + (y - 1) * TILE_HEIGHT)
         end
+    end
+    -- render enemies
+    for k, v in pairs(self.enemies) do
+        v:render()
     end
 end

@@ -6,8 +6,8 @@ function GamePlayState:init()
         x = VIRTUAL_WIDTH / 2,
         y = VIRTUAL_HEIGHT / 2,
         health = 6,
-        movingSpeed = ENTITY_DEFINITIONS.PLAYER.movingSpeed,
-        animations = ENTITY_DEFINITIONS.PLAYER.animations
+        movingSpeed = ENTITY_DEFINITIONS[ENTITY_NAME_KEYS.PLAYER].movingSpeed,
+        animations = ENTITY_DEFINITIONS[ENTITY_NAME_KEYS.PLAYER].animations
     })
 
     self.player.stateMachine = StateMachine({
