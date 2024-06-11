@@ -5,18 +5,22 @@ function EntityIdleState:init(entity, waitDuration)
     self.animations = {
         [ENTITY_DIRECTION_VALUES.UP] = Animation({
             frames = self.entity.animations[ENTITY_ANIMATION_KEYS.IDLE_UP].frames,
+            interval = self.entity.animations[ENTITY_ANIMATION_KEYS.IDLE_UP].interval or 0,
             isLooping = self.entity.animations[ENTITY_ANIMATION_KEYS.IDLE_UP].isLooping
         }),
         [ENTITY_DIRECTION_VALUES.DOWN] = Animation({
             frames = self.entity.animations[ENTITY_ANIMATION_KEYS.IDLE_DOWN].frames,
+            interval = self.entity.animations[ENTITY_ANIMATION_KEYS.IDLE_DOWN].interval or 0,
             isLooping = self.entity.animations[ENTITY_ANIMATION_KEYS.IDLE_DOWN].isLooping
         }),
         [ENTITY_DIRECTION_VALUES.LEFT] = Animation({
             frames = self.entity.animations[ENTITY_ANIMATION_KEYS.IDLE_LEFT].frames,
+            interval = self.entity.animations[ENTITY_ANIMATION_KEYS.IDLE_LEFT].interval or 0,
             isLooping = self.entity.animations[ENTITY_ANIMATION_KEYS.IDLE_LEFT].isLooping
         }),
         [ENTITY_DIRECTION_VALUES.RIGHT] = Animation({
             frames = self.entity.animations[ENTITY_ANIMATION_KEYS.IDLE_RIGHT].frames,
+            interval = self.entity.animations[ENTITY_ANIMATION_KEYS.IDLE_RIGHT].interval or 0,
             isLooping = self.entity.animations[ENTITY_ANIMATION_KEYS.IDLE_RIGHT].isLooping
         })
     }

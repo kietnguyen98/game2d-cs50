@@ -104,18 +104,170 @@ ENTITY_DEFINITIONS = {
     },
     [ENTITY_NAME_KEYS.SLIME] = {
         movingSpeed = SLIME_SPEED,
-        animations = {}
+        animations = {
+            [ENTITY_ANIMATION_KEYS.WALK_LEFT] = {
+                frames = {61, 62, 63, 62},
+                interval = 0.2,
+                isLooping = true
+            },
+            [ENTITY_ANIMATION_KEYS.WALK_RIGHT] = {
+                frames = {73, 74, 75, 74},
+                interval = 0.2,
+                isLooping = true
+            },
+            [ENTITY_ANIMATION_KEYS.WALK_DOWN] = {
+                frames = {49, 50, 51, 50},
+                interval = 0.2,
+                isLooping = true
+            },
+            [ENTITY_ANIMATION_KEYS.WALK_UP] = {
+                frames = {86, 87, 86, 87},
+                interval = 0.2,
+                isLooping = true
+            },
+            [ENTITY_ANIMATION_KEYS.IDLE_LEFT] = {
+                frames = {62},
+                isLooping = false
+            },
+            [ENTITY_ANIMATION_KEYS.IDLE_RIGHT] = {
+                frames = {74},
+                isLooping = false
+            },
+            [ENTITY_ANIMATION_KEYS.IDLE_DOWN] = {
+                frames = {50},
+                isLooping = false
+            },
+            [ENTITY_ANIMATION_KEYS.IDLE_UP] = {
+                frames = {86},
+                isLooping = false
+            }
+        }
     },
     [ENTITY_NAME_KEYS.BAT] = {
         movingSpeed = BAT_SPEED,
-        animations = {}
+        animations = {
+            [ENTITY_ANIMATION_KEYS.WALK_LEFT] = {
+                frames = {64, 65, 66, 65},
+                interval = 0.2,
+                isLooping = true
+            },
+            [ENTITY_ANIMATION_KEYS.WALK_RIGHT] = {
+                frames = {76, 77, 78, 77},
+                interval = 0.2,
+                isLooping = true
+            },
+            [ENTITY_ANIMATION_KEYS.WALK_DOWN] = {
+                frames = {52, 53, 54, 53},
+                interval = 0.2,
+                isLooping = true
+            },
+            [ENTITY_ANIMATION_KEYS.WALK_UP] = {
+                frames = {88, 89, 90, 89},
+                interval = 0.2,
+                isLooping = true
+            },
+            [ENTITY_ANIMATION_KEYS.IDLE_LEFT] = {
+                frames = {64, 65, 66, 65},
+                interval = 0.2,
+                isLooping = true
+            },
+            [ENTITY_ANIMATION_KEYS.IDLE_RIGHT] = {
+                frames = {76, 77, 78, 77},
+                interval = 0.2,
+                isLooping = true
+            },
+            [ENTITY_ANIMATION_KEYS.IDLE_DOWN] = {
+                frames = {52, 53, 54, 53},
+                interval = 0.2,
+                isLooping = true
+            },
+            [ENTITY_ANIMATION_KEYS.IDLE_UP] = {
+                frames = {88, 89, 90, 89},
+                interval = 0.2,
+                isLooping = true
+            }
+        }
     },
     [ENTITY_NAME_KEYS.GHOST] = {
         movingSpeed = GHOST_SPEED,
-        animations = {}
+        animations = {
+            [ENTITY_ANIMATION_KEYS.WALK_LEFT] = {
+                frames = {67, 68, 69, 68},
+                interval = 0.2,
+                isLooping = true
+            },
+            [ENTITY_ANIMATION_KEYS.WALK_RIGHT] = {
+                frames = {79, 80, 81, 80},
+                interval = 0.2,
+                isLooping = true
+            },
+            [ENTITY_ANIMATION_KEYS.WALK_DOWN] = {
+                frames = {55, 56, 57, 56},
+                interval = 0.2,
+                isLooping = true
+            },
+            [ENTITY_ANIMATION_KEYS.WALK_UP] = {
+                frames = {91, 92, 93, 92},
+                interval = 0.2,
+                isLooping = true
+            },
+            [ENTITY_ANIMATION_KEYS.IDLE_LEFT] = {
+                frames = {68},
+                isLooping = false
+            },
+            [ENTITY_ANIMATION_KEYS.IDLE_RIGHT] = {
+                frames = {80},
+                isLooping = false
+            },
+            [ENTITY_ANIMATION_KEYS.IDLE_DOWN] = {
+                frames = {56},
+                isLooping = false
+            },
+            [ENTITY_ANIMATION_KEYS.IDLE_UP] = {
+                frames = {92},
+                isLooping = false
+            }
+        }
     },
     [ENTITY_NAME_KEYS.SPIDER] = {
         movingSpeed = SPIDER_SPEED,
-        animations = {}
+        animations = {
+            [ENTITY_ANIMATION_KEYS.WALK_LEFT] = {
+                frames = {70, 71, 72, 71},
+                interval = 0.2,
+                isLooping = true
+            },
+            [ENTITY_ANIMATION_KEYS.WALK_RIGHT] = {
+                frames = {82, 83, 84, 83},
+                interval = 0.2,
+                isLooping = true
+            },
+            [ENTITY_ANIMATION_KEYS.WALK_DOWN] = {
+                frames = {58, 59, 60, 59},
+                interval = 0.2,
+                isLooping = true
+            },
+            [ENTITY_ANIMATION_KEYS.WALK_UP] = {
+                frames = {94, 95, 96, 95},
+                interval = 0.2,
+                isLooping = true
+            },
+            [ENTITY_ANIMATION_KEYS.IDLE_LEFT] = {
+                frames = {71},
+                isLooping = false
+            },
+            [ENTITY_ANIMATION_KEYS.IDLE_RIGHT] = {
+                frames = {83},
+                isLooping = false
+            },
+            [ENTITY_ANIMATION_KEYS.IDLE_DOWN] = {
+                frames = {59},
+                isLooping = false
+            },
+            [ENTITY_ANIMATION_KEYS.IDLE_UP] = {
+                frames = {95},
+                isLooping = false
+            }
+        }
     }
 }

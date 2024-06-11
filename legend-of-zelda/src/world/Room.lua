@@ -49,11 +49,12 @@ function Room:initializeWallAndFloor()
 end
 
 function Room:generateEnemies()
-    local ENEMY_KEYS = {ENTITY_NAME_KEYS.SKELETON}
-    for x = 2, self.width - 1 do
-        for y = 2, self.height - 1 do
-            -- give a chance to generate enemy
-            if math.random(20) == 1 then
+    local ENEMY_KEYS = {ENTITY_NAME_KEYS.SKELETON, ENTITY_NAME_KEYS.BAT, ENTITY_NAME_KEYS.GHOST, ENTITY_NAME_KEYS.SLIME,
+                        ENTITY_NAME_KEYS.SPIDER}
+    for x = 2, self.width - 2 do
+        for y = 2, self.height - 2 do
+            -- give a chance to generate an enemy
+            if math.random(15) == 1 then
                 local key = ENEMY_KEYS[math.random(1, #ENEMY_KEYS)]
                 local newEnemy = Entity({
                     x = x * TILE_WIDTH,

@@ -5,18 +5,22 @@ function PlayerIdleState:init(player)
     self.animations = {
         [ENTITY_DIRECTION_VALUES.UP] = Animation({
             frames = self.player.animations[ENTITY_ANIMATION_KEYS.IDLE_UP].frames,
+            interval = self.player.animations[ENTITY_ANIMATION_KEYS.IDLE_UP].interval or 0,
             isLooping = self.player.animations[ENTITY_ANIMATION_KEYS.IDLE_UP].isLooping
         }),
         [ENTITY_DIRECTION_VALUES.DOWN] = Animation({
             frames = self.player.animations[ENTITY_ANIMATION_KEYS.IDLE_DOWN].frames,
+            interval = self.player.animations[ENTITY_ANIMATION_KEYS.IDLE_DOWN].interval or 0,
             isLooping = self.player.animations[ENTITY_ANIMATION_KEYS.IDLE_DOWN].isLooping
         }),
         [ENTITY_DIRECTION_VALUES.LEFT] = Animation({
             frames = self.player.animations[ENTITY_ANIMATION_KEYS.IDLE_LEFT].frames,
+            interval = self.player.animations[ENTITY_ANIMATION_KEYS.IDLE_LEFT].interval or 0,
             isLooping = self.player.animations[ENTITY_ANIMATION_KEYS.IDLE_LEFT].isLooping
         }),
         [ENTITY_DIRECTION_VALUES.RIGHT] = Animation({
             frames = self.player.animations[ENTITY_ANIMATION_KEYS.IDLE_RIGHT].frames,
+            interval = self.player.animations[ENTITY_ANIMATION_KEYS.IDLE_RIGHT].interval or 0,
             isLooping = self.player.animations[ENTITY_ANIMATION_KEYS.IDLE_RIGHT].isLooping
         })
     }
