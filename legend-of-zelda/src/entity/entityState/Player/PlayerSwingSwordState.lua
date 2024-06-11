@@ -26,24 +26,37 @@ function PlayerSwingSwordState:init(player)
     }
 end
 
+function PlayerSwingSwordState:initPlayerOffset()
+    self.player.offsetX = (PLAYER_SWING_SWORD_WIDTH - PLAYER_WALK_WIDTH) / 2
+    self.player.offsetY = (PLAYER_SWING_SWORD_HEIGHT - PLAYER_WALK_HEIGHT) / 2
+end
+
+function PlayerSwingSwordState:clearPlayerOffset()
+    self.player.offsetX = 0
+    self.player.offsetY = 0
+end
+
 function PlayerSwingSwordState:enter(params)
     self.player.textureName = PLAYER_TEXTURE_KEYS.SWING_SWORD
     self.player.quadsName = PLAYER_QUADS_KEYS.SWING_SWORD
 
     self.player.currentAnimation = self.animations[self.player.direction]
+    self:initPlayerOffset()
 end
 
 function PlayerSwingSwordState:update(deltaTime)
     self.player.currentAnimation:update(deltaTime)
 
-    if self.player.currentAnimation.timePlayed > 0 then
-        self.player.currentAnimation.timePlayed = 0
-        print("change to idle")
-        self.player:changeState(ENTITY_STATE_KEYS.IDLE)
+    if love.keyboard.isDown(KEYBOARD_BUTTON_VALUES.SPACE) then
+        if self.player.currentAnimation.timePlayed > 0 then
+            self.player.currentAnimation:refresh()
+        end
     end
 
-    if love.keyboard.wasPressed(KEYBOARD_BUTTON_VALUES.SPACE) then
-        self.player:changeState(ENTITY_STATE_KEYS.SWING_SWORD)
+    if self.player.currentAnimation.timePlayed > 0 then
+        self.player.currentAnimation:refresh()
+        self:clearPlayerOffset()
+        self.player:changeState(ENTITY_STATE_KEYS.IDLE)
     end
 end
 

@@ -29,7 +29,6 @@ function Animation:update(deltaTime)
             self.timer = self.timer % self.interval
 
             self.frameIndex = math.max(1, (self.frameIndex + 1) % (#self.frames + 1))
-            print(self.frameIndex)
             if self.frameIndex == 1 then
                 self.timePlayed = self.timePlayed + 1
             end
