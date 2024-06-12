@@ -1,7 +1,8 @@
 Dungeon = class()
 
-function Dungeon:init(def)
-    self.currentRoom = Room()
+function Dungeon:init(player)
+    self.player = player
+    self.currentRoom = Room(self.player)
     self.nextRoom = nil
 end
 

@@ -58,6 +58,12 @@ ENTITY_DEFINITIONS = {
                 interval = 0.05,
                 isLooping = false
             }
+        },
+        hitbox = {
+            offsetX = 1,
+            offsetY = 7,
+            width = 13,
+            height = 18
         }
     },
     -- monster
@@ -100,6 +106,12 @@ ENTITY_DEFINITIONS = {
                 frames = {47},
                 isLooping = false
             }
+        },
+        hitbox = {
+            offsetX = 3,
+            offsetY = 1,
+            width = 10,
+            height = 15
         }
     },
     [ENTITY_NAME_KEYS.SLIME] = {
@@ -141,6 +153,12 @@ ENTITY_DEFINITIONS = {
                 frames = {86},
                 isLooping = false
             }
+        },
+        hitbox = {
+            offsetX = 0,
+            offsetY = 5,
+            width = 16,
+            height = 10
         }
     },
     [ENTITY_NAME_KEYS.BAT] = {
@@ -186,6 +204,12 @@ ENTITY_DEFINITIONS = {
                 interval = 0.2,
                 isLooping = true
             }
+        },
+        hitbox = {
+            offsetX = 2,
+            offsetY = 2,
+            width = 12,
+            height = 8
         }
     },
     [ENTITY_NAME_KEYS.GHOST] = {
@@ -227,6 +251,12 @@ ENTITY_DEFINITIONS = {
                 frames = {92},
                 isLooping = false
             }
+        },
+        hitbox = {
+            offsetX = 2,
+            offsetY = 0,
+            width = 12,
+            height = 13
         }
     },
     [ENTITY_NAME_KEYS.SPIDER] = {
@@ -268,6 +298,12 @@ ENTITY_DEFINITIONS = {
                 frames = {95},
                 isLooping = false
             }
+        },
+        hitbox = {
+            offsetX = 3,
+            offsetY = 8,
+            width = 10,
+            height = 6
         }
     }
 }

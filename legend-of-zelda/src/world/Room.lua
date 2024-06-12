@@ -1,6 +1,7 @@
 Room = class()
 
-function Room:init(def)
+function Room:init(player)
+    self.player = player
     self.width = MAP_WIDTH
     self.height = MAP_HEIGHT
     self.offsetTop = MAP_OFFSET_TOP
@@ -51,38 +52,46 @@ end
 function Room:generateEnemies()
     local ENEMY_KEYS = {ENTITY_NAME_KEYS.SKELETON, ENTITY_NAME_KEYS.BAT, ENTITY_NAME_KEYS.GHOST, ENTITY_NAME_KEYS.SLIME,
                         ENTITY_NAME_KEYS.SPIDER}
-    for x = 2, self.width - 2 do
-        for y = 2, self.height - 2 do
-            -- give a chance to generate an enemy
-            if math.random(15) == 1 then
-                local key = ENEMY_KEYS[math.random(1, #ENEMY_KEYS)]
-                local newEnemy = Entity({
-                    x = x * TILE_WIDTH,
-                    y = y * TILE_HEIGHT,
-                    movingSpeed = ENTITY_DEFINITIONS[key].movingSpeed,
-                    animations = ENTITY_DEFINITIONS[key].animations,
-                    textureName = TEXTURE_KEYS.ENTITIES,
-                    quadsName = QUADS_KEYS.ENTITIES
-                })
-                newEnemy.stateMachine = StateMachine({
-                    [ENTITY_STATE_KEYS.IDLE] = function()
-                        return EntityIdleState(newEnemy, math.random(0, 1))
-                    end,
-                    [ENTITY_STATE_KEYS.MOVING] = function()
-                        return EntityMovingState(newEnemy)
-                    end
-                })
 
-                newEnemy:changeState(ENTITY_STATE_KEYS.IDLE)
-                table.insert(self.enemies, newEnemy)
+    -- generate 20 enemies per room
+    for i = 1, 20 do
+        local key = ENEMY_KEYS[math.random(1, #ENEMY_KEYS)]
+        local newEnemy = Entity({
+            x = math.random(2, self.width - 2) * TILE_WIDTH,
+            y = math.random(2, self.height - 2) * TILE_HEIGHT,
+            width = ENTITY_WIDTH,
+            height = ENTITY_HEIGHT,
+            movingSpeed = ENTITY_DEFINITIONS[key].movingSpeed,
+            animations = ENTITY_DEFINITIONS[key].animations,
+            hitbox = ENTITY_DEFINITIONS[key].hitbox,
+            textureName = TEXTURE_KEYS.ENTITIES,
+            quadsName = QUADS_KEYS.ENTITIES
+        })
+        newEnemy.stateMachine = StateMachine({
+            [ENTITY_STATE_KEYS.IDLE] = function()
+                return EntityIdleState(newEnemy, math.random(0, 1))
+            end,
+            [ENTITY_STATE_KEYS.MOVING] = function()
+                return EntityMovingState(newEnemy)
             end
-        end
+        })
+
+        newEnemy:changeState(ENTITY_STATE_KEYS.IDLE)
+        table.insert(self.enemies, newEnemy)
     end
 end
 
 function Room:update(deltaTime)
-    for k, v in pairs(self.enemies) do
-        v:update(deltaTime)
+    for k, enemy in pairs(self.enemies) do
+        enemy:update(deltaTime)
+
+        -- check for enemy collide with player
+        if enemy:collides(self.player.hitbox) then
+            if not self.player.isImmortal then
+                self.player.health = self.player.health - 1
+                self.player:goImmortal(PLAYER_MAX_IMMORTAL_DURATION)
+            end
+        end
     end
 end
 

@@ -10,6 +10,7 @@ require "src/Constants"
 require "src/StateMachine"
 require "src/BaseState"
 require "src/Animation"
+require "src/Hitbox"
 
 -- [GAME STATES]
 require "src/gameState/GameStartState"

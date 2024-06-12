@@ -13,21 +13,30 @@ MAP_WIDTH = VIRTUAL_WIDTH / TILE_WIDTH
 MAP_HEIGHT = math.floor(VIRTUAL_HEIGHT / TILE_HEIGHT) - 1
 MAP_OFFSET_TOP = VIRTUAL_HEIGHT - MAP_HEIGHT * TILE_HEIGHT
 
+-- gui dimensions
+HEART_WIDTH = 16
+HEART_HEIGHT = 16
+HEART_SCALE_RATIO = 1 / 2
+
 -- entity texture keys
 TEXTURE_KEYS = {
     ['BACKGROUND'] = 'background',
     ['MAP_TILE'] = 'map-tile-sheet',
     ['PLAYER_WALK'] = 'player-walk-sheet',
     ['PLAYER_SWING_SWORD'] = 'player-swing-sword-sheet',
-    ['ENTITIES'] = 'entities-sheet'
+    ['ENTITIES'] = 'entities-sheet',
+    ['HEARTS'] = 'hearts-sheet'
 }
+
 -- entity quads keys
 QUADS_KEYS = {
     ['MAP_TILE'] = 'map-tile',
     ['PLAYER_WALK'] = 'player-walk',
     ['PLAYER_SWING_SWORD'] = 'player-swing-sword',
-    ['ENTITIES'] = 'entities'
+    ['ENTITIES'] = 'entities',
+    ['HEARTS'] = 'hearts'
 }
+
 -- keyboard button values
 KEYBOARD_BUTTON_VALUES = {
     ['ESC'] = 'esc',
@@ -37,7 +46,8 @@ KEYBOARD_BUTTON_VALUES = {
     ['DOWN'] = 'down',
     ['LEFT'] = 'left',
     ['RIGHT'] = 'right',
-    ['SPACE'] = 'space'
+    ['SPACE'] = 'space',
+    ['BACK_TICK'] = '`'
 }
 
 -- entity name keys
@@ -86,6 +96,8 @@ PLAYER_WALK_HEIGHT = 32
 PLAYER_SWING_SWORD_WIDTH = 32
 PLAYER_SWING_SWORD_HEIGHT = 32
 PLAYER_MOVING_SPEED = 40
+PLAYER_MAX_HEALTH = 5
+PLAYER_MAX_IMMORTAL_DURATION = 2
 
 -- entity attributes
 ENTITY_WIDTH = 16
@@ -102,17 +114,20 @@ gameTextures = {
     [TEXTURE_KEYS.MAP_TILE] = love.graphics.newImage("assets/images/tilesheet.png"),
     [TEXTURE_KEYS.PLAYER_WALK] = love.graphics.newImage("assets/images/character-walk.png"),
     [TEXTURE_KEYS.PLAYER_SWING_SWORD] = love.graphics.newImage("assets/images/character-swing-sword.png"),
-    [TEXTURE_KEYS.ENTITIES] = love.graphics.newImage("assets/images/entities.png")
+    [TEXTURE_KEYS.ENTITIES] = love.graphics.newImage("assets/images/entities.png"),
+    [TEXTURE_KEYS.HEARTS] = love.graphics.newImage("assets/images/hearts.png")
 }
 
 -- quads
 gameQuads = {
-    [QUADS_KEYS.MAP_TILE] = generateGameQuads(gameTextures['map-tile-sheet'], TILE_WIDTH, TILE_HEIGHT),
-    [QUADS_KEYS.PLAYER_WALK] = generateGameQuads(gameTextures['player-walk-sheet'], PLAYER_WALK_WIDTH,
+    [QUADS_KEYS.MAP_TILE] = generateGameQuads(gameTextures[TEXTURE_KEYS.MAP_TILE], TILE_WIDTH, TILE_HEIGHT),
+    [QUADS_KEYS.PLAYER_WALK] = generateGameQuads(gameTextures[TEXTURE_KEYS.PLAYER_WALK], PLAYER_WALK_WIDTH,
         PLAYER_WALK_HEIGHT),
-    [QUADS_KEYS.PLAYER_SWING_SWORD] = generateGameQuads(gameTextures['player-swing-sword-sheet'],
+    [QUADS_KEYS.PLAYER_SWING_SWORD] = generateGameQuads(gameTextures[TEXTURE_KEYS.PLAYER_SWING_SWORD],
         PLAYER_SWING_SWORD_WIDTH, PLAYER_SWING_SWORD_HEIGHT),
-    [QUADS_KEYS.ENTITIES] = generateGameQuads(gameTextures['entities-sheet'], ENTITY_WIDTH, ENTITY_HEIGHT)
+    [QUADS_KEYS.ENTITIES] = generateGameQuads(gameTextures[TEXTURE_KEYS.ENTITIES], ENTITY_WIDTH, ENTITY_HEIGHT),
+    [QUADS_KEYS.HEARTS] = generateGameQuads(gameTextures[TEXTURE_KEYS.HEARTS], HEART_WIDTH, HEART_HEIGHT)
+
 }
 
 -- fonts
