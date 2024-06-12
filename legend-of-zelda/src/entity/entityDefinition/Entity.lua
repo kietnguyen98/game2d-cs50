@@ -51,8 +51,8 @@ function Entity:checkWallCollisions()
     local MAP_BOUNDARIES = {
         ['TOP'] = MAP_OFFSET_TOP,
         ['BOTTOM'] = MAP_HEIGHT * TILE_HEIGHT - TILE_HEIGHT,
-        ['LEFT'] = TILE_WIDTH,
-        ['RIGHT'] = (MAP_WIDTH - 1) * TILE_WIDTH - TILE_WIDTH
+        ['LEFT'] = MAP_OFFSET_LEFT + TILE_WIDTH,
+        ['RIGHT'] = MAP_OFFSET_LEFT + (MAP_WIDTH - 1) * TILE_WIDTH - TILE_WIDTH
     }
 
     if self.direction == ENTITY_DIRECTION_VALUES.UP then

@@ -49,7 +49,7 @@ function GamePlayState:renderPlayerHealth()
         ['BLANK'] = 1
     }
 
-    local x = 4
+    local x = MAP_OFFSET_LEFT
     local y = 12
 
     for i = 1, PLAYER_MAX_HEALTH do

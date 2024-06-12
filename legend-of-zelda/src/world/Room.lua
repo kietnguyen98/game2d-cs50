@@ -5,6 +5,11 @@ function Room:init(player)
     self.width = MAP_WIDTH
     self.height = MAP_HEIGHT
     self.offsetTop = MAP_OFFSET_TOP
+    self.offsetLeft = MAP_OFFSET_LEFT
+    self.gateways = {Gateway(GATEWAY_DIRECTION_VALUES.TOP, false, self),
+                     Gateway(GATEWAY_DIRECTION_VALUES.BOTTOM, false, self),
+                     Gateway(GATEWAY_DIRECTION_VALUES.LEFT, false, self),
+                     Gateway(GATEWAY_DIRECTION_VALUES.RIGHT, false, self)}
     self.tiles = {}
     -- init wall and floor for the room
     self:initializeWallAndFloor()
@@ -57,7 +62,7 @@ function Room:generateEnemies()
     for i = 1, 20 do
         local key = ENEMY_KEYS[math.random(1, #ENEMY_KEYS)]
         local newEnemy = Entity({
-            x = math.random(2, self.width - 2) * TILE_WIDTH,
+            x = math.random(3, self.width - 3) * TILE_WIDTH,
             y = math.random(2, self.height - 2) * TILE_HEIGHT,
             width = ENTITY_WIDTH,
             height = ENTITY_HEIGHT,
@@ -82,6 +87,12 @@ function Room:generateEnemies()
 end
 
 function Room:update(deltaTime)
+    -- update gateways
+    for i, gateway in pairs(self.gateways) do
+        gateway:update(deltaTime)
+    end
+
+    -- update enemies
     for k, enemy in pairs(self.enemies) do
         enemy:update(deltaTime)
 
@@ -96,11 +107,16 @@ function Room:update(deltaTime)
 end
 
 function Room:render()
+    -- render room wall, floor
     for x = 1, self.width do
         for y = 1, self.height do
             love.graphics.draw(gameTextures[TEXTURE_KEYS.MAP_TILE], gameQuads[QUADS_KEYS.MAP_TILE][self.tiles[x][y].id],
-                (x - 1) * TILE_WIDTH, self.offsetTop + (y - 1) * TILE_HEIGHT)
+                (x - 1) * TILE_WIDTH + self.offsetLeft, (y - 1) * TILE_HEIGHT + self.offsetTop)
         end
+    end
+    -- render gateways
+    for i, gateway in pairs(self.gateways) do
+        gateway:render()
     end
     -- render enemies
     for k, v in pairs(self.enemies) do

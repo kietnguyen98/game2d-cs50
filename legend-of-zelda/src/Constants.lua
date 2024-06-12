@@ -9,9 +9,10 @@ WINDOW_HEIGHT = 720
 TILE_WIDTH = 16
 TILE_HEIGHT = 16
 
-MAP_WIDTH = VIRTUAL_WIDTH / TILE_WIDTH
-MAP_HEIGHT = math.floor(VIRTUAL_HEIGHT / TILE_HEIGHT) - 1
-MAP_OFFSET_TOP = VIRTUAL_HEIGHT - MAP_HEIGHT * TILE_HEIGHT
+MAP_WIDTH = VIRTUAL_WIDTH / TILE_WIDTH - 2
+MAP_HEIGHT = math.floor(VIRTUAL_HEIGHT / TILE_HEIGHT) - 2
+MAP_OFFSET_TOP = VIRTUAL_HEIGHT - (MAP_HEIGHT + 1) * TILE_HEIGHT
+MAP_OFFSET_LEFT = (VIRTUAL_WIDTH - MAP_WIDTH * TILE_HEIGHT) / 2
 
 -- gui dimensions
 HEART_WIDTH = 16
@@ -86,6 +87,14 @@ ENTITY_ANIMATION_KEYS = {
 ENTITY_DIRECTION_VALUES = {
     ['UP'] = "up",
     ['DOWN'] = "down",
+    ['LEFT'] = "left",
+    ['RIGHT'] = "right"
+}
+
+-- gateway directions
+GATEWAY_DIRECTION_VALUES = {
+    ['TOP'] = "top",
+    ['BOTTOM'] = "bottom",
     ['LEFT'] = "left",
     ['RIGHT'] = "right"
 }
@@ -165,5 +174,23 @@ TILE_ID = {
         ['LEFT'] = {77, 96, 115}
     },
     ['FLOOR'] = {7, 8, 9, 10, 11, 12, 13, 26, 27, 28, 29, 30, 31, 32, 45, 46, 47, 48, 49, 50, 51, 64, 65, 66, 67, 68,
-                 69, 70, 88, 89, 107, 108}
+                 69, 70, 88, 89, 107, 108},
+    ['GATEWAY'] = {
+        [GATEWAY_DIRECTION_VALUES.TOP] = {
+            ['OPEN'] = {134, 135, 153, 154},
+            ['CLOSE'] = {}
+        },
+        [GATEWAY_DIRECTION_VALUES.BOTTOM] = {
+            ['OPEN'] = {},
+            ['CLOSE'] = {}
+        },
+        [GATEWAY_DIRECTION_VALUES.LEFT] = {
+            ['OPEN'] = {},
+            ['CLOSE'] = {}
+        },
+        [GATEWAY_DIRECTION_VALUES.RIGHT] = {
+            ['OPEN'] = {},
+            ['CLOSE'] = {}
+        }
+    }
 }
