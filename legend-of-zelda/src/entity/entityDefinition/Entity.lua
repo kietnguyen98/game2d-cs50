@@ -47,6 +47,10 @@ function Entity:changeState(state)
     self.stateMachine:change(state)
 end
 
+function Entity:toggleHitbox()
+    self.renderHitbox = not self.renderHitbox
+end
+
 function Entity:checkWallCollisions()
     local MAP_BOUNDARIES = {
         ['TOP'] = MAP_OFFSET_TOP,

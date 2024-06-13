@@ -37,3 +37,9 @@ require "src/entity/entityState/Player/PlayerSwingSwordState"
 -- other entity
 require "src/entity/entityState/EntityIdleState"
 require "src/entity/entityState/EntityMovingState"
+
+-- [GAME OBJECTS]
+-- game object
+require "src/gameObject/GameObject"
+-- game object definitions
+require "src/gameObject/GameObjectModelDefinition"

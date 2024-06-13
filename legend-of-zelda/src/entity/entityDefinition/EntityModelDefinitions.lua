@@ -60,10 +60,10 @@ ENTITY_DEFINITIONS = {
             }
         },
         hitbox = {
-            offsetX = 1,
-            offsetY = 7,
-            width = 13,
-            height = 18
+            offsetX = 3,
+            offsetY = 15,
+            width = 9,
+            height = 10
         }
     },
     -- monster

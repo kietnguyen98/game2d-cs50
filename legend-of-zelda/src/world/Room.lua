@@ -6,13 +6,19 @@ function Room:init(player)
     self.height = MAP_HEIGHT
     self.offsetTop = MAP_OFFSET_TOP
     self.offsetLeft = MAP_OFFSET_LEFT
+
+    -- init tiles include wall and floor for the room
+    self.tiles = {}
+    self:initializeWallAndFloor()
+    -- init all gateways
     self.gateways = {Gateway(GATEWAY_DIRECTION_VALUES.TOP, false, self),
                      Gateway(GATEWAY_DIRECTION_VALUES.BOTTOM, false, self),
                      Gateway(GATEWAY_DIRECTION_VALUES.LEFT, false, self),
                      Gateway(GATEWAY_DIRECTION_VALUES.RIGHT, false, self)}
-    self.tiles = {}
-    -- init wall and floor for the room
-    self:initializeWallAndFloor()
+    -- init objects
+    self.objects = {}
+    self:generateObjects()
+
     -- init enemies 
     self.enemies = {}
     self:generateEnemies()
@@ -62,8 +68,8 @@ function Room:generateEnemies()
     for i = 1, 20 do
         local key = ENEMY_KEYS[math.random(1, #ENEMY_KEYS)]
         local newEnemy = Entity({
-            x = math.random(3, self.width - 3) * TILE_WIDTH,
-            y = math.random(2, self.height - 2) * TILE_HEIGHT,
+            x = math.random(MAP_OFFSET_LEFT + TILE_WIDTH, MAP_OFFSET_LEFT + MAP_WIDTH * TILE_WIDTH - 2 * TILE_WIDTH),
+            y = math.random(MAP_OFFSET_TOP + TILE_HEIGHT, MAP_OFFSET_TOP + MAP_HEIGHT * TILE_HEIGHT - 2 * TILE_HEIGHT),
             width = ENTITY_WIDTH,
             height = ENTITY_HEIGHT,
             movingSpeed = ENTITY_DEFINITIONS[key].movingSpeed,
@@ -86,6 +92,35 @@ function Room:generateEnemies()
     end
 end
 
+function Room:generateObjects()
+    -- switch
+    local gateways = self.gateways
+    local switch = GameObject({
+        x = math.random(MAP_OFFSET_LEFT + TILE_WIDTH, MAP_OFFSET_LEFT + MAP_WIDTH * TILE_WIDTH - 2 * TILE_WIDTH),
+        y = math.random(MAP_OFFSET_TOP + TILE_HEIGHT, MAP_OFFSET_TOP + MAP_HEIGHT * TILE_HEIGHT - 2 * TILE_HEIGHT),
+        width = GAME_OBJECT_DEFINITIONS[GAME_OBJECT_NAME_KEYS.SWITCH].width,
+        height = GAME_OBJECT_DEFINITIONS[GAME_OBJECT_NAME_KEYS.SWITCH].height,
+        hitbox = GAME_OBJECT_DEFINITIONS[GAME_OBJECT_NAME_KEYS.SWITCH].hitbox,
+        textureName = GAME_OBJECT_DEFINITIONS[GAME_OBJECT_NAME_KEYS.SWITCH].textureName,
+        quadName = GAME_OBJECT_DEFINITIONS[GAME_OBJECT_NAME_KEYS.SWITCH].quadName,
+        states = GAME_OBJECT_DEFINITIONS[GAME_OBJECT_NAME_KEYS.SWITCH].states,
+        currentState = GAME_OBJECT_DEFINITIONS[GAME_OBJECT_NAME_KEYS.SWITCH].currentState,
+        isSolid = GAME_OBJECT_DEFINITIONS[GAME_OBJECT_NAME_KEYS.SWITCH].isSolid,
+        collidable = GAME_OBJECT_DEFINITIONS[GAME_OBJECT_NAME_KEYS.SWITCH].collidable,
+        onCollide = function(self)
+            if love.keyboard.wasPressed(KEYBOARD_BUTTON_VALUES.SPACE) then
+                -- self refer to switch object
+                self.currentState = SWITCH_STATE_VALUES.PRESSED
+                for i, gateway in pairs(gateways) do
+                    gateway:open()
+                end
+            end
+        end
+    })
+
+    table.insert(self.objects, switch)
+end
+
 function Room:update(deltaTime)
     -- update gateways
     for i, gateway in pairs(self.gateways) do
@@ -104,6 +139,17 @@ function Room:update(deltaTime)
             end
         end
     end
+
+    -- update objects 
+    for i, object in pairs(self.objects) do
+        object:update(deltaTime)
+        -- check if the player collide with object
+        if self.player:collides(object) then
+            if object.collidable then
+                object:onCollide()
+            end
+        end
+    end
 end
 
 function Room:render()
@@ -114,12 +160,16 @@ function Room:render()
                 (x - 1) * TILE_WIDTH + self.offsetLeft, (y - 1) * TILE_HEIGHT + self.offsetTop)
         end
     end
+    -- render objects 
+    for i, object in pairs(self.objects) do
+        object:render()
+    end
     -- render gateways
     for i, gateway in pairs(self.gateways) do
         gateway:render()
     end
     -- render enemies
-    for k, v in pairs(self.enemies) do
-        v:render()
+    for i, enemy in pairs(self.enemies) do
+        enemy:render()
     end
 end

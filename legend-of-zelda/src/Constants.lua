@@ -26,6 +26,7 @@ TEXTURE_KEYS = {
     ['PLAYER_WALK'] = 'player-walk-sheet',
     ['PLAYER_SWING_SWORD'] = 'player-swing-sword-sheet',
     ['ENTITIES'] = 'entities-sheet',
+    ['SWITCHES'] = 'switches-sheet',
     ['HEARTS'] = 'hearts-sheet'
 }
 
@@ -35,6 +36,7 @@ QUADS_KEYS = {
     ['PLAYER_WALK'] = 'player-walk',
     ['PLAYER_SWING_SWORD'] = 'player-swing-sword',
     ['ENTITIES'] = 'entities',
+    ['SWITCHES'] = 'switches',
     ['HEARTS'] = 'hearts'
 }
 
@@ -91,6 +93,17 @@ ENTITY_DIRECTION_VALUES = {
     ['RIGHT'] = "right"
 }
 
+-- game object name keys
+GAME_OBJECT_NAME_KEYS = {
+    ['SWITCH'] = 'switch'
+}
+
+-- switches
+SWITCH_STATE_VALUES = {
+    ['PRESSED'] = 'pressed',
+    ['UN_PRESSED'] = 'un-pressed'
+}
+
 -- gateway directions
 GATEWAY_DIRECTION_VALUES = {
     ['TOP'] = "top",
@@ -124,6 +137,7 @@ gameTextures = {
     [TEXTURE_KEYS.PLAYER_WALK] = love.graphics.newImage("assets/images/character-walk.png"),
     [TEXTURE_KEYS.PLAYER_SWING_SWORD] = love.graphics.newImage("assets/images/character-swing-sword.png"),
     [TEXTURE_KEYS.ENTITIES] = love.graphics.newImage("assets/images/entities.png"),
+    [TEXTURE_KEYS.SWITCHES] = love.graphics.newImage("assets/images/switches.png"),
     [TEXTURE_KEYS.HEARTS] = love.graphics.newImage("assets/images/hearts.png")
 }
 
@@ -135,8 +149,8 @@ gameQuads = {
     [QUADS_KEYS.PLAYER_SWING_SWORD] = generateGameQuads(gameTextures[TEXTURE_KEYS.PLAYER_SWING_SWORD],
         PLAYER_SWING_SWORD_WIDTH, PLAYER_SWING_SWORD_HEIGHT),
     [QUADS_KEYS.ENTITIES] = generateGameQuads(gameTextures[TEXTURE_KEYS.ENTITIES], ENTITY_WIDTH, ENTITY_HEIGHT),
+    [QUADS_KEYS.SWITCHES] = generateGameQuads(gameTextures[TEXTURE_KEYS.SWITCHES], TILE_WIDTH, TILE_HEIGHT),
     [QUADS_KEYS.HEARTS] = generateGameQuads(gameTextures[TEXTURE_KEYS.HEARTS], HEART_WIDTH, HEART_HEIGHT)
-
 }
 
 -- fonts

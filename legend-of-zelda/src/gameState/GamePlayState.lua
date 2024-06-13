@@ -36,9 +36,15 @@ function GamePlayState:update(deltaTime)
 
     -- render hit box if press ` key
     if love.keyboard.wasPressed(KEYBOARD_BUTTON_VALUES.BACK_TICK) then
-        self.player.renderHitbox = not self.player.renderHitbox
+        -- render player hitbox
+        self.player:toggleHitbox()
+        -- render entity hitbox
         for i, enemy in pairs(self.dungeon.currentRoom.enemies) do
-            enemy.renderHitbox = not enemy.renderHitbox
+            enemy:toggleHitbox()
+        end
+        -- render object hitbox
+        for i, object in pairs(self.dungeon.currentRoom.objects) do
+            object:toggleHitbox()
         end
     end
 end

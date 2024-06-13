@@ -28,6 +28,10 @@ function Gateway:init(direction, isOpen, room)
     end
 end
 
+function Gateway:open()
+    self.isOpen = true
+end
+
 function Gateway:update(deltaTime)
 end
 
