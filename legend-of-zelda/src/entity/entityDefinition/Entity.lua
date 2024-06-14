@@ -53,26 +53,26 @@ end
 
 function Entity:checkWallCollisions()
     local MAP_BOUNDARIES = {
-        ['TOP'] = MAP_OFFSET_TOP,
-        ['BOTTOM'] = MAP_HEIGHT * TILE_HEIGHT - TILE_HEIGHT,
+        ['TOP'] = MAP_OFFSET_TOP + TILE_HEIGHT,
+        ['BOTTOM'] = MAP_OFFSET_TOP + MAP_HEIGHT * TILE_HEIGHT - TILE_HEIGHT,
         ['LEFT'] = MAP_OFFSET_LEFT + TILE_WIDTH,
-        ['RIGHT'] = MAP_OFFSET_LEFT + (MAP_WIDTH - 1) * TILE_WIDTH - TILE_WIDTH
+        ['RIGHT'] = MAP_OFFSET_LEFT + MAP_WIDTH * TILE_WIDTH - TILE_WIDTH
     }
 
     if self.direction == ENTITY_DIRECTION_VALUES.UP then
-        if self.y < MAP_BOUNDARIES.TOP then
+        if self.hitbox.y < MAP_BOUNDARIES.TOP then
             return true
         end
     elseif self.direction == ENTITY_DIRECTION_VALUES.DOWN then
-        if self.y > MAP_BOUNDARIES.BOTTOM then
+        if self.hitbox.y + self.hitbox.height > MAP_BOUNDARIES.BOTTOM then
             return true
         end
     elseif self.direction == ENTITY_DIRECTION_VALUES.LEFT then
-        if self.x < MAP_BOUNDARIES.LEFT then
+        if self.hitbox.x < MAP_BOUNDARIES.LEFT then
             return true
         end
     elseif self.direction == ENTITY_DIRECTION_VALUES.RIGHT then
-        if self.x > MAP_BOUNDARIES.RIGHT then
+        if self.hitbox.x + self.hitbox.width > MAP_BOUNDARIES.RIGHT then
             return true
         end
     end
@@ -87,15 +87,16 @@ function Entity:collides(target)
                (self.hitbox.y < target.y + target.height)
 end
 
-function Entity:render()
+function Entity:render(shiftingX, shiftingY)
     if not self.isDead then
         love.graphics.draw(gameTextures[self.textureName],
-            gameQuads[self.quadsName][self.currentAnimation:getCurrentFrame()], math.floor(self.x - self.offsetX),
-            math.floor(self.y - self.offsetY))
+            gameQuads[self.quadsName][self.currentAnimation:getCurrentFrame()],
+            math.floor(self.x - self.offsetX) + shiftingX or 0, math.floor(self.y - self.offsetY) + shiftingY or 0)
         -- render hitbox
         if self.renderHitbox then
             love.graphics.setColor(255 / 255, 0, 0, 255)
-            love.graphics.rectangle('line', self.hitbox.x, self.hitbox.y, self.hitbox.width, self.hitbox.height)
+            love.graphics.rectangle('line', self.hitbox.x + shiftingX or 0, self.hitbox.y + shiftingY or 0,
+                self.hitbox.width, self.hitbox.height)
             love.graphics.setColor(255, 255, 255, 255)
         end
     end

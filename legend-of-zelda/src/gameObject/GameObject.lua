@@ -35,13 +35,14 @@ end
 function GameObject:update(deltaTime)
 end
 
-function GameObject:render()
+function GameObject:render(shiftingX, shiftingY)
     love.graphics.draw(gameTextures[self.textureName], gameQuads[self.quadName][self.states[self.currentState].quadId],
-        self.x, self.y)
+        self.x + shiftingX or 0, self.y + shiftingY or 0)
     -- render hitbox
     if self.renderHitbox then
         love.graphics.setColor(255 / 255, 0, 0, 255)
-        love.graphics.rectangle('line', self.hitbox.x, self.hitbox.y, self.hitbox.width, self.hitbox.height)
+        love.graphics.rectangle('line', self.hitbox.x + shiftingX or 0, self.hitbox.y + shiftingY or 0,
+            self.hitbox.width, self.hitbox.height)
         love.graphics.setColor(255, 255, 255, 255)
     end
 end

@@ -10,21 +10,45 @@ function Gateway:init(direction, isOpen, room)
         self.y = MAP_OFFSET_TOP - TILE_HEIGHT
         self.width = 32
         self.height = 32
+        self.hitbox = Hitbox({
+            x = self.x + 14,
+            y = self.y + 28,
+            width = 4,
+            height = 4
+        })
     elseif self.direction == GATEWAY_DIRECTION_VALUES.BOTTOM then
         self.x = MAP_OFFSET_LEFT + MAP_WIDTH * TILE_WIDTH / 2 - TILE_WIDTH
         self.y = MAP_OFFSET_TOP + MAP_HEIGHT * TILE_HEIGHT - TILE_HEIGHT
         self.width = 32
         self.height = 32
+        self.hitbox = Hitbox({
+            x = self.x + 14,
+            y = self.y,
+            width = 4,
+            height = 4
+        })
     elseif self.direction == GATEWAY_DIRECTION_VALUES.LEFT then
         self.x = 0
         self.y = MAP_OFFSET_TOP + MAP_HEIGHT * TILE_HEIGHT / 2 - TILE_HEIGHT
         self.width = 32
         self.height = 32
+        self.hitbox = Hitbox({
+            x = self.x + 28,
+            y = self.y + 14,
+            width = 4,
+            height = 4
+        })
     elseif self.direction == GATEWAY_DIRECTION_VALUES.RIGHT then
         self.x = MAP_OFFSET_LEFT + MAP_WIDTH * TILE_WIDTH - 16
         self.y = MAP_OFFSET_TOP + MAP_HEIGHT * TILE_HEIGHT / 2 - TILE_HEIGHT
         self.width = 32
         self.height = 32
+        self.hitbox = Hitbox({
+            x = self.x,
+            y = self.y + 14,
+            width = 4,
+            height = 4
+        })
     end
 end
 
@@ -32,59 +56,22 @@ function Gateway:open()
     self.isOpen = true
 end
 
+function Gateway:close()
+    self.isOpen = false
+end
+
 function Gateway:update(deltaTime)
 end
 
-function Gateway:render()
+function Gateway:render(shiftingX, shiftingY)
     local texture = gameTextures[TEXTURE_KEYS.MAP_TILE]
     local quads = gameQuads[QUADS_KEYS.MAP_TILE]
-    if self.direction == GATEWAY_DIRECTION_VALUES.TOP then
-        if self.isOpen then
-            love.graphics.draw(texture, quads[98], self.x, self.y)
-            love.graphics.draw(texture, quads[99], self.x + TILE_WIDTH, self.y)
-            love.graphics.draw(texture, quads[117], self.x, self.y + TILE_HEIGHT)
-            love.graphics.draw(texture, quads[118], self.x + TILE_WIDTH, self.y + TILE_HEIGHT)
-        else
-            love.graphics.draw(texture, quads[134], self.x, self.y)
-            love.graphics.draw(texture, quads[135], self.x + TILE_WIDTH, self.y)
-            love.graphics.draw(texture, quads[153], self.x, self.y + TILE_HEIGHT)
-            love.graphics.draw(texture, quads[154], self.x + TILE_WIDTH, self.y + TILE_HEIGHT)
-        end
-    elseif self.direction == GATEWAY_DIRECTION_VALUES.BOTTOM then
-        if self.isOpen then
-            love.graphics.draw(texture, quads[141], self.x, self.y)
-            love.graphics.draw(texture, quads[142], self.x + TILE_WIDTH, self.y)
-            love.graphics.draw(texture, quads[160], self.x, self.y + TILE_HEIGHT)
-            love.graphics.draw(texture, quads[161], self.x + TILE_WIDTH, self.y + TILE_HEIGHT)
-        else
-            love.graphics.draw(texture, quads[216], self.x, self.y)
-            love.graphics.draw(texture, quads[217], self.x + TILE_WIDTH, self.y)
-            love.graphics.draw(texture, quads[235], self.x, self.y + TILE_HEIGHT)
-            love.graphics.draw(texture, quads[236], self.x + TILE_WIDTH, self.y + TILE_HEIGHT)
-        end
-    elseif self.direction == GATEWAY_DIRECTION_VALUES.LEFT then
-        if self.isOpen then
-            love.graphics.draw(texture, quads[181], self.x, self.y)
-            love.graphics.draw(texture, quads[182], self.x + TILE_WIDTH, self.y)
-            love.graphics.draw(texture, quads[200], self.x, self.y + TILE_HEIGHT)
-            love.graphics.draw(texture, quads[201], self.x + TILE_WIDTH, self.y + TILE_HEIGHT)
-        else
-            love.graphics.draw(texture, quads[219], self.x, self.y)
-            love.graphics.draw(texture, quads[220], self.x + TILE_WIDTH, self.y)
-            love.graphics.draw(texture, quads[238], self.x, self.y + TILE_HEIGHT)
-            love.graphics.draw(texture, quads[239], self.x + TILE_WIDTH, self.y + TILE_HEIGHT)
-        end
-    elseif self.direction == GATEWAY_DIRECTION_VALUES.RIGHT then
-        if self.isOpen then
-            love.graphics.draw(texture, quads[172], self.x, self.y)
-            love.graphics.draw(texture, quads[173], self.x + TILE_WIDTH, self.y)
-            love.graphics.draw(texture, quads[191], self.x, self.y + TILE_HEIGHT)
-            love.graphics.draw(texture, quads[192], self.x + TILE_WIDTH, self.y + TILE_HEIGHT)
-        else
-            love.graphics.draw(texture, quads[174], self.x, self.y)
-            love.graphics.draw(texture, quads[175], self.x + TILE_WIDTH, self.y)
-            love.graphics.draw(texture, quads[193], self.x, self.y + TILE_HEIGHT)
-            love.graphics.draw(texture, quads[194], self.x + TILE_WIDTH, self.y + TILE_HEIGHT)
-        end
-    end
+    local tileIds = TILE_ID.GATEWAY[self.direction][self.isOpen and 'OPEN' or 'CLOSE']
+    love.graphics.draw(texture, quads[tileIds['TOP_LEFT']], self.x + shiftingX or 0, self.y + shiftingY or 0)
+    love.graphics.draw(texture, quads[tileIds['TOP_RIGHT']], self.x + TILE_WIDTH + shiftingX or 0,
+        self.y + shiftingY or 0)
+    love.graphics.draw(texture, quads[tileIds['BOTTOM_LEFT']], self.x + shiftingX or 0,
+        self.y + TILE_HEIGHT + shiftingY or 0)
+    love.graphics.draw(texture, quads[tileIds['BOTTOM_RIGHT']], self.x + TILE_WIDTH + shiftingX or 0,
+        self.y + TILE_HEIGHT + shiftingY or 0)
 end

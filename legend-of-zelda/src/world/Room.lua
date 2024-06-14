@@ -4,6 +4,8 @@ function Room:init(player)
     self.player = player
     self.width = MAP_WIDTH
     self.height = MAP_HEIGHT
+    self.shiftingX = 0
+    self.shiftingY = 0
     self.offsetTop = MAP_OFFSET_TOP
     self.offsetLeft = MAP_OFFSET_LEFT
 
@@ -11,10 +13,12 @@ function Room:init(player)
     self.tiles = {}
     self:initializeWallAndFloor()
     -- init all gateways
-    self.gateways = {Gateway(GATEWAY_DIRECTION_VALUES.TOP, false, self),
-                     Gateway(GATEWAY_DIRECTION_VALUES.BOTTOM, false, self),
-                     Gateway(GATEWAY_DIRECTION_VALUES.LEFT, false, self),
-                     Gateway(GATEWAY_DIRECTION_VALUES.RIGHT, false, self)}
+    self.gateways = {
+        [GATEWAY_DIRECTION_VALUES.TOP] = Gateway(GATEWAY_DIRECTION_VALUES.TOP, false, self),
+        [GATEWAY_DIRECTION_VALUES.BOTTOM] = Gateway(GATEWAY_DIRECTION_VALUES.BOTTOM, false, self),
+        [GATEWAY_DIRECTION_VALUES.LEFT] = Gateway(GATEWAY_DIRECTION_VALUES.LEFT, false, self),
+        [GATEWAY_DIRECTION_VALUES.RIGHT] = Gateway(GATEWAY_DIRECTION_VALUES.RIGHT, false, self)
+    }
     -- init objects
     self.objects = {}
     self:generateObjects()
@@ -94,10 +98,11 @@ end
 
 function Room:generateObjects()
     -- switch
-    local gateways = self.gateways
     local switch = GameObject({
-        x = math.random(MAP_OFFSET_LEFT + TILE_WIDTH, MAP_OFFSET_LEFT + MAP_WIDTH * TILE_WIDTH - 2 * TILE_WIDTH),
-        y = math.random(MAP_OFFSET_TOP + TILE_HEIGHT, MAP_OFFSET_TOP + MAP_HEIGHT * TILE_HEIGHT - 2 * TILE_HEIGHT),
+        x = math.random(MAP_OFFSET_LEFT + TILE_WIDTH,
+            MAP_OFFSET_LEFT + MAP_WIDTH * TILE_WIDTH - TILE_WIDTH - SWITCH_WIDTH),
+        y = math.random(MAP_OFFSET_TOP + TILE_HEIGHT,
+            MAP_OFFSET_TOP + MAP_HEIGHT * TILE_HEIGHT - TILE_HEIGHT - SWITCH_HEIGHT),
         width = GAME_OBJECT_DEFINITIONS[GAME_OBJECT_NAME_KEYS.SWITCH].width,
         height = GAME_OBJECT_DEFINITIONS[GAME_OBJECT_NAME_KEYS.SWITCH].height,
         hitbox = GAME_OBJECT_DEFINITIONS[GAME_OBJECT_NAME_KEYS.SWITCH].hitbox,
@@ -106,24 +111,29 @@ function Room:generateObjects()
         states = GAME_OBJECT_DEFINITIONS[GAME_OBJECT_NAME_KEYS.SWITCH].states,
         currentState = GAME_OBJECT_DEFINITIONS[GAME_OBJECT_NAME_KEYS.SWITCH].currentState,
         isSolid = GAME_OBJECT_DEFINITIONS[GAME_OBJECT_NAME_KEYS.SWITCH].isSolid,
-        collidable = GAME_OBJECT_DEFINITIONS[GAME_OBJECT_NAME_KEYS.SWITCH].collidable,
-        onCollide = function(self)
-            if love.keyboard.wasPressed(KEYBOARD_BUTTON_VALUES.SPACE) then
-                -- self refer to switch object
-                self.currentState = SWITCH_STATE_VALUES.PRESSED
-                for i, gateway in pairs(gateways) do
-                    gateway:open()
-                end
+        collidable = GAME_OBJECT_DEFINITIONS[GAME_OBJECT_NAME_KEYS.SWITCH].collidable
+
+    })
+
+    switch.onCollide = function()
+        if love.keyboard.wasPressed(KEYBOARD_BUTTON_VALUES.SPACE) then
+            -- self refer to switch object
+            switch.currentState = SWITCH_STATE_VALUES.PRESSED
+            for k, gateway in pairs(self.gateways) do
+                gateway:open()
             end
         end
-    })
+    end
 
     table.insert(self.objects, switch)
 end
 
 function Room:update(deltaTime)
+    -- update player 
+    self.player:update(deltaTime)
+
     -- update gateways
-    for i, gateway in pairs(self.gateways) do
+    for k, gateway in pairs(self.gateways) do
         gateway:update(deltaTime)
     end
 
@@ -144,7 +154,7 @@ function Room:update(deltaTime)
     for i, object in pairs(self.objects) do
         object:update(deltaTime)
         -- check if the player collide with object
-        if self.player:collides(object) then
+        if self.player:collides(object.hitbox) then
             if object.collidable then
                 object:onCollide()
             end
@@ -157,19 +167,26 @@ function Room:render()
     for x = 1, self.width do
         for y = 1, self.height do
             love.graphics.draw(gameTextures[TEXTURE_KEYS.MAP_TILE], gameQuads[QUADS_KEYS.MAP_TILE][self.tiles[x][y].id],
-                (x - 1) * TILE_WIDTH + self.offsetLeft, (y - 1) * TILE_HEIGHT + self.offsetTop)
+                (x - 1) * TILE_WIDTH + self.offsetLeft + self.shiftingX,
+                (y - 1) * TILE_HEIGHT + self.offsetTop + self.shiftingY)
         end
     end
+
     -- render objects 
     for i, object in pairs(self.objects) do
-        object:render()
+        object:render(self.shiftingX, self.shiftingY)
     end
+
     -- render gateways
-    for i, gateway in pairs(self.gateways) do
-        gateway:render()
+    for k, gateway in pairs(self.gateways) do
+        gateway:render(self.shiftingX, self.shiftingY)
     end
+
     -- render enemies
     for i, enemy in pairs(self.enemies) do
-        enemy:render()
+        enemy:render(self.shiftingX, self.shiftingY)
     end
+
+    -- render player
+    self.player:render()
 end

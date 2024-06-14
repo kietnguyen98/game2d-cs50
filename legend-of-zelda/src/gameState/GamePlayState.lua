@@ -17,7 +17,7 @@ function GamePlayState:init()
             return PlayerIdleState(self.player)
         end,
         [ENTITY_STATE_KEYS.MOVING] = function()
-            return PlayerMovingState(self.player)
+            return PlayerMovingState(self.player, self.dungeon)
         end,
         [ENTITY_STATE_KEYS.SWING_SWORD] = function()
             return PlayerSwingSwordState(self.player, self.dungeon)
@@ -31,8 +31,8 @@ function GamePlayState:enter(params)
 end
 
 function GamePlayState:update(deltaTime)
+    Timer.update(deltaTime)
     self.dungeon:update(deltaTime)
-    self.player:update(deltaTime)
 
     -- render hit box if press ` key
     if love.keyboard.wasPressed(KEYBOARD_BUTTON_VALUES.BACK_TICK) then
@@ -67,6 +67,5 @@ end
 
 function GamePlayState:render()
     self.dungeon:render()
-    self.player:render()
     self:renderPlayerHealth()
 end

@@ -2,6 +2,8 @@
 -- libraries
 require "lib/class"
 push = require "lib/push"
+Event = require "lib/knife/event"
+Timer = require "lib/knife/timer"
 -- utilities
 require "src/Utils"
 -- contants

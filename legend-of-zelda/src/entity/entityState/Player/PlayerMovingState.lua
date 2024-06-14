@@ -1,7 +1,8 @@
 PlayerMovingState = BaseState()
 
-function PlayerMovingState:init(player)
+function PlayerMovingState:init(player, dungeon)
     self.player = player
+    self.dungeon = dungeon
     self.animations = {
         [ENTITY_DIRECTION_VALUES.UP] = Animation({
             frames = self.player.animations[ENTITY_ANIMATION_KEYS.WALK_UP].frames,
@@ -53,25 +54,41 @@ function PlayerMovingState:update(deltaTime)
     -- move player
     if self.player.direction == ENTITY_DIRECTION_VALUES.UP then
         self.player.y = self.player.y - self.player.movingSpeed * deltaTime
-        if self.player:checkWallCollisions() then
+        -- check for collide with top gateway or wall
+        local topGateway = self.dungeon.currentRoom.gateways[GATEWAY_DIRECTION_VALUES.TOP]
+        if self.player:collides(topGateway.hitbox) and topGateway.isOpen then
+            Event.dispatch(EVENT_NAME_KEYS.SHIFT_PLAYER_UP)
+        elseif self.player:checkWallCollisions() then
             -- reset position
             self.player.y = self.player.y + self.player.movingSpeed * deltaTime
         end
     elseif self.player.direction == ENTITY_DIRECTION_VALUES.DOWN then
         self.player.y = self.player.y + self.player.movingSpeed * deltaTime
-        if self.player:checkWallCollisions() then
+        -- check for collide with bottom gateway or wall
+        local bottomGateway = self.dungeon.currentRoom.gateways[GATEWAY_DIRECTION_VALUES.BOTTOM]
+        if self.player:collides(bottomGateway.hitbox) and bottomGateway.isOpen then
+            Event.dispatch(EVENT_NAME_KEYS.SHIFT_PLAYER_DOWN)
+        elseif self.player:checkWallCollisions() then
             -- reset position
             self.player.y = self.player.y - self.player.movingSpeed * deltaTime
         end
     elseif self.player.direction == ENTITY_DIRECTION_VALUES.LEFT then
         self.player.x = self.player.x - self.player.movingSpeed * deltaTime
-        if self.player:checkWallCollisions() then
+        -- check for collide with left gateway or wall
+        local leftGateway = self.dungeon.currentRoom.gateways[GATEWAY_DIRECTION_VALUES.LEFT]
+        if self.player:collides(leftGateway.hitbox) and leftGateway.isOpen then
+            Event.dispatch(EVENT_NAME_KEYS.SHIFT_PLAYER_LEFT)
+        elseif self.player:checkWallCollisions() then
             -- reset position
             self.player.x = self.player.x + self.player.movingSpeed * deltaTime
         end
     elseif self.player.direction == ENTITY_DIRECTION_VALUES.RIGHT then
         self.player.x = self.player.x + self.player.movingSpeed * deltaTime
-        if self.player:checkWallCollisions() then
+        -- check for collide with right gateway or wall
+        local rightGateway = self.dungeon.currentRoom.gateways[GATEWAY_DIRECTION_VALUES.RIGHT]
+        if self.player:collides(rightGateway.hitbox) and rightGateway.isOpen then
+            Event.dispatch(EVENT_NAME_KEYS.SHIFT_PLAYER_RIGHT)
+        elseif self.player:checkWallCollisions() then
             -- reset position
             self.player.x = self.player.x - self.player.movingSpeed * deltaTime
         end

@@ -104,6 +104,9 @@ SWITCH_STATE_VALUES = {
     ['UN_PRESSED'] = 'un-pressed'
 }
 
+SWITCH_WIDTH = TILE_WIDTH
+SWITCH_HEIGHT = TILE_HEIGHT + 2
+
 -- gateway directions
 GATEWAY_DIRECTION_VALUES = {
     ['TOP'] = "top",
@@ -130,6 +133,14 @@ BAT_SPEED = 12
 GHOST_SPEED = 14
 SPIDER_SPEED = 10
 
+-- event name keys
+EVENT_NAME_KEYS = {
+    ['SHIFT_PLAYER_UP'] = 'shift-player-up',
+    ['SHIFT_PLAYER_DOWN'] = 'shift-player-down',
+    ['SHIFT_PLAYER_LEFT'] = 'shift-player-left',
+    ['SHIFT_PLAYER_RIGHT'] = 'shift-player-right'
+}
+
 -- textures
 gameTextures = {
     [TEXTURE_KEYS.BACKGROUND] = love.graphics.newImage("assets/images/background-2.png"),
@@ -149,7 +160,7 @@ gameQuads = {
     [QUADS_KEYS.PLAYER_SWING_SWORD] = generateGameQuads(gameTextures[TEXTURE_KEYS.PLAYER_SWING_SWORD],
         PLAYER_SWING_SWORD_WIDTH, PLAYER_SWING_SWORD_HEIGHT),
     [QUADS_KEYS.ENTITIES] = generateGameQuads(gameTextures[TEXTURE_KEYS.ENTITIES], ENTITY_WIDTH, ENTITY_HEIGHT),
-    [QUADS_KEYS.SWITCHES] = generateGameQuads(gameTextures[TEXTURE_KEYS.SWITCHES], TILE_WIDTH, TILE_HEIGHT),
+    [QUADS_KEYS.SWITCHES] = generateGameQuads(gameTextures[TEXTURE_KEYS.SWITCHES], SWITCH_WIDTH, SWITCH_HEIGHT),
     [QUADS_KEYS.HEARTS] = generateGameQuads(gameTextures[TEXTURE_KEYS.HEARTS], HEART_WIDTH, HEART_HEIGHT)
 }
 
@@ -191,20 +202,60 @@ TILE_ID = {
                  69, 70, 88, 89, 107, 108},
     ['GATEWAY'] = {
         [GATEWAY_DIRECTION_VALUES.TOP] = {
-            ['OPEN'] = {134, 135, 153, 154},
-            ['CLOSE'] = {}
+            ['OPEN'] = {
+                ['TOP_LEFT'] = 98,
+                ['TOP_RIGHT'] = 99,
+                ['BOTTOM_LEFT'] = 117,
+                ['BOTTOM_RIGHT'] = 118
+            },
+            ['CLOSE'] = {
+                ['TOP_LEFT'] = 134,
+                ['TOP_RIGHT'] = 135,
+                ['BOTTOM_LEFT'] = 153,
+                ['BOTTOM_RIGHT'] = 154
+            }
         },
         [GATEWAY_DIRECTION_VALUES.BOTTOM] = {
-            ['OPEN'] = {},
-            ['CLOSE'] = {}
+            ['OPEN'] = {
+                ['TOP_LEFT'] = 141,
+                ['TOP_RIGHT'] = 142,
+                ['BOTTOM_LEFT'] = 160,
+                ['BOTTOM_RIGHT'] = 161
+            },
+            ['CLOSE'] = {
+                ['TOP_LEFT'] = 216,
+                ['TOP_RIGHT'] = 217,
+                ['BOTTOM_LEFT'] = 235,
+                ['BOTTOM_RIGHT'] = 236
+            }
         },
         [GATEWAY_DIRECTION_VALUES.LEFT] = {
-            ['OPEN'] = {},
-            ['CLOSE'] = {}
+            ['OPEN'] = {
+                ['TOP_LEFT'] = 181,
+                ['TOP_RIGHT'] = 182,
+                ['BOTTOM_LEFT'] = 200,
+                ['BOTTOM_RIGHT'] = 201
+            },
+            ['CLOSE'] = {
+                ['TOP_LEFT'] = 219,
+                ['TOP_RIGHT'] = 220,
+                ['BOTTOM_LEFT'] = 238,
+                ['BOTTOM_RIGHT'] = 239
+            }
         },
         [GATEWAY_DIRECTION_VALUES.RIGHT] = {
-            ['OPEN'] = {},
-            ['CLOSE'] = {}
+            ['OPEN'] = {
+                ['TOP_LEFT'] = 172,
+                ['TOP_RIGHT'] = 173,
+                ['BOTTOM_LEFT'] = 191,
+                ['BOTTOM_RIGHT'] = 192
+            },
+            ['CLOSE'] = {
+                ['TOP_LEFT'] = 174,
+                ['TOP_RIGHT'] = 175,
+                ['BOTTOM_LEFT'] = 193,
+                ['BOTTOM_RIGHT'] = 194
+            }
         }
     }
 }
