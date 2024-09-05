@@ -61,7 +61,7 @@ function love.load()
     -- create box
     boxBody = love.physics.newBody(world, math.random(VIRTUAL_WIDTH), 0, "dynamic")
     boxShape = love.physics.newRectangleShape(30, 30)
-    boxFixture = love.physics.newFixture(boxBody, boxShape, 20)
+    boxFixture = love.physics.newFixture(boxBody, boxShape, 10)
 end
 
 function push.resize(w, h)
