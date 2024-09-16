@@ -26,7 +26,7 @@ function Alien:init(def)
 
     self.fixture = love.physics.newFixture(self.body, self.shape)
 
-    self.fixture:setUserData(userData)
+    self.fixture:setUserData(def.userData)
 
     -- used to keep track of despawning the Alien and flinging it
     self.launched = false

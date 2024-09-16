@@ -33,6 +33,10 @@ function GameStartState:enter(params)
 end
 
 function GameStartState:update(deltaTime)
+    if love.keyboard.wasPressed("enter") or love.keyboard.wasPressed("return") then
+        gameStateMachine:change("play")
+    end
+
     self.world:update(deltaTime)
     self.background:update(deltaTime)
 end

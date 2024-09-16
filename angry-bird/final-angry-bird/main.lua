@@ -55,16 +55,21 @@ function love.mouse.wasPressed(buttonKey)
     return love.mouse.keysPressed[buttonKey]
 end
 
-function love.mousereleased(buttonKey)
+function love.mousereleased(x, y, buttonKey)
     love.mouse.keysReleased[buttonKey] = true
 end
 
 function love.mouse.wasReleased(buttonKey)
-    return love.mouse.keysReleased
+    return love.mouse.keysReleased[buttonKey]
 end
 
 function love.update(deltaTime)
-    gameStateMachine:update(deltaTime)
+    if not isGamePaused then
+        gameStateMachine:update(deltaTime)
+        love.keyboard.keysPressed = {}
+        love.mouse.keysPressed = {}
+        love.mouse.keysReleased = {}
+    end
 end
 
 function love.draw()

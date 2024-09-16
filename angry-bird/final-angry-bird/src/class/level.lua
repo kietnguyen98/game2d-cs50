@@ -66,8 +66,6 @@ function Level:init(def)
 
         -- if we hit the ground, play a bounce sound
         if types['Player'] and types['Ground'] then
-            gSounds['bounce']:stop()
-            gSounds['bounce']:play()
         end
     end
 
@@ -75,21 +73,155 @@ function Level:init(def)
     -- implementing any functionality with them in this demo; use-case specific
     -- http://www.iforce2d.net/b2dtut/collision-anatomy
     function endContact(a, b, coll)
-
     end
 
     function preSolve(a, b, coll)
-
     end
 
     function postSolve(a, b, coll, normalImpulse, tangentImpulse)
-
     end
 
+    -- register just-defined functions as collision callbacks for world
+    self.world:setCallbacks(beginContact, endContact, preSolve, postSolve)
+
+    -- init aliens table
+    self.aliens = {}
+
+    -- init obstacles table, obstacles guarding aliens that we can destroy
+    self.obstacles = {}
+
+    -- simple edge shape to represent collision for ground
+    self.edgeShape = love.physics.newEdgeShape(0, 0, VIRTUAL_WIDTH * 3, 0)
+
+    -- background graphics
+    self.background = Background()
+
+    -- init entities
+    self:generateGround()
+    self:generateAlien()
+    self:generateObstacles()
+
+    -- init alien launch maker
+    self.alienLaunchMarker = AlienLaunchMarker({
+        world = self.world
+    })
+end
+
+function Level:generateGround()
+    -- ground data
+    self.groundBody = love.physics.newBody(self.world, -VIRTUAL_WIDTH, VIRTUAL_HEIGHT - 35, 'static')
+    self.groundFixture = love.physics.newFixture(self.groundBody, self.edgeShape)
+    self.groundFixture:setFriction(0.5)
+    self.groundFixture:setUserData('Ground')
+end
+
+function Level:generateAlien()
+    -- spawn an alien to try and destroy
+    newAlien = Alien({
+        world = self.world,
+        type = 'square',
+        x = VIRTUAL_WIDTH - 80,
+        y = VIRTUAL_HEIGHT - TILE_HEIGHT - ALIEN_HEIGHT / 2,
+        userData = 'Alien'
+    })
+
+    table.insert(self.aliens, newAlien)
+end
+
+function Level:generateObstacles()
+    -- spawn a few obstacles
+    leftVerticalObstacle = Obstacle({
+        world = self.world,
+        shape = 'vertical',
+        x = VIRTUAL_WIDTH - 120,
+        y = VIRTUAL_HEIGHT - 35 - 110 / 2
+    })
+    rightVerticalObstacle = Obstacle({
+        world = self.world,
+        shape = 'vertical',
+        x = VIRTUAL_WIDTH - 35,
+        y = VIRTUAL_HEIGHT - 35 - 110 / 2
+    })
+    topHorizontalObstacle = Obstacle({
+        world = self.world,
+        shape = 'horizontal',
+        x = VIRTUAL_WIDTH - 80,
+        y = VIRTUAL_HEIGHT - 35 - 110 - 35 / 2
+    })
+
+    table.insert(self.obstacles, leftVerticalObstacle)
+    table.insert(self.obstacles, rightVerticalObstacle)
+    table.insert(self.obstacles, topHorizontalObstacle)
 end
 
 function Level:update(deltaTime)
+    -- Box2D world update code; resolves collisions and processes callbacks
+    self.world:update(deltaTime)
+
+    -- update alien launch maker
+    self.alienLaunchMarker:update(deltaTime)
+
+    -- destroy all bodies we calculated to destroy during the update call
+    for k, body in pairs(self.destroyedBodies) do
+        if not body:isDestroyed() then
+            body:destroy()
+        end
+    end
+
+    -- remove all destroyed obstacles from level
+    for i = #self.obstacles, 1, -1 do
+        if self.obstacles[i].body:isDestroyed() then
+            table.remove(self.obstacles, i)
+        end
+    end
+
+    -- remove all destroyed aliens from level
+    for i = #self.aliens, 1, -1 do
+        if self.aliens[i].body:isDestroyed() then
+            table.remove(self.aliens, i)
+        end
+    end
+
+    -- reset destroyed bodies to empty table for next update phase
+    self.destroyedBodies = {}
+
+    -- replace launch marker if original alien stopped moving
+    if self.alienLaunchMarker.isLaunched then
+        local xPos, yPos = self.alienLaunchMarker.alien.body:getPosition()
+        local xVel, yVel = self.alienLaunchMarker.alien.body:getLinearVelocity()
+
+        -- if we fired our alien to the left or it's almost done rolling, respawn
+        if xPos < 0 or (math.abs(xVel) + math.abs(yVel) < 5) then
+            self.alienLaunchMarker.alien.body:destroy()
+            -- re-initialize alien launch maker
+            self.alienLaunchMarker = AlienLaunchMarker({
+                world = self.world
+            })
+
+            -- re-initialize level if we have no more aliens
+            if #self.aliens == 0 then
+                gameStateMachine:change('start')
+            end
+        end
+    end
 end
 
 function Level:render()
+    -- render ground tiles across full scrollable width of the screen
+    for x = -VIRTUAL_WIDTH, VIRTUAL_WIDTH * 2, 35 do
+        love.graphics.draw(gameTextures['tiles'], gameFrames['tiles'][12], x, VIRTUAL_HEIGHT - 35)
+    end
+
+    -- render alien launch maker
+    self.alienLaunchMarker:render(deltaTime)
+
+    -- render aliens
+    for k, alien in pairs(self.aliens) do
+        alien:render()
+    end
+
+    -- render obstacles
+    for k, obstacle in pairs(self.obstacles) do
+        obstacle:render()
+    end
 end

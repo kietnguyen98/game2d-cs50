@@ -1,6 +1,9 @@
 Obstacle = class()
 
+MATERIAL_TYPE = {"wood", "stone", "metal"}
+
 function Obstacle:init(def)
+    self.materialIndex = MATERIAL_TYPE[math.random(#MATERIAL_TYPE)]
     self.shape = def.shape or 'horizontal'
 
     if self.shape == 'horizontal' then
@@ -37,6 +40,7 @@ function Obstacle:update(deltaTime)
 end
 
 function Obstacle:render()
-    love.graphics.draw(gameTextures['wood'], gameFrames['wood'][self.frame], self.body:getX(), self.body:getY(),
+    love.graphics.draw(gameTextures[self.materialIndex .. "-obstacle"],
+        gameFrames[self.materialIndex .. "-obstacle"][self.frame], self.body:getX(), self.body:getY(),
         self.body:getAngle(), 1, 1, self.width / 2, self.height / 2)
 end
